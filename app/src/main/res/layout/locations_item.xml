@@ -7,7 +7,7 @@
 
     <ImageView
         android:layout_margin="5dp"
-        android:id="@+id/city_adapter_icon"
+        android:id="@+id/locations_adapter_icon"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:src="@drawable/location"/>

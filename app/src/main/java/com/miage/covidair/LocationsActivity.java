@@ -1,97 +1,68 @@
 package com.miage.covidair;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import com.miage.covidair.event.EventBusManager;
+import com.miage.covidair.event.SearchLocationResultEvent;
+import com.miage.covidair.service.CitySearchService;
+import com.miage.covidair.service.LocationSearchService;
+import com.miage.covidair.ui.LocationAdapter;
+import com.squareup.otto.Subscribe;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 
 public class LocationsActivity extends AppCompatActivity {
-
-
-    @BindView(R.id.activity_detail_city_street)
-    TextView mCityStreet;
-
-    @BindView(R.id.activity_detail_city_pic)
-    ImageView mCityPic;
-
-    private String mCityStreetValue;
+    @BindView(R.id.recyclerView)
+    RecyclerView mRecyclerView;
+    private LocationAdapter mLocationAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.locations_item);
+        setContentView(R.layout.activity_main);
 
+        // Binding ButterKnife annotations now that content view has been set
         ButterKnife.bind(this);
-        mCityStreetValue = getIntent().getStringExtra("placeStreet");
-        mCityStreet.setText(mCityStreetValue);
-    }
 
-    @OnClick(R.id.activity_detail_city_street)
-    public void clickedOnCityStreet() {
-        finish();
-    }
-
-    @OnClick(R.id.activity_detail_button_search)
-    public void clickedOnGoogleSearch() {
-        // Open browser using an Intent
-        Uri url = Uri.parse("https://www.google.fr/search?q=" + mCityStreetValue);
-        Intent launchBrowser = new Intent(Intent.ACTION_VIEW, url);
-        startActivity(launchBrowser);
-    }
-
-    @OnClick(R.id.activity_detail_button_share)
-    public void clickedOnShare() {
-        // Open share picker using an Intent
-        Intent sendIntent = new Intent();
-        sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, "J'ai découvert " + mCityStreetValue + " grâce à City Searcher !");
-        sendIntent.setType("text/plain");
-        startActivity(sendIntent);
-    }
-
-    @OnClick(R.id.activity_detail_button_galery)
-    public void clickedOnPickFromGalery() {
-        // Open galery picker using an Intent
-        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-        photoPickerIntent.setType("image/*");
-        startActivityForResult(photoPickerIntent, SELECT_PHOTO);
+        // Instanciate a CityAdpater with empty content
+        mLocationAdapter = new LocationAdapter(this, new ArrayList<>());
+        mRecyclerView.setAdapter(mLocationAdapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
-        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+    protected void onResume() {
+        // Do NOT forget to call super.onResume()
+        super.onResume();
 
-        // If we get a result from the SELECT_PHOTO query
-        switch(requestCode) {
-            case SELECT_PHOTO:
-                if(resultCode == RESULT_OK){
-                    // Get the selected image as bitmap
-                    Uri selectedImage = imageReturnedIntent.getData();
-                    InputStream imageStream = null;
-                    try {
-                        imageStream = getContentResolver().openInputStream(selectedImage);
-                        Bitmap selectedImageBitmap = BitmapFactory.decodeStream(imageStream);
-
-                        // Set the bitmap to the picture
-                        mCityPic.setImageBitmap(selectedImageBitmap);
-                    } catch (FileNotFoundException e) {
-                        // Silent catch : image will not be displayed
-                    }
-
-                }
-        }
+        // Register to Event bus : now each time an event is posted, the activity will receive it if it is @Subscribed to this event
+        EventBusManager.BUS.register(this);
+        String location = getIntent().getStringExtra("city");
+        LocationSearchService.INSTANCE.searchFromAPI("locations?city="+location);
     }
+
+    @Override
+    protected void onPause() {
+        // Unregister from Event bus : if event are posted now, the activity will not receive it
+        EventBusManager.BUS.unregister(this);
+
+        super.onPause();
+    }
+
+    @Subscribe
+    public void searchResult(final SearchLocationResultEvent event) {
+        // Here someone has posted a SearchCityResultEvent
+        // Update adapter's model
+        mLocationAdapter.setLocations(event.getLocations());
+        runOnUiThread(() -> mLocationAdapter.notifyDataSetChanged());
+    }
+
 }

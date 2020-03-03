@@ -76,7 +76,7 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityViewHolder
 
                 // Open city details activity
                 Intent seeCityDetailIntent = new Intent(context, LocationsActivity.class);
-                seeCityDetailIntent.putExtra("placeStreet", city.getName());
+                seeCityDetailIntent.putExtra("City", city.getName());
                 context.startActivity(seeCityDetailIntent);
             }
         });

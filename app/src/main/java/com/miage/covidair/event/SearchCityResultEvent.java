@@ -4,11 +4,11 @@ import com.miage.covidair.model.City;
 
 import java.util.List;
 
-public class SearchResultEvent {
+public class SearchCityResultEvent {
 
     private List<City> cities;
 
-    public SearchResultEvent(List<City> cities) {
+    public SearchCityResultEvent(List<City> cities) {
         this.cities = cities;
     }
 

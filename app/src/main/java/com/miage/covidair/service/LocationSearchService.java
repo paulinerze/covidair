@@ -1,11 +1,13 @@
-package com.miage.covidair;
+package com.miage.covidair.service;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.miage.covidair.event.EventBusManager;
-import com.miage.covidair.event.SearchResultEvent;
+import com.miage.covidair.event.SearchCityResultEvent;
+import com.miage.covidair.event.SearchLocationResultEvent;
 import com.miage.covidair.model.City;
+import com.miage.covidair.model.Location;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,11 +21,10 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class CitySearchService {
+public class LocationSearchService {
+    public static LocationSearchService INSTANCE = new LocationSearchService();
 
-    public static CitySearchService INSTANCE = new CitySearchService();
-
-    private CitySearchService() {
+    private LocationSearchService() {
 
     }
 
@@ -42,23 +43,23 @@ public class CitySearchService {
                     Response response = okHttpClient.newCall(request).execute();
                     if (response != null && response.body() != null) {
                         JSONObject jsonResult = new JSONObject(response.body().string());
-                        JSONArray jsonCities = jsonResult.getJSONArray("results");
+                        JSONArray jsonLocations = jsonResult.getJSONArray("results");
 
-                        List<City> foundCities = new ArrayList<>();
-                        for (int i = 0; i < jsonCities.length(); i++) {
-                            JSONObject jsonCity = jsonCities.getJSONObject(i);
-                            String name = jsonCity.getString("name");
+                        List<Location> foundLocations = new ArrayList<>();
+                        for (int i = 0; i < jsonLocations.length(); i++) {
+                            JSONObject jsonCity = jsonLocations.getJSONObject(i);
+                            String location = jsonCity.getString("location");
                             String count = jsonCity.getString("count");
-                            String locations = jsonCity.getString("locations");
-                            foundCities.add(new City(name,count,locations));
+                            String lastUpdated = jsonCity.getString("lastUpdated");
+                            foundLocations.add(new Location(location,count,lastUpdated));
                         }
-                        EventBusManager.BUS.post(new SearchResultEvent(foundCities));
+                        EventBusManager.BUS.post(new SearchLocationResultEvent(foundLocations));
                     }
                 } catch (IOException e) {
-                    // Silent catch, no cities will be displayed
+                    // Silent catch, no locations will be displayed
                     Log.e("CovidAir - Network Issue", e.getMessage());
                 } catch (JSONException e) {
-                    // Silent catch, no cities will be displayed
+                    // Silent catch, no locations will be displayed
                     Log.e("CovidAir - Json Exception", e.getMessage());
                 }
                 return null;
