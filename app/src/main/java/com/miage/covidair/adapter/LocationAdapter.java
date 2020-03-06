@@ -1,4 +1,4 @@
-package com.miage.covidair.ui;
+package com.miage.covidair.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.miage.covidair.LocationsActivity;
+import com.miage.covidair.DetailActivity;
 import com.miage.covidair.R;
 import com.miage.covidair.model.Location;
 
@@ -69,8 +69,8 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
                 }
 
                 // Open locations details activity
-                Intent seeCityDetailIntent = new Intent(context, LocationsActivity.class);
-                seeCityDetailIntent.putExtra("Location", location.getLocation());
+                Intent seeCityDetailIntent = new Intent(context, DetailActivity.class);
+                seeCityDetailIntent.putExtra("location", location.getLocation());
                 context.startActivity(seeCityDetailIntent);
             }
         });

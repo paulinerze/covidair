@@ -8,9 +8,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.miage.covidair.event.EventBusManager;
 import com.miage.covidair.event.SearchLocationResultEvent;
-import com.miage.covidair.service.CitySearchService;
 import com.miage.covidair.service.LocationSearchService;
-import com.miage.covidair.ui.LocationAdapter;
+import com.miage.covidair.adapter.LocationAdapter;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;

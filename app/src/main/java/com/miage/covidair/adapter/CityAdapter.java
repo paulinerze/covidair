@@ -1,4 +1,4 @@
-package com.miage.covidair.ui;
+package com.miage.covidair.adapter;
 
 import android.app.Activity;
 import android.content.Intent;

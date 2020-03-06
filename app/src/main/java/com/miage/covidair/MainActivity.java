@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.miage.covidair.event.EventBusManager;
 import com.miage.covidair.event.SearchCityResultEvent;
 import com.miage.covidair.service.CitySearchService;
-import com.miage.covidair.ui.CityAdapter;
+import com.miage.covidair.adapter.CityAdapter;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;

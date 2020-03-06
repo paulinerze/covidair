@@ -7,9 +7,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.miage.covidair.event.EventBusManager;
-import com.miage.covidair.event.SearchLocationResultEvent;
-import com.miage.covidair.service.LocationSearchService;
-import com.miage.covidair.ui.LocationAdapter;
+import com.miage.covidair.event.SearchDetailResultEvent;
+import com.miage.covidair.service.DetailSearchService;
+import com.miage.covidair.adapter.DetailAdapter;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ public class DetailActivity extends AppCompatActivity{
 
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
-    private LocationAdapter mLocationAdapter;
+    private DetailAdapter mDetailAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +32,8 @@ public class DetailActivity extends AppCompatActivity{
         ButterKnife.bind(this);
 
         // Instanciate a CityAdpater with empty content
-        mLocationAdapter = new LocationAdapter(this, new ArrayList<>());
-        mRecyclerView.setAdapter(mLocationAdapter);
+        mDetailAdapter = new DetailAdapter(this, new ArrayList<>());
+        mRecyclerView.setAdapter(mDetailAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
@@ -46,7 +46,7 @@ public class DetailActivity extends AppCompatActivity{
         EventBusManager.BUS.register(this);
         String location = getIntent().getStringExtra("location");
         String city = getIntent().getStringExtra("city");
-        LocationSearchService.INSTANCE.searchFromAPI("https://api.openaq.org/v1/measurements?city="+city+"&location="+location+"&order_by=date&sort=desc");
+        DetailSearchService.INSTANCE.searchFromAPI("https://api.openaq.org/v1/measurements?city="+city+"&location="+location+"&order_by=date&sort=desc");
     }
 
     @Override
@@ -58,10 +58,10 @@ public class DetailActivity extends AppCompatActivity{
     }
 
     @Subscribe
-    public void searchResult(final SearchLocationResultEvent event) {
+    public void searchResult(final SearchDetailResultEvent event) {
         // Here someone has posted a SearchCityResultEvent
         // Update adapter's model
-        mLocationAdapter.setLocations(event.getLocations());
-        runOnUiThread(() -> mLocationAdapter.notifyDataSetChanged());
+        mDetailAdapter.setDetails(event.getDetails());
+        runOnUiThread(() -> mDetailAdapter.notifyDataSetChanged());
     }
 }

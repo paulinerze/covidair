@@ -19,6 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".LocationsActivity" />
+        <activity android:name=".DetailActivity" />
     </application>
 
 </manifest>

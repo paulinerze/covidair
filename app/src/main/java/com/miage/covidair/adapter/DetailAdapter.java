@@ -1,9 +1,6 @@
-package com.miage.covidair.ui;
+package com.miage.covidair.adapter;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.content.res.AssetFileDescriptor;
-import android.media.MediaPlayer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,11 +8,9 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.miage.covidair.LocationsActivity;
 import com.miage.covidair.R;
 import com.miage.covidair.model.Detail;
 
-import java.io.IOException;
 import java.util.List;
 
 import butterknife.BindView;
