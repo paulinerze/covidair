@@ -49,8 +49,6 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityViewHolder
         holder.mCityName.setText(city.getName());
         holder.mCityCount.setText(city.getCount());
         holder.mCityLocations.setText(city.getLocations());
-        holder.mCountLabel.setText("Count :");
-        holder.mLocationsLabel.setText("Locations :");
         if (city.getName().contains("1")) {
             holder.mCityIcon.setImageResource(R.drawable.street_icon);
         } else {
@@ -105,12 +103,6 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityViewHolder
 
         @BindView(R.id.city_adapter_icon)
         ImageView mCityIcon;
-
-        @BindView(R.id.city_adapter_countLabel)
-        TextView mCountLabel;
-
-        @BindView(R.id.city_adapter_locationsLabel)
-        TextView mLocationsLabel;
 
         public CityViewHolder(View itemView) {
             super(itemView);

@@ -42,9 +42,6 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.DetailsVie
         holder.mDetailValue.setText(detail.getValue());
         holder.mDetailUnit.setText(detail.getUnit());
         holder.mDetailAveragingPeriod.setText(detail.getLocalDate());
-        holder.mDetailValueLabel.setText("Value :");
-        holder.mDetailUnitLabel.setText("Unit :");
-        holder.mDetailAveragingPeriodLabel.setText("Averaging period :");
 
     }
 
@@ -70,12 +67,6 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.DetailsVie
 
         @BindView(R.id.detail_adapter_averagingPeriod)
         TextView mDetailAveragingPeriod;
-
-        @BindView(R.id.detail_adapter_valueLabel)
-        TextView mDetailValueLabel;
-
-        @BindView(R.id.detail_adapter_unitLabel)
-        TextView mDetailUnitLabel;
 
         @BindView(R.id.detail_adapter_averagingPeriodLabel)
         TextView mDetailAveragingPeriodLabel;

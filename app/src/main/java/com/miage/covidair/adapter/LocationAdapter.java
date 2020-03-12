@@ -50,8 +50,6 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
         holder.mLocation.setText(location.getLocation());
         holder.mCount.setText(location.getCount());
         holder.mLastUpdated.setText(location.getLastUpdated());
-        holder.mCountLabel.setText("Count :");
-        holder.mLastUpdatedLabel.setText("Last updated :");
         holder.mLocationsIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -97,14 +95,8 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
         @BindView(R.id.location_adapter_location)
         TextView mLocation;
 
-        @BindView(R.id.location_adapter_countLabel)
-        TextView mCountLabel;
-
         @BindView(R.id.location_adapter_count)
         TextView mCount;
-
-        @BindView(R.id.location_adapter_lastUpdatedLabel)
-        TextView mLastUpdatedLabel;
 
         @BindView(R.id.location_adapter_lastUpdated)
         TextView mLastUpdated;

@@ -7,10 +7,10 @@
 
     <ImageView
         android:id="@+id/detail_adapter_icon"
-        android:layout_width="76dp"
-        android:layout_height="76dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_margin="5dp"
-        android:src="@drawable/location" />
+        android:src="@drawable/detail" />
 
     <LinearLayout
         android:layout_margin="5dp"
@@ -32,34 +32,14 @@
             android:layout_height="0dp">
 
             <TextView
-                android:id="@+id/detail_adapter_valueLabel"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content" />
-
-            <TextView
                 android:id="@+id/detail_adapter_value"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2" />
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="0dp">
-
-            <TextView
-                android:id="@+id/detail_adapter_unitLabel"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content" />
-
             <TextView
                 android:id="@+id/detail_adapter_unit"
-                android:layout_width="0dp"
+                android:layout_width="230dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2" />
 
@@ -73,9 +53,10 @@
 
             <TextView
                 android:id="@+id/detail_adapter_averagingPeriodLabel"
-                android:layout_width="0dp"
+                android:layout_width="68dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_height="wrap_content" />
+                android:text="Date de la mesure" />
 
             <TextView
                 android:id="@+id/detail_adapter_averagingPeriod"

@@ -1,7 +1,10 @@
 package com.miage.covidair.service;
 
 import android.os.AsyncTask;
+import android.os.Build;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
 
 import com.miage.covidair.event.EventBusManager;
 import com.miage.covidair.event.SearchDetailResultEvent;
@@ -14,7 +17,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
@@ -32,6 +40,7 @@ public class DetailSearchService {
         // Create AsyncTask
         AsyncTask<Void, Void, Void> asyncTask = new AsyncTask<Void, Void, Void>() {
 
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             protected Void doInBackground(Void... params) {
                 // Here we are in a new background thread
@@ -52,7 +61,8 @@ public class DetailSearchService {
                             String value = jsonDetail.getString("value");
                             String unit = jsonDetail.getString("unit");
                             JSONObject jsonDate = jsonDetail.getJSONObject("date");
-                            String localDate = jsonDate.getString("local");
+                            String localDate = jsonDate.getString("local").substring(0,10)
+                                    + " " + jsonDate.getString("local").substring(11,19);
                             JSONObject jsonCoordinate = jsonDetail.getJSONObject("coordinates");
                             String longitude = jsonCoordinate.getString("longitude");
                             String latitude = jsonCoordinate.getString("latitude");

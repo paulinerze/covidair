@@ -50,7 +50,8 @@ public class LocationSearchService {
                             JSONObject jsonLocation = jsonLocations.getJSONObject(i);
                             String location = jsonLocation.getString("location");
                             String count = jsonLocation.getString("count");
-                            String lastUpdated = jsonLocation.getString("lastUpdated"); //TODO Joda Time ISODateTimeFormat.dateTime()
+                            String lastUpdated = jsonLocation.getString("lastUpdated").substring(0,10)
+                                    + " " + jsonLocation.getString("lastUpdated").substring(11,19); //TODO Joda Time ISODateTimeFormat.dateTime()
                             foundLocations.add(new Location(location,count,lastUpdated));
                         }
                         EventBusManager.BUS.post(new SearchLocationResultEvent(foundLocations));

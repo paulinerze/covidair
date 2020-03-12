@@ -33,9 +33,10 @@
 
             <TextView
                 android:id="@+id/location_adapter_countLabel"
-                android:layout_width="0dp"
+                android:layout_width="73dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_height="wrap_content" />
+                android:text="Nombre de mesures" />
 
             <TextView
                 android:id="@+id/location_adapter_count"
@@ -53,9 +54,10 @@
 
             <TextView
                 android:id="@+id/location_adapter_lastUpdatedLabel"
-                android:layout_width="0dp"
+                android:layout_width="74dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_height="wrap_content" />
+                android:text="Dernière mise à jour" />
 
             <TextView
                 android:id="@+id/location_adapter_lastUpdated"
