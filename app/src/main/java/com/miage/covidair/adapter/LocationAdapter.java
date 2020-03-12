@@ -27,11 +27,13 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
     private LayoutInflater inflater;
     private Activity context;
     private List<Location> mLocations;
+    private String mCity;
 
-    public LocationAdapter(Activity context, List<Location> locations) {
+    public LocationAdapter(Activity context, List<Location> locations, String city) {
         inflater = LayoutInflater.from(context);
         this.context = context;
         this.mLocations = locations;
+        this.mCity = city;
     }
 
     @Override
@@ -71,6 +73,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
                 // Open locations details activity
                 Intent seeCityDetailIntent = new Intent(context, DetailActivity.class);
                 seeCityDetailIntent.putExtra("location", location.getLocation());
+                seeCityDetailIntent.putExtra("city", mCity);
                 context.startActivity(seeCityDetailIntent);
             }
         });

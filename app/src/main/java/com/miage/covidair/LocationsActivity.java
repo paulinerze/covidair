@@ -1,5 +1,6 @@
 package com.miage.covidair;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,7 +33,8 @@ public class LocationsActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         // Instanciate a CityAdpater with empty content
-        mLocationAdapter = new LocationAdapter(this, new ArrayList<>());
+        String city = getIntent().getStringExtra("city");
+        mLocationAdapter = new LocationAdapter(this, new ArrayList<>(), city);
         mRecyclerView.setAdapter(mLocationAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -44,8 +46,8 @@ public class LocationsActivity extends AppCompatActivity {
 
         // Register to Event bus : now each time an event is posted, the activity will receive it if it is @Subscribed to this event
         EventBusManager.BUS.register(this);
-        String location = getIntent().getStringExtra("city");
-        LocationSearchService.INSTANCE.searchFromAPI("locations?city="+location+"&limit=10000");
+        String city = getIntent().getStringExtra("city");
+        LocationSearchService.INSTANCE.searchFromAPI("locations?city="+city+"&country=FR&limit=10000");
     }
 
     @Override

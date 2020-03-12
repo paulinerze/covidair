@@ -41,7 +41,7 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.DetailsVie
         holder.mDetailParameter.setText(detail.getParameter());
         holder.mDetailValue.setText(detail.getValue());
         holder.mDetailUnit.setText(detail.getUnit());
-        holder.mDetailAveragingPeriod.setText(detail.getAveragingPeriod());
+        holder.mDetailAveragingPeriod.setText(detail.getLocalDate());
         holder.mDetailValueLabel.setText("Value :");
         holder.mDetailUnitLabel.setText("Unit :");
         holder.mDetailAveragingPeriodLabel.setText("Averaging period :");

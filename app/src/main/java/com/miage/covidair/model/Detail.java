@@ -4,15 +4,15 @@ public class Detail {
     private String parameter;
     private String value;
     private String unit;
-    private String averagingPeriod;
+    private String localDate;
     private String longitude;
     private String latitude;
 
-    public Detail(String parameter, String value, String unit, String averagingPeriod, String longitude, String latitude) {
+    public Detail(String parameter, String value, String unit, String localDate, String longitude, String latitude) {
         this.parameter = parameter;
         this.value = value;
         this.unit = unit;
-        this.averagingPeriod = averagingPeriod;
+        this.localDate = localDate;
         this.longitude = longitude;
         this.latitude = latitude;
     }
@@ -41,12 +41,12 @@ public class Detail {
         this.unit = unit;
     }
 
-    public String getAveragingPeriod() {
-        return averagingPeriod;
+    public String getLocalDate() {
+        return localDate;
     }
 
-    public void setAveragingPeriod(String averagingPeriod) {
-        this.averagingPeriod = averagingPeriod;
+    public void setLocalDate(String localDate) {
+        this.localDate = localDate;
     }
 
     public String getLongitude() {

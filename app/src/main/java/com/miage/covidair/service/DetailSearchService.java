@@ -51,11 +51,12 @@ public class DetailSearchService {
                             String parameter = jsonDetail.getString("parameter");
                             String value = jsonDetail.getString("value");
                             String unit = jsonDetail.getString("unit");
-                            String averagingPeriode = jsonDetail.getString("averagingPeriod");
+                            JSONObject jsonDate = jsonDetail.getJSONObject("date");
+                            String localDate = jsonDate.getString("local");
                             JSONObject jsonCoordinate = jsonDetail.getJSONObject("coordinates");
                             String longitude = jsonCoordinate.getString("longitude");
                             String latitude = jsonCoordinate.getString("latitude");
-                            foundDetails.add(new Detail(parameter,value,unit,averagingPeriode,longitude,latitude));
+                            foundDetails.add(new Detail(parameter,value,unit,localDate,longitude,latitude));
                         }
                         EventBusManager.BUS.post(new SearchDetailResultEvent(foundDetails));
                     }
