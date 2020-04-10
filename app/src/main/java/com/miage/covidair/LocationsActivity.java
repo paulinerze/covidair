@@ -47,7 +47,7 @@ public class LocationsActivity extends AppCompatActivity {
         // Register to Event bus : now each time an event is posted, the activity will receive it if it is @Subscribed to this event
         EventBusManager.BUS.register(this);
         String city = getIntent().getStringExtra("city");
-        LocationSearchService.INSTANCE.searchFromAPI("locations?city="+city+"&country=FR&limit=10000");
+        LocationSearchService.INSTANCE.searchFromAPI("locations?city="+city+"&country=FR&limit=10000", city);
     }
 
     @Override

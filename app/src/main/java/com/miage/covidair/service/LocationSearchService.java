@@ -4,16 +4,16 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.miage.covidair.event.EventBusManager;
-import com.miage.covidair.event.SearchCityResultEvent;
 import com.miage.covidair.event.SearchLocationResultEvent;
-import com.miage.covidair.model.City;
 import com.miage.covidair.model.Location;
 
+import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +28,7 @@ public class LocationSearchService {
 
     }
 
-    public void searchFromAPI(final String search) {
+    public void searchFromAPI(final String search, String city) {
         // Create AsyncTask
         AsyncTask<Void, Void, Void> asyncTask = new AsyncTask<Void, Void, Void>() {
 
@@ -48,11 +48,20 @@ public class LocationSearchService {
                         List<Location> foundLocations = new ArrayList<>();
                         for (int i = 0; i < jsonLocations.length(); i++) {
                             JSONObject jsonLocation = jsonLocations.getJSONObject(i);
-                            String location = jsonLocation.getString("location");
-                            String count = jsonLocation.getString("count");
-                            String lastUpdated = jsonLocation.getString("lastUpdated").substring(0,10)
-                                    + " " + jsonLocation.getString("lastUpdated").substring(11,19); //TODO Joda Time ISODateTimeFormat.dateTime()
-                            foundLocations.add(new Location(location,count,lastUpdated));
+                            String actualCity = jsonLocation.getString("city");
+                            if (city.equals(actualCity)){
+                                String location = jsonLocation.getString("location");
+                                String count = jsonLocation.getString("count");
+                                String lastUpdated = jsonLocation.getString("lastUpdated").substring(0,10)
+                                        + " " + jsonLocation.getString("lastUpdated").substring(11,19);  //TODO Joda Time ISODateTimeFormat.dateTime()
+                                if (!foundLocations.isEmpty()){
+                                    if(!foundLocations.get(foundLocations.size()-1).getLocation().equals(location)) {
+                                        foundLocations.add(new Location(location, count, lastUpdated));
+                                    }
+                                } else {
+                                    foundLocations.add(new Location(location, count, lastUpdated));
+                                }
+                            }
                         }
                         EventBusManager.BUS.post(new SearchLocationResultEvent(foundLocations));
                     }
