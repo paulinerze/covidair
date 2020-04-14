@@ -28,7 +28,7 @@ public class CitySearchService {
 
     }
 
-    public void searchFromAPI(String search) {
+    public void searchFromAPI() {
         // Create AsyncTask
         AsyncTask<Void, Void, Void> asyncTask = new AsyncTask<Void, Void, Void>() {
 
