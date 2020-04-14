@@ -36,7 +36,7 @@ public class DetailSearchService {
 
     }
 
-    public void searchFromAPI(final String search) {
+    public void searchFromAPI(String city, String location) {
         // Create AsyncTask
         AsyncTask<Void, Void, Void> asyncTask = new AsyncTask<Void, Void, Void>() {
 
@@ -47,7 +47,7 @@ public class DetailSearchService {
                 try {
                     final OkHttpClient okHttpClient = new OkHttpClient();
                     final Request request = new Request.Builder()
-                            .url("https://api.openaq.org/v1/"+ search)
+                            .url("https://api.openaq.org/v1/measurements?city="+city+"&location="+location+"&country=FR&limit=10000")
                             .build();
                     Response response = okHttpClient.newCall(request).execute();
                     if (response != null && response.body() != null) {

@@ -46,7 +46,7 @@ public class DetailActivity extends AppCompatActivity{
         EventBusManager.BUS.register(this);
         String location = getIntent().getStringExtra("location");
         String city = getIntent().getStringExtra("city");
-        DetailSearchService.INSTANCE.searchFromAPI("measurements?city="+city+"&location="+location+"&country=FR&limit=10000");
+        DetailSearchService.INSTANCE.searchFromAPI(city,location);
     }
 
     @Override

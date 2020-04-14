@@ -3,6 +3,7 @@ package com.miage.covidair.service;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.activeandroid.query.Select;
 import com.miage.covidair.event.EventBusManager;
 import com.miage.covidair.event.SearchCityResultEvent;
 import com.miage.covidair.model.City;
@@ -27,7 +28,7 @@ public class CitySearchService {
 
     }
 
-    public void searchFromAPI(final String search) {
+    public void searchFromAPI(String search) {
         // Create AsyncTask
         AsyncTask<Void, Void, Void> asyncTask = new AsyncTask<Void, Void, Void>() {
 
@@ -37,7 +38,7 @@ public class CitySearchService {
                 try {
                     final OkHttpClient okHttpClient = new OkHttpClient();
                     final Request request = new Request.Builder()
-                            .url("https://api.openaq.org/v1/"+ search)
+                            .url("https://api.openaq.org/v1/cities?country=FR&limit=10000")
                             .build();
                     Response response = okHttpClient.newCall(request).execute();
                     if (response != null && response.body() != null) {
@@ -64,5 +65,10 @@ public class CitySearchService {
                 return null;
             }
         }.execute();
+    }
+
+    private void searchCitiesFromDB() {
+        List<City> matchingCitiesFromDB = new Select().from(City.class).orderBy("name").execute();
+        EventBusManager.BUS.post(new SearchCityResultEvent(matchingCitiesFromDB));
     }
 }

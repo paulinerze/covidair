@@ -1,9 +1,16 @@
 package com.miage.covidair.model;
 
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+
+@Table(name = "Location")
 public class Location {
 
+    @Column(name = "location", index = true, unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     private String location;
+    @Column(name = "count")
     private String count;
+    @Column(name = "lastUpdated")
     private String lastUpdated;
 
     public Location(String location, String count, String lastUpdated) {

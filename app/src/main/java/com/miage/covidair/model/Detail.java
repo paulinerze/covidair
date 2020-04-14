@@ -1,11 +1,22 @@
 package com.miage.covidair.model;
 
-public class Detail {
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+
+@Table(name = "Detail")
+public class Detail extends Model {
+    @Column(name = "parameter", index = true)
     private String parameter;
+    @Column(name = "value")
     private String value;
+    @Column(name = "unit")
     private String unit;
+    @Column(name = "localDate")
     private String localDate;
+    @Column(name = "longitude")
     private String longitude;
+    @Column(name = "latitude")
     private String latitude;
 
     public Detail(String parameter, String value, String unit, String localDate, String longitude, String latitude) {

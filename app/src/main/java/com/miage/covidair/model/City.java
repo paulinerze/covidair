@@ -1,9 +1,17 @@
 package com.miage.covidair.model;
 
-public class City {
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
 
+@Table(name = "City")
+public class City extends Model {
+
+    @Column(name = "name", index = true, unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     private String name;
+    @Column(name = "count")
     private String count;
+    @Column(name = "locations")
     private String locations;
 
     public City(String name, String count, String locations) {

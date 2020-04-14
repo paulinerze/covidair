@@ -44,4 +44,6 @@ dependencies {
 
     implementation 'joda-time:joda-time:2.10.5'
 
+    implementation 'com.michaelpardo:activeandroid:3+'
+
 }

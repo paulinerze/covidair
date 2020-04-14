@@ -28,7 +28,7 @@ public class LocationSearchService {
 
     }
 
-    public void searchFromAPI(final String search, String city) {
+    public void searchFromAPI(String city) {
         // Create AsyncTask
         AsyncTask<Void, Void, Void> asyncTask = new AsyncTask<Void, Void, Void>() {
 
@@ -38,7 +38,7 @@ public class LocationSearchService {
                 try {
                     final OkHttpClient okHttpClient = new OkHttpClient();
                     final Request request = new Request.Builder()
-                            .url("https://api.openaq.org/v1/"+ search)
+                            .url("https://api.openaq.org/v1/locations?city="+city+"&country=FR&limit=10000")
                             .build();
                     Response response = okHttpClient.newCall(request).execute();
                     if (response != null && response.body() != null) {
