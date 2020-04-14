@@ -55,7 +55,7 @@ public class CitySearchService {
                 // Using OkHttp as HTTP Client
                 .client(new OkHttpClient())
                 // Having the following as server URL
-                .baseUrl("https://api-adresse.data.gouv.fr")
+                .baseUrl("https://api.openaq.org/v1/")
                 // Using GSON to convert from Json to Java
                 .addConverterFactory(GsonConverterFactory.create(gsonConverter))
                 .build();
@@ -75,7 +75,7 @@ public class CitySearchService {
             searchCitiesFromDB();
 
             // Step 2 : Call to the REST service
-            mICitySearchRESTService.searchForCities().enqueue(new Callback<CitySearchResult>() {
+            mICitySearchRESTService.searchForCities("FR",10000).enqueue(new Callback<CitySearchResult>() {
                 @Override
                 public void onResponse(Call<CitySearchResult> call, retrofit2.Response<CitySearchResult> response) {
                     // Post an event so that listening activities can update their UI
