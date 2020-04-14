@@ -1,6 +1,8 @@
 package com.miage.covidair;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
     private CityAdapter mCityAdapter;
+    @BindView(R.id.activity_main_loader)
+    ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +64,11 @@ public class MainActivity extends AppCompatActivity {
     public void searchResult(final SearchCityResultEvent event) {
         // Here someone has posted a SearchCityResultEvent
         // Update adapter's model
+        runOnUiThread(() -> {
+            mCityAdapter.setCities(event.getCities());
+            mCityAdapter.notifyDataSetChanged();
+            mProgressBar.setVisibility(View.GONE);
+        });
         mCityAdapter.setCities(event.getCities());
         runOnUiThread(() -> mCityAdapter.notifyDataSetChanged());
     }
