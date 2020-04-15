@@ -94,7 +94,7 @@ public class CitySearchService {
                         // Null result
                         // We may want to display a warning to user (e.g. Toast)
 
-                        Log.e("[CovidAir] [REST]", "Response error : null body SEX");
+                        Log.e("[CovidAir] [REST]", "Response error : null body");
                     }
                 }
 
