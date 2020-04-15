@@ -21,7 +21,7 @@
                 <!--Provider-->
                 <provider
                     android:name="com.activeandroid.content.ContentProvider"
-                    android:authorities="org.miage.covidair"
+                    android:authorities="com.miage.covidair"
                     android:enabled="true"
                     android:exported="false">
                 </provider>

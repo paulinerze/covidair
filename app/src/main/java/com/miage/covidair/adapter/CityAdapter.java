@@ -49,11 +49,6 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityViewHolder
         holder.mCityName.setText(city.getName());
         holder.mCityCount.setText(city.getCount());
         holder.mCityLocations.setText(city.getLocations());
-        if (city.getName().contains("1")) {
-            holder.mCityIcon.setImageResource(R.drawable.street_icon);
-        } else {
-            holder.mCityIcon.setImageResource(R.drawable.city);
-        }
         holder.mCityIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

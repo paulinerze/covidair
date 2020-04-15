@@ -8,5 +8,5 @@ import retrofit2.http.Query;
 
 public interface ICitySearchRESTService {
     @GET("cities?")
-    Call<CitySearchResult> searchForCities(@Query("coutry") String country, @Query("limit") int limit);
+    Call<CitySearchResult> searchForCities(@Query("country") String country, @Query("limit") int limit);
 }

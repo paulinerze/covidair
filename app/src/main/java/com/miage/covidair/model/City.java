@@ -14,10 +14,8 @@ public class City extends Model {
     @Column(name = "locations")
     public String locations;
 
-    public City(String name, String count, String locations) {
-        this.name = name;
-        this.count = count;
-        this.locations = locations;
+    public City() {
+        super();
     }
 
     public String getName() {

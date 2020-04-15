@@ -79,10 +79,10 @@ public class CitySearchService {
                 @Override
                 public void onResponse(Call<CitySearchResult> call, retrofit2.Response<CitySearchResult> response) {
                     // Post an event so that listening activities can update their UI
-                    if (response.body() != null && response.body().cities != null) {
+                    if (response.body() != null && response.body().results != null) {
                         // Save all results in Database
                         ActiveAndroid.beginTransaction();
-                        for (City city : response.body().cities) {
+                        for (City city : response.body().results) {
                             city.save();
                         }
                         ActiveAndroid.setTransactionSuccessful();
@@ -94,7 +94,7 @@ public class CitySearchService {
                         // Null result
                         // We may want to display a warning to user (e.g. Toast)
 
-                        Log.e("[CovidAir] [REST]", "Response error : null body");
+                        Log.e("[CovidAir] [REST]", "Response error : null body SEX");
                     }
                 }
 
