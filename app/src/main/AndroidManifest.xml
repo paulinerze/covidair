@@ -25,6 +25,11 @@
                     android:enabled="true"
                     android:exported="false">
                 </provider>
+                <meta-data
+                    android:name="AA_MODELS"
+                    android:value="com.miage.covidair.model.City,
+                                   com.miage.covidair.model.Detail,
+                                   com.miage.covidair.model.Location" />
 
         <activity android:name=".MainActivity">
             <intent-filter>

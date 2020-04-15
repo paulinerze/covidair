@@ -7,4 +7,8 @@ import java.util.List;
 public class CitySearchResult {
     @Expose
     public List<City> results;
+
+    public CitySearchResult(List<City> results){
+        this.results = results;
+    }
 }

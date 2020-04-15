@@ -72,7 +72,7 @@ public class CitySearchService {
         // Schedule a network call in REFRESH_DELAY ms
         mLastScheduleTask = mScheduler.schedule(() -> {
             // Step 1 : first run a local search from DB and post result
-            searchCitiesFromDB();
+            //searchCitiesFromDB();
 
             // Step 2 : Call to the REST service
             mICitySearchRESTService.searchForCities("FR",10000).enqueue(new Callback<CitySearchResult>() {

@@ -3,14 +3,18 @@ package com.miage.covidair.model;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.google.gson.annotations.Expose;
 
 @Table(name = "City")
 public class City extends Model {
 
+    @Expose
     @Column(name = "name", index = true, unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     public String name;
+    @Expose
     @Column(name = "count")
     public String count;
+    @Expose
     @Column(name = "locations")
     public String locations;
 
