@@ -1,6 +1,5 @@
 package com.miage.covidair;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -47,7 +46,7 @@ public class LocationsActivity extends AppCompatActivity {
         // Register to Event bus : now each time an event is posted, the activity will receive it if it is @Subscribed to this event
         EventBusManager.BUS.register(this);
         String city = getIntent().getStringExtra("city");
-        LocationSearchService.INSTANCE.searchFromAPI(city);
+        LocationSearchService.INSTANCE.searchLocations(city);
     }
 
     @Override

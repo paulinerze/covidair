@@ -1,4 +1,4 @@
-package com.miage.covidair.model;
+package com.miage.covidair.model.Detail;
 
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;

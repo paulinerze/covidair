@@ -9,8 +9,7 @@ import androidx.annotation.RequiresApi;
 import com.miage.covidair.event.EventBusManager;
 import com.miage.covidair.event.SearchDetailResultEvent;
 import com.miage.covidair.event.SearchLocationResultEvent;
-import com.miage.covidair.model.Detail;
-import com.miage.covidair.model.Location;
+import com.miage.covidair.model.Detail.Detail;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -9,7 +9,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.miage.covidair.R;
-import com.miage.covidair.model.Detail;
+import com.miage.covidair.model.Detail.Detail;
 
 import java.util.List;
 

@@ -14,10 +14,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.miage.covidair.LocationsActivity;
 import com.miage.covidair.R;
-import com.miage.covidair.model.City;
+import com.miage.covidair.model.City.City;
+
 
 import java.io.IOException;
 import java.util.List;
+
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

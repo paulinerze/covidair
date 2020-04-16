@@ -1,4 +1,4 @@
-package com.miage.covidair.model;
+package com.miage.covidair.model.City;
 
 import com.google.gson.annotations.Expose;
 

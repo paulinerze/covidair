@@ -1,6 +1,7 @@
 package com.miage.covidair.event;
 
-import com.miage.covidair.model.City;
+
+import com.miage.covidair.model.City.City;
 
 import java.util.List;
 

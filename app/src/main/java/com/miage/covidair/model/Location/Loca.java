@@ -1,23 +1,28 @@
-package com.miage.covidair.model;
+package com.miage.covidair.model.Location;
 
+import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.google.gson.annotations.Expose;
 
-@Table(name = "Location")
-public class Location {
+@Table(name = "Loca")
+public class Loca extends Model {
 
+    @Expose
     @Column(name = "location", index = true, unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
-    private String location;
+    public String location;
+    @Expose
     @Column(name = "count")
-    private String count;
+    public String count;
+    @Expose
     @Column(name = "lastUpdated")
-    private String lastUpdated;
+    public String lastUpdated;
+    @Expose
+    @Column(name = "city")
+    public String city;
+    @Expose
+    public Coordinates coordinates;
 
-    public Location(String location, String count, String lastUpdated) {
-        this.location = location;
-        this.count = count;
-        this.lastUpdated = lastUpdated;
-    }
 
     public String getLocation() {
         return location;
@@ -42,4 +47,21 @@ public class Location {
     public void setLastUpdated(String lastUpdated) {
         this.lastUpdated = lastUpdated;
     }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public Coordinates getCoordinates() {
+        return coordinates;
+    }
+
+    public void setCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
+    }
+
 }

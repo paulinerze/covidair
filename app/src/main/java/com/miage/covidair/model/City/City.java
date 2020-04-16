@@ -1,4 +1,4 @@
-package com.miage.covidair.model;
+package com.miage.covidair.model.City;
 
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
@@ -18,9 +18,6 @@ public class City extends Model {
     @Column(name = "locations")
     public String locations;
 
-    public City() {
-        super();
-    }
 
     public String getName() {
         return name;

@@ -6,11 +6,10 @@ import com.activeandroid.ActiveAndroid;
 import com.activeandroid.query.Select;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.miage.covidair.domain.ICitySearchRESTService;
 import com.miage.covidair.event.EventBusManager;
 import com.miage.covidair.event.SearchCityResultEvent;
-import com.miage.covidair.model.City;
-import com.miage.covidair.model.CitySearchResult;
+import com.miage.covidair.model.City.City;
+import com.miage.covidair.model.City.CitySearchResult;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,7 +26,7 @@ import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 
 public class CitySearchService {
-    public ICitySearchRESTService mICitySearchRESTService;
+    public ISearchRESTService mISearchRESTService;
 
     public static CitySearchService INSTANCE = new CitySearchService();
     private static final long REFRESH_DELAY = 650;
@@ -52,10 +51,10 @@ public class CitySearchService {
                 .build();
 
         // Use retrofit to generate our REST service code
-        mICitySearchRESTService = retrofit.create(ICitySearchRESTService.class);
+        mISearchRESTService = retrofit.create(ISearchRESTService.class);
     }
 
-    public void searchFromAPI() {
+    public void searchCities() {
         // Cancel last scheduled network call (if any)
         if (mLastScheduleTask != null && !mLastScheduleTask.isDone()) {
             mLastScheduleTask.cancel(true);
@@ -63,10 +62,10 @@ public class CitySearchService {
         // Schedule a network call in REFRESH_DELAY ms
         mLastScheduleTask = mScheduler.schedule(() -> {
             // Step 1 : first run a local search from DB and post result
-            //searchCitiesFromDB();
+            searchCitiesFromDB();
 
             // Step 2 : Call to the REST service
-            mICitySearchRESTService.searchForCities("FR",10000).enqueue(new Callback<CitySearchResult>() {
+            mISearchRESTService.searchForCities("FR",10000).enqueue(new Callback<CitySearchResult>() {
                 @Override
                 public void onResponse(Call<CitySearchResult> call, retrofit2.Response<CitySearchResult> response) {
                     // Post an event so that listening activities can update their UI

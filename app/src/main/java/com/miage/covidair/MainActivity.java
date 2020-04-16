@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         // Register to Event bus : now each time an event is posted, the activity will receive it if it is @Subscribed to this event
         EventBusManager.BUS.register(this);
 
-        CitySearchService.INSTANCE.searchFromAPI();
+        CitySearchService.INSTANCE.searchCities();
     }
 
     @Override
