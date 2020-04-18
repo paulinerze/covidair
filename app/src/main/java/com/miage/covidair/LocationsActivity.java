@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.miage.covidair.event.EventBusManager;
+import com.miage.covidair.event.SearchLatestMeasurementsResultEvent;
 import com.miage.covidair.event.SearchLocationResultEvent;
 import com.miage.covidair.service.LocationSearchService;
 import com.miage.covidair.adapter.LocationAdapter;
@@ -58,7 +59,7 @@ public class LocationsActivity extends AppCompatActivity {
     }
 
     @Subscribe
-    public void searchResult(final SearchLocationResultEvent event) {
+    public void searchResultLocation(final SearchLocationResultEvent event) {
         // Here someone has posted a SearchCityResultEvent
         // Update adapter's model
         mLocationAdapter.setLocations(event.getLocations());

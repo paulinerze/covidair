@@ -16,6 +16,8 @@ import com.miage.covidair.model.Location.LocationSearchResult;
 import com.miage.covidair.model.Location.Measurement;
 
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -80,6 +82,7 @@ public class LocationSearchService {
                             //TODO : test sur la date pour last update
                             if (city.equals(loca.city)){
                                 loca.coordinates.location = loca.location;
+                                loca.measurements = new HashMap<String, Measurement>();
                                 loca.save();
                                 loca.coordinates.save();
                             }
@@ -95,7 +98,7 @@ public class LocationSearchService {
                         // Null result
                         // We may want to display a warning to user (e.g. Toast)
 
-                        Log.e("[CovidAir] [REST]", "Response error : null body");
+                        Log.e("[CovidAir] [LOCATION] [REST]", "Response error : null body");
                     }
                 }
 
@@ -103,7 +106,7 @@ public class LocationSearchService {
                 public void onFailure(Call<LocationSearchResult> call, Throwable t) {
                     // Request has failed or is not at expected format
                     // We may want to display a warning to user (e.g. Toast)
-                    Log.e("[CovidAir] [REST]", "Response error : " + t.getMessage());
+                    Log.e("[CovidAir] [LOCATION] [REST]", "Response error : " + t.getMessage());
                 }
             });
         }, REFRESH_DELAY, TimeUnit.MILLISECONDS);
@@ -123,7 +126,8 @@ public class LocationSearchService {
             }
             mLastScheduleTask = mScheduler.schedule(() -> {
                 // Step 1 : first run a local search from DB and post result
-                searchLatestMeasurementsFromDB(loca.city,loca.location,"FR");
+                searchLocationsFromDB(city);
+                //searchLatestMeasurementsFromDB(loca.city,loca.location,"FR");
 
                 // Step 2 : Call to the REST service
                 mISearchRESTService.searchForLatest("FR", city, loca.location).enqueue(new Callback<LatestSearchResult>() {
@@ -134,19 +138,25 @@ public class LocationSearchService {
                             // Save all results in Database
                             ActiveAndroid.beginTransaction();
                             for (Latest latest : response.body().results) {
-                                latest.save();
-
+                                for(Measurement measurement : latest.measurements){
+                                   measurement.key = city+loca.location+"FR";
+                                   if (loca.getMeasurements() == null){
+                                       HashMap<String,Measurement> measurementHashMap = new HashMap<String, Measurement>();
+                                       loca.setMeasurements(measurementHashMap);
+                                   }
+                                   loca.getMeasurements().put(measurement.parameter,measurement);
+                                   loca.save();
+                                }
+                                searchLocationsFromDB(city);
+                                //searchLatestMeasurementsFromDB(loca.city,loca.location,"FR");
                             }
                             ActiveAndroid.setTransactionSuccessful();
                             ActiveAndroid.endTransaction();
-                            // Send a new event with results from network
-                            searchLatestMeasurementsFromDB(loca.city,loca.location,"FR");
-
                         } else {
                             // Null result
                             // We may want to display a warning to user (e.g. Toast)
 
-                            Log.e("[CovidAir] [REST]", "Response error : null body");
+                            Log.e("[CovidAir] [LATEST] [REST]", "Response error : null body");
                         }
                     }
 
@@ -154,7 +164,7 @@ public class LocationSearchService {
                     public void onFailure(Call<LatestSearchResult> call, Throwable t) {
                         // Request has failed or is not at expected format
                         // We may want to display a warning to user (e.g. Toast)
-                        Log.e("[CovidAir] [REST]", "Response error : " + t.getMessage());
+                        Log.e("[CovidAir] [LATEST] [REST]", "Response error : " + t.getMessage());
                     }
                 });
             }, REFRESH_DELAY, TimeUnit.MILLISECONDS);

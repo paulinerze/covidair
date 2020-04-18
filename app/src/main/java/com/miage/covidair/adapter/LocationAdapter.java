@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -50,6 +52,68 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
         holder.mLocation.setText(location.getLocation());
         holder.mCount.setText(location.getCount());
         holder.mLastUpdated.setText(location.getLastUpdated());
+
+        if (location.getMeasurements() != null && !location.getMeasurements().isEmpty()){
+            if (location.getMeasurements().containsKey("bc")){
+                holder.mLatestBC.setText(location.getMeasurements().get("bc").parameter);
+                holder.mLatestBCValue.setText(location.getMeasurements().get("bc").value);
+                holder.mLatestBCUnit.setText(location.getMeasurements().get("bc").unit);
+            } else {
+                holder.mBCLayout.setVisibility(View.GONE);
+            }
+            if (location.getMeasurements().containsKey("co")){
+                holder.mLatestCO.setText(location.getMeasurements().get("co").parameter);
+                holder.mLatestCOValue.setText(location.getMeasurements().get("co").value);
+                holder.mLatestCOUnit.setText(location.getMeasurements().get("co").unit);
+            } else {
+                holder.mCOLayout.setVisibility(View.GONE);
+            }
+            if (location.getMeasurements().containsKey("no2")){
+                holder.mLatestNO2.setText(location.getMeasurements().get("no2").parameter);
+                holder.mLatestNO2Value.setText(location.getMeasurements().get("no2").value);
+                holder.mLatestNO2Unit.setText(location.getMeasurements().get("no2").unit);
+            } else {
+                holder.mNO2Layout.setVisibility(View.GONE);
+            }
+            if (location.getMeasurements().containsKey("o3")){
+                holder.mLatestO3.setText(location.getMeasurements().get("o3").parameter);
+                holder.mLatestO3Value.setText(location.getMeasurements().get("o3").value);
+                holder.mLatestO3Unit.setText(location.getMeasurements().get("o3").unit);
+            } else {
+                holder.mO3Layout.setVisibility(View.GONE);
+            }
+            if (location.getMeasurements().containsKey("pm10")){
+                holder.mLatestPM10.setText(location.getMeasurements().get("pm10").parameter);
+                holder.mLatestPM10Value.setText(location.getMeasurements().get("pm10").value);
+                holder.mLatestPM10Unit.setText(location.getMeasurements().get("pm10").unit);
+            } else {
+                holder.mPM10Layout.setVisibility(View.GONE);
+            }
+            if (location.getMeasurements().containsKey("pm25")){
+                holder.mLatestPM25.setText(location.getMeasurements().get("pm25").parameter);
+                holder.mLatestPM25Value.setText(location.getMeasurements().get("pm25").value);
+                holder.mLatestPM25Unit.setText(location.getMeasurements().get("pm25").unit);
+            } else {
+                holder.mPM25Layout.setVisibility(View.GONE);
+             }
+            if (location.getMeasurements().containsKey("so2")){
+                holder.mLatestSO2.setText(location.getMeasurements().get("so2").parameter);
+                holder.mLatestSO2Value.setText(location.getMeasurements().get("so2").value);
+                holder.mLatestSO2Unit.setText(location.getMeasurements().get("so2").unit);
+            } else {
+                holder.mSO2Layout.setVisibility(View.GONE);
+            }
+        } else {
+            holder.mBCLayout.setVisibility(View.GONE);
+            holder.mCOLayout.setVisibility(View.GONE);
+            holder.mNO2Layout.setVisibility(View.GONE);
+            holder.mO3Layout.setVisibility(View.GONE);
+            holder.mPM10Layout.setVisibility(View.GONE);
+            holder.mPM25Layout.setVisibility(View.GONE);
+            holder.mSO2Layout.setVisibility(View.GONE);
+        }
+
+
         holder.mLocationsIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -100,7 +164,69 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
 
         @BindView(R.id.location_adapter_lastUpdated)
         TextView mLastUpdated;
-
+        //
+        @BindView(R.id.bc)
+        LinearLayout mBCLayout;
+        @BindView(R.id.location_adapter_latest_bc)
+        TextView mLatestBC;
+        @BindView(R.id.location_adapter_latest_bc_value)
+        TextView mLatestBCValue;
+        @BindView(R.id.location_adapter_latest_bc_unit)
+        TextView mLatestBCUnit;
+        //
+        @BindView(R.id.co)
+        LinearLayout mCOLayout;
+        @BindView(R.id.location_adapter_latest_co)
+        TextView mLatestCO;
+        @BindView(R.id.location_adapter_latest_co_value)
+        TextView mLatestCOValue;
+        @BindView(R.id.location_adapter_latest_co_unit)
+        TextView mLatestCOUnit;
+        //
+        @BindView(R.id.no2)
+        LinearLayout mNO2Layout;
+        @BindView(R.id.location_adapter_latest_no2)
+        TextView mLatestNO2;
+        @BindView(R.id.location_adapter_latest_no2_value)
+        TextView mLatestNO2Value;
+        @BindView(R.id.location_adapter_latest_no2_unit)
+        TextView mLatestNO2Unit;
+        //
+        @BindView(R.id.o3)
+        LinearLayout mO3Layout;
+        @BindView(R.id.location_adapter_latest_o3)
+        TextView mLatestO3;
+        @BindView(R.id.location_adapter_latest_o3_value)
+        TextView mLatestO3Value;
+        @BindView(R.id.location_adapter_latest_o3_unit)
+        TextView mLatestO3Unit;
+        //
+        @BindView(R.id.pm10)
+        LinearLayout mPM10Layout;
+        @BindView(R.id.location_adapter_latest_pm10)
+        TextView mLatestPM10;
+        @BindView(R.id.location_adapter_latest_pm10_value)
+        TextView mLatestPM10Value;
+        @BindView(R.id.location_adapter_latest_pm10_unit)
+        TextView mLatestPM10Unit;
+        //
+        @BindView(R.id.pm25)
+        LinearLayout mPM25Layout;
+        @BindView(R.id.location_adapter_latest_pm25)
+        TextView mLatestPM25;
+        @BindView(R.id.location_adapter_latest_pm25_value)
+        TextView mLatestPM25Value;
+        @BindView(R.id.location_adapter_latest_pm25_unit)
+        TextView mLatestPM25Unit;
+        //
+        @BindView(R.id.so2)
+        LinearLayout mSO2Layout;
+        @BindView(R.id.location_adapter_latest_so2)
+        TextView mLatestSO2;
+        @BindView(R.id.location_adapter_latest_so2_value)
+        TextView mLatestSO2Value;
+        @BindView(R.id.location_adapter_latest_so2_unit)
+        TextView mLatestSO2Unit;
 
         public LocationsViewHolder(View itemView) {
             super(itemView);

@@ -84,7 +84,7 @@ public class CitySearchService {
                         // Null result
                         // We may want to display a warning to user (e.g. Toast)
 
-                        Log.e("[CovidAir] [REST]", "Response error : null body");
+                        Log.e("[CovidAir] [CITY] [REST]", "Response error : null body");
                     }
                 }
 
@@ -92,7 +92,7 @@ public class CitySearchService {
                 public void onFailure(Call<CitySearchResult> call, Throwable t) {
                     // Request has failed or is not at expected format
                     // We may want to display a warning to user (e.g. Toast)
-                    Log.e("[CovidAir] [REST]", "Response error : " + t.getMessage());
+                    Log.e("[CovidAir] [CITY] [REST]", "Response error : " + t.getMessage());
                 }
             });
         }, REFRESH_DELAY, TimeUnit.MILLISECONDS);

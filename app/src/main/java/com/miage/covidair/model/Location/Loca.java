@@ -5,6 +5,10 @@ import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.google.gson.annotations.Expose;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 @Table(name = "Loca")
 public class Loca extends Model {
 
@@ -22,6 +26,17 @@ public class Loca extends Model {
     public String city;
     @Expose
     public Coordinates coordinates;
+    @Expose
+    @Column(name = "measurements")
+    public HashMap<String,Measurement> measurements;
+
+    public void setMeasurements(HashMap<String, Measurement> measurements) {
+        this.measurements = measurements;
+    }
+
+    public HashMap<String,Measurement> getMeasurements() {
+        return measurements;
+    }
 
 
     public String getLocation() {
