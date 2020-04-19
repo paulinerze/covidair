@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,53 +52,60 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
         holder.mCount.setText(location.getCount());
         holder.mLastUpdated.setText(location.getLastUpdated());
 
-        if (location.getMeasurements() != null && !location.getMeasurements().isEmpty()){
-            if (location.getMeasurements().containsKey("bc")){
-                holder.mLatestBC.setText(location.getMeasurements().get("bc").parameter);
-                holder.mLatestBCValue.setText(location.getMeasurements().get("bc").value);
-                holder.mLatestBCUnit.setText(location.getMeasurements().get("bc").unit);
+        if (location.getLatestMeasurements() != null && !location.getLatestMeasurements().isEmpty()){
+            if (location.getLatestMeasurements().containsKey("bc")){
+                holder.mBCLayout.setVisibility(View.VISIBLE);
+                holder.mLatestBC.setText(location.getLatestMeasurements().get("bc").parameter);
+                holder.mLatestBCValue.setText(location.getLatestMeasurements().get("bc").value);
+                holder.mLatestBCUnit.setText(location.getLatestMeasurements().get("bc").unit);
             } else {
                 holder.mBCLayout.setVisibility(View.GONE);
             }
-            if (location.getMeasurements().containsKey("co")){
-                holder.mLatestCO.setText(location.getMeasurements().get("co").parameter);
-                holder.mLatestCOValue.setText(location.getMeasurements().get("co").value);
-                holder.mLatestCOUnit.setText(location.getMeasurements().get("co").unit);
+            if (location.getLatestMeasurements().containsKey("co")){
+                holder.mCOLayout.setVisibility(View.VISIBLE);
+                holder.mLatestCO.setText(location.getLatestMeasurements().get("co").parameter);
+                holder.mLatestCOValue.setText(location.getLatestMeasurements().get("co").value);
+                holder.mLatestCOUnit.setText(location.getLatestMeasurements().get("co").unit);
             } else {
                 holder.mCOLayout.setVisibility(View.GONE);
             }
-            if (location.getMeasurements().containsKey("no2")){
-                holder.mLatestNO2.setText(location.getMeasurements().get("no2").parameter);
-                holder.mLatestNO2Value.setText(location.getMeasurements().get("no2").value);
-                holder.mLatestNO2Unit.setText(location.getMeasurements().get("no2").unit);
+            if (location.getLatestMeasurements().containsKey("no2")){
+                holder.mNO2Layout.setVisibility(View.VISIBLE);
+                holder.mLatestNO2.setText(location.getLatestMeasurements().get("no2").parameter);
+                holder.mLatestNO2Value.setText(location.getLatestMeasurements().get("no2").value);
+                holder.mLatestNO2Unit.setText(location.getLatestMeasurements().get("no2").unit);
             } else {
                 holder.mNO2Layout.setVisibility(View.GONE);
             }
-            if (location.getMeasurements().containsKey("o3")){
-                holder.mLatestO3.setText(location.getMeasurements().get("o3").parameter);
-                holder.mLatestO3Value.setText(location.getMeasurements().get("o3").value);
-                holder.mLatestO3Unit.setText(location.getMeasurements().get("o3").unit);
+            if (location.getLatestMeasurements().containsKey("o3")){
+                holder.mO3Layout.setVisibility(View.VISIBLE);
+                holder.mLatestO3.setText(location.getLatestMeasurements().get("o3").parameter);
+                holder.mLatestO3Value.setText(location.getLatestMeasurements().get("o3").value);
+                holder.mLatestO3Unit.setText(location.getLatestMeasurements().get("o3").unit);
             } else {
                 holder.mO3Layout.setVisibility(View.GONE);
             }
-            if (location.getMeasurements().containsKey("pm10")){
-                holder.mLatestPM10.setText(location.getMeasurements().get("pm10").parameter);
-                holder.mLatestPM10Value.setText(location.getMeasurements().get("pm10").value);
-                holder.mLatestPM10Unit.setText(location.getMeasurements().get("pm10").unit);
+            if (location.getLatestMeasurements().containsKey("pm10")){
+                holder.mPM10Layout.setVisibility(View.VISIBLE);
+                holder.mLatestPM10.setText(location.getLatestMeasurements().get("pm10").parameter);
+                holder.mLatestPM10Value.setText(location.getLatestMeasurements().get("pm10").value);
+                holder.mLatestPM10Unit.setText(location.getLatestMeasurements().get("pm10").unit);
             } else {
                 holder.mPM10Layout.setVisibility(View.GONE);
             }
-            if (location.getMeasurements().containsKey("pm25")){
-                holder.mLatestPM25.setText(location.getMeasurements().get("pm25").parameter);
-                holder.mLatestPM25Value.setText(location.getMeasurements().get("pm25").value);
-                holder.mLatestPM25Unit.setText(location.getMeasurements().get("pm25").unit);
+            if (location.getLatestMeasurements().containsKey("pm25")){
+                holder.mPM25Layout.setVisibility(View.VISIBLE);
+                holder.mLatestPM25.setText(location.getLatestMeasurements().get("pm25").parameter);
+                holder.mLatestPM25Value.setText(location.getLatestMeasurements().get("pm25").value);
+                holder.mLatestPM25Unit.setText(location.getLatestMeasurements().get("pm25").unit);
             } else {
                 holder.mPM25Layout.setVisibility(View.GONE);
              }
-            if (location.getMeasurements().containsKey("so2")){
-                holder.mLatestSO2.setText(location.getMeasurements().get("so2").parameter);
-                holder.mLatestSO2Value.setText(location.getMeasurements().get("so2").value);
-                holder.mLatestSO2Unit.setText(location.getMeasurements().get("so2").unit);
+            if (location.getLatestMeasurements().containsKey("so2")){
+                holder.mSO2Layout.setVisibility(View.VISIBLE);
+                holder.mLatestSO2.setText(location.getLatestMeasurements().get("so2").parameter);
+                holder.mLatestSO2Value.setText(location.getLatestMeasurements().get("so2").value);
+                holder.mLatestSO2Unit.setText(location.getLatestMeasurements().get("so2").unit);
             } else {
                 holder.mSO2Layout.setVisibility(View.GONE);
             }

@@ -3,6 +3,7 @@ package com.miage.covidair.service;
 import com.miage.covidair.model.City.CitySearchResult;
 import com.miage.covidair.model.Location.LatestSearchResult;
 import com.miage.covidair.model.Location.LocationSearchResult;
+import com.miage.covidair.model.Measurement.MeasurementSearchResult;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -19,7 +20,12 @@ public interface ISearchRESTService {
                                                   @Query("limit") int limit);
 
     @GET("latest?")
-    Call<LatestSearchResult> searchForLatest(@Query("country") String country,
-                                             @Query("city") String city,
-                                             @Query("location") String location);
+    Call<LatestSearchResult> searchForLatest(@Query("coordinates") String coordinates,
+                                             @Query("radius") int radius,
+                                             @Query("limit") int limit);
+
+    @GET("measurements?")
+    Call<MeasurementSearchResult> searchForMeasurements(@Query("coordinates") String coordinates,
+                                                        @Query("radius") int radius,
+                                                        @Query("limit") int limit);
 }

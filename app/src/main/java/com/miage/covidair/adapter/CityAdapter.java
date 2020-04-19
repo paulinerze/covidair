@@ -54,21 +54,6 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityViewHolder
         holder.mCityIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Play mp3
-                AssetFileDescriptor afd = null;
-                try {
-                    afd = context.getAssets().openFd("house.mp3");
-
-                    MediaPlayer player = new MediaPlayer();
-                    player.setDataSource(afd.getFileDescriptor(),afd.getStartOffset(),afd.getLength());
-                    player.prepare();
-                    player.start();
-
-                } catch (IOException e) {
-                    // Silent catch : sound will not be played
-                    e.printStackTrace();
-                }
-
                 // Open city details activity
                 Intent seeCityDetailIntent = new Intent(context, LocationsActivity.class);
                 seeCityDetailIntent.putExtra("city", city.getName());

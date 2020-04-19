@@ -4,10 +4,9 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.google.gson.annotations.Expose;
+import com.miage.covidair.model.Measurement.Measurement;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 @Table(name = "Loca")
 public class Loca extends Model {
@@ -27,17 +26,38 @@ public class Loca extends Model {
     @Expose
     public Coordinates coordinates;
     @Expose
-    @Column(name = "measurements")
-    public HashMap<String,Measurement> measurements;
+    @Column(name = "longitude")
+    public String longitude;
+    @Expose
+    @Column(name = "latitude")
+    public String latitude;
+    @Expose
+    @Column(name = "latestMeasurements")
+    public HashMap<String, Measurement> latestMeasurements;
 
-    public void setMeasurements(HashMap<String, Measurement> measurements) {
-        this.measurements = measurements;
+    public void setLatestMeasurements(HashMap<String, Measurement> latestMeasurements) {
+        this.latestMeasurements = latestMeasurements;
     }
 
-    public HashMap<String,Measurement> getMeasurements() {
-        return measurements;
+    public HashMap<String,Measurement> getLatestMeasurements() {
+        return latestMeasurements;
     }
 
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
 
     public String getLocation() {
         return location;

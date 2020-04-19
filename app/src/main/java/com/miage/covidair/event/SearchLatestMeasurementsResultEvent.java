@@ -1,6 +1,6 @@
 package com.miage.covidair.event;
 
-import com.miage.covidair.model.Location.Measurement;
+import com.miage.covidair.model.Measurement.Measurement;
 
 import java.util.List;
 

@@ -14,11 +14,11 @@ public class Coordinates extends Model {
 
     @Expose
     @Column(name = "longitude")
-    public double longitude;
+    public String longitude;
 
     @Expose
     @Column(name = "latitude")
-    public double latitude;
+    public String latitude;
 
 
     public String getLocation() {
@@ -29,19 +29,19 @@ public class Coordinates extends Model {
         this.location = location;
     }
 
-    public double getLongitude() {
+    public String getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(double longitude) {
+    public void setLongitude(String longitude) {
         this.longitude = longitude;
     }
 
-    public double getLatitude() {
+    public String getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(double latitude) {
+    public void setLatitude(String latitude) {
         this.latitude = latitude;
     }
 }
