@@ -7,5 +7,5 @@ import java.util.Date;
 
 public class MeasurementDate {
     @Expose
-    public Date utc;
+    public String utc;
 }

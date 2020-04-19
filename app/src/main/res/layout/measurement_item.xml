@@ -19,7 +19,7 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/detail_adapter_parameter"
+            android:id="@+id/measurement_adapter_parameter"
             android:layout_width="match_parent"
             android:textStyle="bold"
             android:layout_weight="1"
@@ -32,13 +32,13 @@
             android:layout_height="0dp">
 
             <TextView
-                android:id="@+id/detail_adapter_value"
+                android:id="@+id/measurement_adapter_value"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2" />
 
             <TextView
-                android:id="@+id/detail_adapter_unit"
+                android:id="@+id/measurement_adapter_unit"
                 android:layout_width="230dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2" />
@@ -59,7 +59,7 @@
                 android:text="Date de la mesure" />
 
             <TextView
-                android:id="@+id/detail_adapter_averagingPeriod"
+                android:id="@+id/measurement_adapter_date"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2" />

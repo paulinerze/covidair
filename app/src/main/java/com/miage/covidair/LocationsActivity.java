@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.miage.covidair.event.EventBusManager;
-import com.miage.covidair.event.SearchLatestMeasurementsResultEvent;
 import com.miage.covidair.event.SearchLocationResultEvent;
 import com.miage.covidair.service.LocationSearchService;
 import com.miage.covidair.adapter.LocationAdapter;

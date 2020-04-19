@@ -5,6 +5,7 @@ import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.google.gson.annotations.Expose;
 
+//TODO: INUTILE
 @Table(name = "Coordinates")
 public class Coordinates extends Model {
 

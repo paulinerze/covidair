@@ -6,27 +6,20 @@ import android.util.Log;
 import androidx.annotation.RequiresApi;
 
 import com.activeandroid.ActiveAndroid;
-import com.activeandroid.Model;
 import com.activeandroid.query.Select;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.miage.covidair.event.EventBusManager;
-import com.miage.covidair.event.SearchLatestMeasurementsResultEvent;
 import com.miage.covidair.event.SearchLocationResultEvent;
 import com.miage.covidair.model.Location.Latest;
 import com.miage.covidair.model.Location.LatestSearchResult;
 import com.miage.covidair.model.Location.Loca;
 import com.miage.covidair.model.Location.LocationSearchResult;
 import com.miage.covidair.model.Measurement.Measurement;
-import com.miage.covidair.model.Measurement.MeasurementSearchResult;
 
 import java.lang.reflect.Modifier;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -71,7 +64,7 @@ public class LocationSearchService {
     }
 
     public void searchLocations(String city) {
-    // Cancel last scheduled network call (if any)
+        // Cancel last scheduled network call (if any)
         if (mLastScheduleTask != null && !mLastScheduleTask.isDone()) {
             mLastScheduleTask.cancel(true);
         }
@@ -93,7 +86,7 @@ public class LocationSearchService {
                             //TODO : test sur la date pour last update
 
                             if (city.equals(loca.city)) {
-                                    loca.coordinates.location = loca.location;
+                                    loca.coordinates.location = loca.location; //TODO: INUTILE
                                     loca.longitude = loca.coordinates.longitude;
                                     loca.latitude = loca.coordinates.latitude;
                                     DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.FRENCH);
@@ -161,7 +154,6 @@ public class LocationSearchService {
                                     latestMeasurements.put(measurement.parameter,measurement);
                                 }
                             }
-
                             loca.setLatestMeasurements(latestMeasurements);
                             loca.save();
 
