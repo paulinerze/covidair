@@ -15,10 +15,11 @@ import com.miage.covidair.model.Measurement.Measurement;
 import com.miage.covidair.model.Measurement.MeasurementSearchResult;
 
 import java.lang.reflect.Modifier;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.Executors;
@@ -72,7 +73,7 @@ public class MeasurementSearchService {
             searchLatestMeasurementsFromDB(location, city);
 
             // Step 2 : Call to the REST service
-            mISearchRESTService.searchForMeasurements(latitude+","+longitude,750,10000).enqueue(new Callback<MeasurementSearchResult>() {
+            mISearchRESTService.searchForMeasurements(latitude+","+longitude,750,30).enqueue(new Callback<MeasurementSearchResult>() {
                 @RequiresApi(api = Build.VERSION_CODES.O)
                 @Override
                 public void onResponse(Call<MeasurementSearchResult> call, retrofit2.Response<MeasurementSearchResult> response) {
@@ -87,9 +88,12 @@ public class MeasurementSearchService {
                                 measurement.longitude = measurement.coordinates.longitude;
                                 DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.FRENCH);
                                 DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale.FRENCH);
-                                LocalDate date = LocalDate.parse(measurement.date.utc, inputFormatter);
+                                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                                String strDate = dateFormat.format(measurement.date.utc);
+                                LocalDate date = LocalDate.parse(strDate, inputFormatter);
                                 String formattedDate = outputFormatter.format(date);
-                                measurement.utcDate = formattedDate;
+                                measurement.displayDate = formattedDate;
+                                measurement.orderDate = measurement.date.utc;
                                 measurement.save();
                             }
                         }
@@ -115,14 +119,6 @@ public class MeasurementSearchService {
         }, REFRESH_DELAY, TimeUnit.MILLISECONDS);
     }
 
-    private void searchMeasurementsFromDB(String city, String location) {
-        List<Measurement> matchingMeasurementsFromDB = new Select()
-                .from(Measurement.class)
-                .where("city LIKE '%" + city + "%' AND location LIKE '%" + location + "%'")
-                .orderBy("date desc")
-                .execute();
-        //EventBusManager.BUS.post(new SearchMeasurementResultEvent(matchingMeasurementsFromDB));
-    }
 
     private void searchLatestMeasurementsFromDB(String location, String city) {
         String[] params = {"pm25", "pm10", "so2", "no2", "o3", "co", "bc"};
@@ -131,7 +127,7 @@ public class MeasurementSearchService {
             List<Measurement> matchingLatest = new Select()
                     .from(Measurement.class)
                     .where("location LIKE '%" +location+"%' AND city LIKE'%"+ city + "%' AND parameter LIKE'%"+ parameter + "%'")
-                    .orderBy("date DESC")
+                    .orderBy("orderDate DESC")
                     .limit(1)
                     .execute();
             if (matchingLatest != null && !matchingLatest.isEmpty()){

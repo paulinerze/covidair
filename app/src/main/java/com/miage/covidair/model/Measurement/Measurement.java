@@ -32,12 +32,63 @@ public class Measurement extends Model {
     @Column(name = "longitude")
     public String longitude;
     @Expose
-    @Column(name = "date")
-    public String utcDate;
+    @Column(name = "displayDate")
+    public String displayDate;
+    @Expose
+    @Column(name = "orderDate")
+    public Date orderDate;
     @Expose
     public MeasurementDate date;
     @Expose
     public Coordinates coordinates;
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getDisplayDate() {
+        return displayDate;
+    }
+
+    public void setDisplayDate(String displayDate) {
+        this.displayDate = displayDate;
+    }
+
+    public Date getOrderDate() {
+        return orderDate;
+    }
+
+    public void setOrderDate(Date orderDate) {
+        this.orderDate = orderDate;
+    }
+
+    public MeasurementDate getDate() {
+        return date;
+    }
+
+    public void setDate(MeasurementDate date) {
+        this.date = date;
+    }
+
+    public Coordinates getCoordinates() {
+        return coordinates;
+    }
+
+    public void setCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
+    }
 
     public String getLocation() {
         return location;
@@ -79,11 +130,4 @@ public class Measurement extends Model {
         this.unit = unit;
     }
 
-    public String getUtcDate() {
-        return utcDate;
-    }
-
-    public void setUtcDate(String utcDate) {
-        this.utcDate = utcDate;
-    }
 }

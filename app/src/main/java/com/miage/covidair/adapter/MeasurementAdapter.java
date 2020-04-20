@@ -41,7 +41,7 @@ public class MeasurementAdapter extends RecyclerView.Adapter<MeasurementAdapter.
         holder.mMeasurementParameter.setText(measurement.getParameter());
         holder.mMeasurementValue.setText(measurement.getValue());
         holder.mMeasurementUnit.setText(measurement.getUnit());
-        holder.mMeasurementDate.setText(measurement.getUtcDate());
+        holder.mMeasurementDate.setText(measurement.getDisplayDate());
 
     }
 
@@ -56,7 +56,7 @@ public class MeasurementAdapter extends RecyclerView.Adapter<MeasurementAdapter.
 
     // Pattern ViewHolder
     class MeasurementsViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.measurement_adapter_parameter)
+        @BindView(R.id.measurement_adapter_label)
         TextView mMeasurementParameter;
 
         @BindView(R.id.measurement_adapter_value)
