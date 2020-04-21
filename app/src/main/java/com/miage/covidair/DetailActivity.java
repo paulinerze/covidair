@@ -6,10 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.miage.covidair.adapter.DetailAdapter;
 import com.miage.covidair.event.EventBusManager;
 import com.miage.covidair.event.SearchMeasurementResultEvent;
-import com.miage.covidair.service.MeasurementSearchService;
-import com.miage.covidair.adapter.MeasurementAdapter;
+import com.miage.covidair.service.DetailSearchService;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ public class DetailActivity extends AppCompatActivity{
 
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
-    private MeasurementAdapter mMeasurementAdapter;
+    private DetailAdapter mDetailAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +32,8 @@ public class DetailActivity extends AppCompatActivity{
         ButterKnife.bind(this);
 
         // Instanciate a CityAdpater with empty content
-        mMeasurementAdapter = new MeasurementAdapter(this, new ArrayList<>());
-        mRecyclerView.setAdapter(mMeasurementAdapter);
+        mDetailAdapter = new DetailAdapter(this, new ArrayList<>());
+        mRecyclerView.setAdapter(mDetailAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
@@ -48,7 +48,8 @@ public class DetailActivity extends AppCompatActivity{
         String longitude = getIntent().getStringExtra("longitude");
         String latitude = getIntent().getStringExtra("latitude");
         String city = getIntent().getStringExtra("city");
-        MeasurementSearchService.INSTANCE.searchDetails(city,location,longitude,latitude);
+        DetailSearchService.INSTANCE.searchDetails(city,location,longitude,latitude);
+        DetailSearchService.INSTANCE.searchWeather(latitude+ "," + longitude);
     }
 
     @Override
@@ -63,7 +64,7 @@ public class DetailActivity extends AppCompatActivity{
     public void searchResult(final SearchMeasurementResultEvent event) {
         // Here someone has posted a SearchCityResultEvent
         // Update adapter's model
-        mMeasurementAdapter.setMeasurements(event.getDetails());
-        runOnUiThread(() -> mMeasurementAdapter.notifyDataSetChanged());
+        mDetailAdapter.setMeasurements(event.getDetails());
+        runOnUiThread(() -> mDetailAdapter.notifyDataSetChanged());
     }
 }

@@ -16,12 +16,12 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MeasurementAdapter extends RecyclerView.Adapter<MeasurementAdapter.MeasurementsViewHolder> {
+public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.MeasurementsViewHolder> {
     private LayoutInflater inflater;
     private Activity context;
     private List<Measurement> mMeasurement;
 
-    public MeasurementAdapter(Activity context, List<Measurement> measurements) {
+    public DetailAdapter(Activity context, List<Measurement> measurements) {
         inflater = LayoutInflater.from(context);
         this.context = context;
         this.mMeasurement = measurements;
