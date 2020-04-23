@@ -34,6 +34,9 @@ public class Loca extends Model {
     @Expose
     @Column(name = "latestMeasurements")
     public HashMap<String, Measurement> latestMeasurements;
+    @Expose
+    @Column(name = "sol")
+    public Double sol;
 
     public void setLatestMeasurements(HashMap<String, Measurement> latestMeasurements) {
         this.latestMeasurements = latestMeasurements;
@@ -99,4 +102,11 @@ public class Loca extends Model {
         this.coordinates = coordinates;
     }
 
+    public Double getSol() {
+        return sol;
+    }
+
+    public void setSol(Double sol) {
+        this.sol = sol;
+    }
 }

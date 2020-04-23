@@ -49,7 +49,6 @@ public class DetailActivity extends AppCompatActivity{
         String latitude = getIntent().getStringExtra("latitude");
         String city = getIntent().getStringExtra("city");
         DetailSearchService.INSTANCE.searchDetails(city,location,longitude,latitude);
-        DetailSearchService.INSTANCE.searchWeather(latitude+ "," + longitude);
     }
 
     @Override
@@ -61,10 +60,12 @@ public class DetailActivity extends AppCompatActivity{
     }
 
     @Subscribe
-    public void searchResult(final SearchMeasurementResultEvent event) {
+    public void searchMeasurement(final SearchMeasurementResultEvent event) {
         // Here someone has posted a SearchCityResultEvent
         // Update adapter's model
         mDetailAdapter.setMeasurements(event.getDetails());
         runOnUiThread(() -> mDetailAdapter.notifyDataSetChanged());
     }
+
+
 }

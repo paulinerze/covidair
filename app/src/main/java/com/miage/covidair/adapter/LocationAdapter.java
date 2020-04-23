@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.miage.covidair.DetailActivity;
 import com.miage.covidair.R;
 import com.miage.covidair.model.Location.Loca;
+import com.miage.covidair.model.Weather.Weather;
 
 import java.io.IOException;
 import java.util.List;
@@ -51,6 +52,15 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
         holder.mLocation.setText(location.getLocation());
         holder.mCount.setText(location.getCount());
         holder.mLastUpdated.setText(location.getLastUpdated());
+
+        if (location.getSol() != null){
+            holder.mTemperatureLayout.setVisibility(View.VISIBLE);
+            String.valueOf(location.getSol());
+            holder.mTemperatureValue.setText(String.valueOf(location.getSol()));
+        } else{
+            holder.mTemperatureLayout.setVisibility(View.GONE);
+        }
+
 
         if (location.getLatestMeasurements() != null && !location.getLatestMeasurements().isEmpty()){
             if (location.getLatestMeasurements().containsKey("bc")){
@@ -117,6 +127,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
             holder.mPM10Layout.setVisibility(View.GONE);
             holder.mPM25Layout.setVisibility(View.GONE);
             holder.mSO2Layout.setVisibility(View.GONE);
+            //TODO : faire un layout pour indiquer N/A
         }
 
 
@@ -172,6 +183,11 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
 
         @BindView(R.id.location_adapter_lastUpdated)
         TextView mLastUpdated;
+
+        @BindView(R.id.temperature_layout)
+        LinearLayout mTemperatureLayout;
+        @BindView(R.id.location_adapter_temperature_value)
+        TextView mTemperatureValue;
         //
         @BindView(R.id.bc)
         LinearLayout mBCLayout;

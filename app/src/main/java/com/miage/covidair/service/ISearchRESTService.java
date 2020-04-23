@@ -4,6 +4,11 @@ import com.miage.covidair.model.City.CitySearchResult;
 import com.miage.covidair.model.Location.LatestSearchResult;
 import com.miage.covidair.model.Location.LocationSearchResult;
 import com.miage.covidair.model.Measurement.MeasurementSearchResult;
+import com.miage.covidair.model.Weather.Weather;
+
+import org.json.JSONObject;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -28,4 +33,7 @@ public interface ISearchRESTService {
     Call<MeasurementSearchResult> searchForMeasurements(@Query("coordinates") String coordinates,
                                                         @Query("radius") int radius,
                                                         @Query("limit") int limit);
+    @GET("json?")
+    Call<JSONObject> searchForWeather(@Query("_ll") String ll,
+                                      @Query("_auth") String auth);
 }

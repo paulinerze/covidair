@@ -65,4 +65,5 @@ public class LocationsActivity extends AppCompatActivity {
         runOnUiThread(() -> mLocationAdapter.notifyDataSetChanged());
     }
 
+
 }

@@ -14,6 +14,7 @@ import com.miage.covidair.event.EventBusManager;
 import com.miage.covidair.event.SearchMeasurementResultEvent;
 import com.miage.covidair.model.Measurement.Measurement;
 import com.miage.covidair.model.Measurement.MeasurementSearchResult;
+import com.miage.covidair.model.Weather.Weather;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -23,6 +24,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.lang.reflect.Modifier;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -133,64 +135,6 @@ public class DetailSearchService {
         }, REFRESH_DELAY, TimeUnit.MILLISECONDS);
     }
 
-    public void searchWeather(final String search) {
-        // Create AsyncTask
-        AsyncTask<Void, Void, Void> asyncTask = new AsyncTask<Void, Void, Void>() {
-
-            @Override
-            protected Void doInBackground(Void... params) {
-                // Here we are in a new background thread
-                try {
-                    final OkHttpClient okHttpClient = new OkHttpClient();
-                    final Request request = new Request.Builder()
-                            .url("https://www.infoclimat.fr/public-api/gfs/json?&_ll=" + search +
-                                    "&_auth=UkgCFVUrVnQFKFBnAXcLIgdvAjcNe1RzBHgEZwpvUi9TOFU0AmJSNFU7USxSf" +
-                                    "QE3VXgEZwE6CDhWPQB4Xy1SM1I4Am5VPlYxBWpQNQEuCyAHKQJjDS1UcwRmBGQKYVIvU" +
-                                    "zFVNQJpUi5VOFEyUmABK1VnBGUBPwgvVioAZl83UjlSNgJiVTZWNwVqUDABNwsgBysCZ" +
-                                    "w1nVGUEMwQ3Cm5SMFMyVTACNVI5VWlRYlJlAStVZARmATcIM1YxAG5fMVI3Ui4CeVVPV" +
-                                    "kcFd1ByAXMLagdyAn8NZ1QyBDM%3D&_c=a8c2984da207697b07c0c8ec4037473f")
-                            .build();
-                    Response response = okHttpClient.newCall(request).execute();
-                    if (response != null && response.body() != null) {
-                        JSONObject jsonResult = new JSONObject(response.body().string());
-                        String todaysDate = getTodaysDate();
-                        JSONArray jsonWeather = jsonResult.getJSONArray(todaysDate);
-                        for (int i = 0; i < jsonWeather.length(); i++) {
-                            JSONObject jsonTemperature = jsonWeather.getJSONObject(i);
-                            Double twoM = jsonTemperature.getJSONObject("temperature").getDouble("sol");
-                            Double sol = jsonTemperature.getJSONObject("temperature").getDouble("sol");
-                            Log.d("RECEIVED temperature", String.valueOf(sol));
-                        }
-                    }
-                } catch (IOException e) {
-                    Log.e("[CovidAir] [WEATHER] [NETWORK] ", e.getMessage());
-                } catch (JSONException e) {
-                    Log.e("[CovidAir] [WEATHER] [JSON] ", e.getMessage());
-                }
-                return null;
-            }
-        }.execute();
-    }
-
-    @NotNull
-    private String getTodaysDate() {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH");
-        Date date = new Date();
-        String todaysDate = dateFormat.format(date);
-        int hour = Integer.parseInt(todaysDate.substring(11,12));
-        int[] numbers = {2,5,8,11,14,17,20,23};
-        List<Integer> list = Arrays.stream(numbers).boxed().collect(Collectors.toList());
-        int c = list.stream()
-                .min(Comparator.comparingInt(i -> Math.abs(i - hour)))
-                .orElseThrow(() -> new NoSuchElementException("No value present"));
-        if (c > 8) {
-            todaysDate = todaysDate.substring(0,10) + " " + c + ":00:00";
-        } else {
-            todaysDate = todaysDate.substring(0,10) + " 0" + c + ":00:00";
-        }
-        return todaysDate;
-    }
-
 
     private void searchLatestMeasurementsFromDB(String location, String city) {
         String[] params = {"pm25", "pm10", "so2", "no2", "o3", "co", "bc"};
@@ -208,4 +152,6 @@ public class DetailSearchService {
         }
         EventBusManager.BUS.post(new SearchMeasurementResultEvent(latestMeasurementsFromDB));
     }
+
+
 }

@@ -1,5 +1,6 @@
 package com.miage.covidair.service;
 
+import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
 
@@ -16,10 +17,23 @@ import com.miage.covidair.model.Location.LatestSearchResult;
 import com.miage.covidair.model.Location.Loca;
 import com.miage.covidair.model.Location.LocationSearchResult;
 import com.miage.covidair.model.Measurement.Measurement;
+import com.miage.covidair.model.Weather.Weather;
 
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.lang.reflect.Modifier;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -29,6 +43,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -41,6 +56,7 @@ public class LocationSearchService {
     private static final long REFRESH_DELAY = 650;
     private ScheduledExecutorService mScheduler = Executors.newScheduledThreadPool(1);
     private ScheduledFuture mLastScheduleTask;
+    private static DecimalFormat df2 = new DecimalFormat("#.##");
 
     private LocationSearchService() {
         // Create GSON Converter that will be used to convert from JSON to Java
@@ -55,6 +71,15 @@ public class LocationSearchService {
                 .client(new OkHttpClient())
                 // Having the following as server URL
                 .baseUrl("https://api.openaq.org/v1/")
+                // Using GSON to convert from Json to Java
+                .addConverterFactory(GsonConverterFactory.create(gsonConverter))
+                .build();
+
+        Retrofit retrofitWeather = new Retrofit.Builder()
+                // Using OkHttp as HTTP Client
+                .client(new OkHttpClient())
+                // Having the following as server URL
+                .baseUrl("https://www.infoclimat.fr/public-api/gfs/")
                 // Using GSON to convert from Json to Java
                 .addConverterFactory(GsonConverterFactory.create(gsonConverter))
                 .build();
@@ -105,6 +130,7 @@ public class LocationSearchService {
                         searchLocationsFromDB(city);
                         searchLatestMeasurements(city);
 
+
                     } else {
                         // Null result
                         // We may want to display a warning to user (e.g. Toast)
@@ -125,11 +151,7 @@ public class LocationSearchService {
     }
 
     public void searchLatestMeasurements(String city) {
-        List<Loca> matchingLocationsFromDB = new Select()
-                .from(Loca.class)
-                .where("city LIKE '%" + city + "%'")
-                .orderBy("location")
-                .execute();
+        List<Loca> matchingLocationsFromDB = returnMatchingLocationFromDB(city);
 
         for (Loca loca : matchingLocationsFromDB){
             if (mLastScheduleTask != null && !mLastScheduleTask.isDone()) {
@@ -160,6 +182,7 @@ public class LocationSearchService {
                             ActiveAndroid.setTransactionSuccessful();
                             ActiveAndroid.endTransaction();
                             searchLocationsFromDB(city);
+                            searchWeather(city);
                         } else {
                             // Null result
                             // We may want to display a warning to user (e.g. Toast)
@@ -182,6 +205,123 @@ public class LocationSearchService {
 
     }
 
+    public void searchWeather(String city) {
+        List<Loca> matchingLocationsFromDB = returnMatchingLocationFromDB(city);
+
+        for (Loca loca : matchingLocationsFromDB){
+            searchLocationsFromDB(city);
+            // Create AsyncTask
+            AsyncTask<Void, Void, Void> asyncTask = new AsyncTask<Void, Void, Void>() {
+
+                @Override
+                protected Void doInBackground(Void... params) {
+                    // Here we are in a new background thread
+                    try {
+                        final OkHttpClient okHttpClient = new OkHttpClient();
+                        final Request request = new Request.Builder()
+                                .url("https://www.infoclimat.fr/public-api/gfs/json?&_ll=" + loca.latitude + "," + loca.longitude +
+                                        "&_auth=UkgCFVUrVnQFKFBnAXcLIgdvAjcNe1RzBHgEZwpvUi9TOFU0AmJSNFU7USxSf" +
+                                        "QE3VXgEZwE6CDhWPQB4Xy1SM1I4Am5VPlYxBWpQNQEuCyAHKQJjDS1UcwRmBGQKYVIvU" +
+                                        "zFVNQJpUi5VOFEyUmABK1VnBGUBPwgvVioAZl83UjlSNgJiVTZWNwVqUDABNwsgBysCZ" +
+                                        "w1nVGUEMwQ3Cm5SMFMyVTACNVI5VWlRYlJlAStVZARmATcIM1YxAG5fMVI3Ui4CeVVPV" +
+                                        "kcFd1ByAXMLagdyAn8NZ1QyBDM%3D&_c=a8c2984da207697b07c0c8ec4037473f")
+                                .build();
+                        okhttp3.Response response = okHttpClient.newCall(request).execute();
+
+                        if (response != null && response.body() != null) {
+                            ActiveAndroid.beginTransaction();
+                            JSONObject jsonResult = new JSONObject(response.body().string());
+                            String todaysDate = getTodaysDate();
+                            JSONObject jsonTemperature = jsonResult.getJSONObject(todaysDate).getJSONObject("temperature");
+                            Double kelvin = jsonTemperature.getDouble("sol") - Double.valueOf(273.15);
+                            BigDecimal celcius = new BigDecimal(kelvin).setScale(2, RoundingMode.HALF_EVEN);
+                            loca.sol = celcius.doubleValue();
+                            if (loca.latestMeasurements == null){
+                                HashMap<String,Measurement> latestMeasurements = new HashMap<>();
+                                loca.setLatestMeasurements(latestMeasurements);
+                            }
+                            loca.save();
+                            ActiveAndroid.setTransactionSuccessful();
+                            ActiveAndroid.endTransaction();
+                            searchLocationsFromDB(city);
+                        }
+
+                    } catch (IOException e) {
+                        Log.e("[CovidAir] [WEATHER] [NETWORK] ", e.getMessage());
+                    } catch (JSONException e) {
+                        Log.e("[CovidAir] [WEATHER] [JSON] ", e.getMessage());
+                    }
+                    return null;
+                }
+            }.execute();
+        }
+
+    }
+
+
+
+    @NotNull
+    private String getTodaysDate() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH");
+        Date date = new Date();
+        String todaysDate = dateFormat.format(date);
+
+        int hour = Integer.parseInt(todaysDate.substring(11,13));
+        int newHour = 0;
+        switch (hour){
+            case 0:
+            case 1:
+            case 2: newHour = 2;
+                break;
+            case 3:
+            case 4:
+            case 5: newHour = 5;
+                break;
+            case 6:
+            case 7:
+            case 8: newHour = 8;
+                break;
+            case 9:
+            case 10:
+            case 11: newHour = 11;
+                break;
+            case 12:
+            case 13:
+            case 14: newHour = 14;
+                break;
+            case 15:
+            case 16:
+            case 17: newHour = 17;
+                break;
+            case 18:
+            case 19:
+            case 20: newHour = 20;
+                break;
+            case 21:
+            case 22:
+            case 23: newHour = 23;
+                break;
+            default: newHour = 23;
+                break;
+        }
+
+
+        if (newHour > 8) {
+            todaysDate = todaysDate.substring(0,10) + " " + newHour + ":00:00";
+        } else {
+            todaysDate = todaysDate.substring(0,10) + " 0" + newHour + ":00:00";
+        }
+        return todaysDate;
+    }
+
+    private List<Loca> returnMatchingLocationFromDB(String city){
+        List<Loca> matchingLocationsFromDB = new Select()
+                .from(Loca.class)
+                .where("city LIKE '%" + city + "%'")
+                .orderBy("location")
+                .execute();
+        return matchingLocationsFromDB;
+    }
     private void searchLocationsFromDB(String city) {
         List<Loca> matchingLocationsFromDB = new Select()
                 .from(Loca.class)
@@ -189,22 +329,5 @@ public class LocationSearchService {
                 .orderBy("location")
                 .execute();
         EventBusManager.BUS.post(new SearchLocationResultEvent(matchingLocationsFromDB));
-    }
-
-    private HashMap<String,Measurement> searchLatestMeasurementsFromDB(String location) {
-        String[] params = {"pm25", "pm10", "so2", "no2", "o3", "co", "bc"};
-        HashMap<String,Measurement> latestMeasurementsFromDB = new HashMap<>();
-        for (String parameter : params){
-            List<Measurement> matchingLatest = new Select()
-                    .from(Measurement.class)
-                    .where("location LIKE '%" +location+"%' AND parameter LIKE'%"+ parameter + "%'")
-                    .orderBy("date DESC")
-                    .limit(1)
-                    .execute();
-            if (matchingLatest != null && !matchingLatest.isEmpty()){
-                latestMeasurementsFromDB.put(matchingLatest.get(0).parameter,matchingLatest.get(0));
-            }
-        }
-        return latestMeasurementsFromDB;
     }
 }
