@@ -1,6 +1,11 @@
 package com.miage.covidair;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -10,11 +15,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.miage.covidair.event.EventBusManager;
 import com.miage.covidair.event.SearchCityResultEvent;
+import com.miage.covidair.model.City.City;
 import com.miage.covidair.service.CitySearchService;
 import com.miage.covidair.adapter.CityAdapter;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private CityAdapter mCityAdapter;
     @BindView(R.id.activity_main_loader)
     ProgressBar mProgressBar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,5 +79,26 @@ public class MainActivity extends AppCompatActivity {
         });
         mCityAdapter.setCities(event.getCities());
         runOnUiThread(() -> mCityAdapter.notifyDataSetChanged());
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_list:
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.action_favorite:
+                /* DO ADD */
+                return true;
+            case R.id.action_map:
+                /* DO DELETE */
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -1,6 +1,9 @@
 package com.miage.covidair;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -63,6 +66,27 @@ public class LocationsActivity extends AppCompatActivity {
         // Update adapter's model
         mLocationAdapter.setLocations(event.getLocations());
         runOnUiThread(() -> mLocationAdapter.notifyDataSetChanged());
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_list:
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.action_favorite:
+                /* DO ADD */
+                return true;
+            case R.id.action_map:
+                /* DO DELETE */
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 
