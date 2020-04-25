@@ -13,6 +13,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+
+        <!-- Google Maps API Key -->
+                <meta-data
+                    android:name="com.google.android.geo.API_KEY"
+                    android:value="AIzaSyDY7Jss-oxBTtQJ-yDP9xLseurySYX3l7E"/>
+
         <!-- Active Android Database definition -->
                 <!-- DB Name -->
                 <meta-data android:name="AA_DB_NAME" android:value="CovidAir" />
@@ -43,6 +50,7 @@
         </activity>
         <activity android:name=".LocationsActivity" />
         <activity android:name=".DetailActivity" />
+        <activity android:name=".MapActivity" />
     </application>
 
 </manifest>
