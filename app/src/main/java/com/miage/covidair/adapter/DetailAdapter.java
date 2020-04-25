@@ -3,6 +3,9 @@ package com.miage.covidair.adapter;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +16,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.miage.covidair.R;
 import com.miage.covidair.model.Measurement.Measurement;
+import com.miage.covidair.service.LoadImage;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -35,7 +40,7 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.Measuremen
 
     @Override
     public MeasurementsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.measurement_item, parent, false);
+        View view = inflater.inflate(R.layout.detail_item, parent, false);
         MeasurementsViewHolder holder = new MeasurementsViewHolder(view);
         return holder;
     }
@@ -49,20 +54,8 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.Measuremen
         holder.mMeasurementUnit.setText(measurement.getUnit());
         holder.mMeasurementDate.setText(measurement.getDisplayDate());
 
-        URL url = null;
-        try {
-            url = new URL("https://maps.googleapis.com/maps/api/streetview?size=400x400&location=" +
-                    measurement.getLatitude() + "," + measurement.getLongitude() +
-                    "&fov=80&heading=70&pitch=0&key=AIzaSyDY7Jss-oxBTtQJ-yDP9xLseurySYX3l7E");
-            Bitmap bmp = null;
-            bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-            holder.mPhoto.setImageBitmap(bmp);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        LoadImage loadImage = new LoadImage(holder.mPhoto);
+        loadImage.execute(measurement.latitude + "," + measurement.getLongitude());
 
     }
 
@@ -98,4 +91,5 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.Measuremen
             ButterKnife.bind(this, itemView);
         }
     }
+
 }
