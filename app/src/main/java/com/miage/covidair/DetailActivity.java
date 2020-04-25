@@ -1,6 +1,7 @@
 package com.miage.covidair;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -69,6 +70,7 @@ public class DetailActivity extends AppCompatActivity{
         mDetailAdapter.setMeasurements(event.getDetails());
         runOnUiThread(() -> mDetailAdapter.notifyDataSetChanged());
     }
+
 
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
