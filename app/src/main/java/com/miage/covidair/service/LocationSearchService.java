@@ -111,16 +111,16 @@ public class LocationSearchService {
                             //TODO : test sur la date pour last update
 
                             if (city.equals(loca.city)) {
-                                    loca.coordinates.location = loca.location; //TODO: INUTILE
-                                    loca.longitude = loca.coordinates.longitude;
-                                    loca.latitude = loca.coordinates.latitude;
-                                    DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.FRENCH);
-                                    DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale.FRENCH);
-                                    LocalDate date = LocalDate.parse(loca.lastUpdated, inputFormatter);
-                                    String formattedDate = outputFormatter.format(date);
-                                    loca.lastUpdated = formattedDate;
-                                    loca.latestMeasurements = new HashMap<>();
-                                    loca.save();
+                                loca.coordinates.location = loca.location; //TODO: INUTILE
+                                loca.longitude = loca.coordinates.longitude;
+                                loca.latitude = loca.coordinates.latitude;
+                                DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.FRENCH);
+                                DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale.FRENCH);
+                                LocalDate date = LocalDate.parse(loca.lastUpdated, inputFormatter);
+                                String formattedDate = outputFormatter.format(date);
+                                loca.lastUpdated = formattedDate;
+                                loca.latestMeasurements = new HashMap<>();
+                                loca.save();
 
                             }
                         }
@@ -144,6 +144,59 @@ public class LocationSearchService {
                     // Request has failed or is not at expected format
                     // We may want to display a warning to user (e.g. Toast)
                     Log.e("[CovidAir] [LOCATION] [REST]", "Response error : " + t.getMessage());
+                }
+            });
+        }, REFRESH_DELAY, TimeUnit.MILLISECONDS);
+
+    }
+    public void searchLocationsWOotherCalls(String city) {
+        // Cancel last scheduled network call (if any)
+        if (mLastScheduleTask != null && !mLastScheduleTask.isDone()) {
+            mLastScheduleTask.cancel(true);
+        }
+        // Schedule a network call in REFRESH_DELAY ms
+        mLastScheduleTask = mScheduler.schedule(() -> {
+            // Step 2 : Call to the REST service
+            mISearchRESTService.searchForLocations("FR", city, 10000).enqueue(new Callback<LocationSearchResult>() {
+                @RequiresApi(api = Build.VERSION_CODES.O)
+                @Override
+                public void onResponse(Call<LocationSearchResult> call, retrofit2.Response<LocationSearchResult> response) {
+                    // Post an event so that listening activities can update their UI
+                    if (response.body() != null && response.body().results != null) {
+                        // Save all results in Database
+                        ActiveAndroid.beginTransaction();
+                        for (Loca loca : response.body().results) {
+                            //TODO : test sur la date pour last update
+
+                            if (city.equals(loca.city)) {
+                                loca.coordinates.location = loca.location; //TODO: INUTILE
+                                loca.longitude = loca.coordinates.longitude;
+                                loca.latitude = loca.coordinates.latitude;
+                                DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.FRENCH);
+                                DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale.FRENCH);
+                                LocalDate date = LocalDate.parse(loca.lastUpdated, inputFormatter);
+                                String formattedDate = outputFormatter.format(date);
+                                loca.lastUpdated = formattedDate;
+                                loca.latestMeasurements = new HashMap<>();
+                                loca.save();
+
+                            }
+                        }
+                        ActiveAndroid.setTransactionSuccessful();
+                        ActiveAndroid.endTransaction();
+                    } else {
+                        // Null result
+                        // We may want to display a warning to user (e.g. Toast)
+                        Log.e("[CovidAir] [LOCATION2] [REST]", "Response error : null body");
+                    }
+                }
+
+
+                @Override
+                public void onFailure(Call<LocationSearchResult> call, Throwable t) {
+                    // Request has failed or is not at expected format
+                    // We may want to display a warning to user (e.g. Toast)
+                    Log.e("[CovidAir] [LOCATION2] [REST]", "Response error : " + t.getMessage());
                 }
             });
         }, REFRESH_DELAY, TimeUnit.MILLISECONDS);
@@ -329,5 +382,16 @@ public class LocationSearchService {
                 .orderBy("location")
                 .execute();
         EventBusManager.BUS.post(new SearchLocationResultEvent(matchingLocationsFromDB));
+    }
+
+    public Loca returnFirstLocationFromDB(String city){
+        List<Loca> matchingLocationFromDB = new Select()
+                .from(Loca.class)
+                .where("city LIKE '%" + city + "%'")
+                .limit(1)
+                .execute();
+        if (matchingLocationFromDB != null && !matchingLocationFromDB.isEmpty()) {
+            return matchingLocationFromDB.get(0);
+        } else return null;
     }
 }

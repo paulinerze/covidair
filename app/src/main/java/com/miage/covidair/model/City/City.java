@@ -17,6 +17,12 @@ public class City extends Model {
     @Expose
     @Column(name = "locations")
     public String locations;
+    @Expose
+    @Column(name = "latitude")
+    public String latitude;
+    @Expose
+    @Column(name = "longitude")
+    public String longitude;
 
 
     public String getName() {
@@ -41,5 +47,21 @@ public class City extends Model {
 
     public void setLocations(String locations) {
         this.locations = locations;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 }

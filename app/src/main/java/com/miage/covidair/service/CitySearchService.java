@@ -1,6 +1,9 @@
 package com.miage.covidair.service;
 
+import android.os.Build;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
 
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.query.Select;
@@ -10,13 +13,19 @@ import com.miage.covidair.event.EventBusManager;
 import com.miage.covidair.event.SearchCityResultEvent;
 import com.miage.covidair.model.City.City;
 import com.miage.covidair.model.City.CitySearchResult;
+import com.miage.covidair.model.Location.Loca;
+import com.miage.covidair.model.Location.LocationSearchResult;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import java.lang.reflect.Modifier;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -80,6 +89,7 @@ public class CitySearchService {
 
                         // Send a new event with results from network
                         searchCitiesFromDB();
+                        searchLocations();
                     } else {
                         // Null result
                         // We may want to display a warning to user (e.g. Toast)
@@ -96,10 +106,64 @@ public class CitySearchService {
                 }
             });
         }, REFRESH_DELAY, TimeUnit.MILLISECONDS);
+
+    }
+
+    private void searchLocations() {
+        List<City> matchingCitiesFromDB =  returnCitiesFromDB();
+
+        for (City city: matchingCitiesFromDB) {
+            // Schedule a network call in REFRESH_DELAY ms
+            mLastScheduleTask = mScheduler.schedule(() -> {
+                searchCitiesFromDB();
+                // Step 2 : Call to the REST service
+                mISearchRESTService.searchForLocations("FR", city.name, 10000).enqueue(new Callback<LocationSearchResult>() {
+                    @RequiresApi(api = Build.VERSION_CODES.O)
+                    @Override
+                    public void onResponse(Call<LocationSearchResult> call, retrofit2.Response<LocationSearchResult> response) {
+                        // Post an event so that listening activities can update their UI
+                        if (response.body() != null && response.body().results != null) {
+                            // Save all results in Database
+                            ActiveAndroid.beginTransaction();
+                            Boolean saved = false;
+                            for (Loca loca : response.body().results) {
+                                if (city.name.equals(loca.city) && !saved) {
+                                    city.longitude = loca.coordinates.longitude;
+                                    city.latitude = loca.coordinates.latitude;
+                                    city.save();
+                                    saved = true;
+                                }
+                            }
+                            ActiveAndroid.setTransactionSuccessful();
+                            ActiveAndroid.endTransaction();
+                            searchCitiesFromDB();
+                        } else {
+                            // Null result
+                            // We may want to display a warning to user (e.g. Toast)
+                            Log.e("[CovidAir] [LOCATION2] [REST]", "Response error : null body");
+                        }
+                    }
+
+
+                    @Override
+                    public void onFailure(Call<LocationSearchResult> call, Throwable t) {
+                        // Request has failed or is not at expected format
+                        // We may want to display a warning to user (e.g. Toast)
+                        Log.e("[CovidAir] [LOCATION2] [REST]", "Response error : " + t.getMessage());
+                    }
+                });
+            }, REFRESH_DELAY, TimeUnit.MILLISECONDS);
+        }
+
     }
 
     private void searchCitiesFromDB() {
         List<City> matchingCitiesFromDB = new Select().from(City.class).orderBy("name").execute();
         EventBusManager.BUS.post(new SearchCityResultEvent(matchingCitiesFromDB));
+    }
+
+    private List<City> returnCitiesFromDB() {
+        List<City> matchingCitiesFromDB = new Select().from(City.class).orderBy("name").execute();
+        return matchingCitiesFromDB;
     }
 }

@@ -89,14 +89,13 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_list:
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
                 return true;
             case R.id.action_favorite:
                 /* DO ADD */
                 return true;
             case R.id.action_map:
-                /* DO DELETE */
+                //Intent intent = new Intent(this, MapActivity.class);
+                //startActivity(intent);
                 return true;
         }
         return super.onOptionsItemSelected(item);
