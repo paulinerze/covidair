@@ -19,7 +19,7 @@
             android:layout_height="0dp">
 
             <TextView
-                android:id="@+id/measurement_adapter_bc"
+                android:id="@+id/measurement_adapter_parameter"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"

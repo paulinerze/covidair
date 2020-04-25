@@ -56,7 +56,7 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.Measuremen
 
     // Pattern ViewHolder
     class MeasurementsViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.measurement_adapter_label)
+        @BindView(R.id.measurement_adapter_parameter)
         TextView mMeasurementParameter;
 
         @BindView(R.id.measurement_adapter_value)
