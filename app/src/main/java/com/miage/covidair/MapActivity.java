@@ -1,6 +1,8 @@
 package com.miage.covidair;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -10,8 +12,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.miage.covidair.event.EventBusManager;
 import com.miage.covidair.event.SearchCityResultEvent;
+import com.miage.covidair.model.City.City;
 import com.miage.covidair.service.CitySearchService;
 import com.squareup.otto.Subscribe;
 
@@ -56,9 +62,38 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     @Subscribe
     public void searchResult(final SearchCityResultEvent event) {
-        // Here someone has posted a SearchResultEvent
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
 
-        // Update map's markers
+                // Here someone has posted a SearchResultEvent
+                // Check that map is ready
+                if (mActiveGoogleMap != null) {
+                    // Update map's markers
+                    mActiveGoogleMap.clear();
+                    for (City city : event.getCities()) {
+                        // Step 1: create marker icon (and resize drawable so that marker is not too big)
+                        if (city.latitude != null && city.longitude != null){
+                            int markerIconResource;
+                            markerIconResource = R.drawable.baseline_location_on_black_18dp;
+                            Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(), markerIconResource);
+                            Bitmap resizedBitmap = Bitmap.createScaledBitmap(imageBitmap, 50, 50, false);
+
+                            // Step 2: define marker options
+                            MarkerOptions markerOptions = new MarkerOptions()
+                                    .position(new LatLng(Double.valueOf(city.getLatitude()), Double.valueOf(city.getLongitude())))
+                                    .title(city.name)
+                                    .snippet("Nombre de mesures : " +city.count)
+                                    .icon(BitmapDescriptorFactory.fromBitmap(resizedBitmap));
+
+                            // Step 3: add marker
+                            mActiveGoogleMap.addMarker(markerOptions);
+                        }
+                    }
+                }
+            }
+        });
+
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
