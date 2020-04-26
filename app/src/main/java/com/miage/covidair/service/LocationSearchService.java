@@ -7,11 +7,13 @@ import android.util.Log;
 import androidx.annotation.RequiresApi;
 
 import com.activeandroid.ActiveAndroid;
+import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.miage.covidair.event.EventBusManager;
 import com.miage.covidair.event.SearchLocationResultEvent;
+import com.miage.covidair.model.Favorite;
 import com.miage.covidair.model.Location.Latest;
 import com.miage.covidair.model.Location.LatestSearchResult;
 import com.miage.covidair.model.Location.Location;
@@ -403,5 +405,71 @@ public class LocationSearchService {
         if (matchingLocationFromDB != null && !matchingLocationFromDB.isEmpty()) {
             return matchingLocationFromDB.get(0);
         } else return null;
+    }
+
+    public void addToFavorites(String location, String city){
+        List<Location> matchingLocationFromDB = new Select()
+                .from(Location.class)
+                .where("location LIKE '%" + location + "%'")
+                .limit(1)
+                .execute();
+
+        if (matchingLocationFromDB != null && !matchingLocationFromDB.isEmpty()) {
+            ActiveAndroid.beginTransaction();
+            Favorite favorite = new Favorite();
+            Location newLocation = matchingLocationFromDB.get(0);
+            favorite.location = newLocation.location;
+            favorite.city = newLocation.city;
+            favorite.count = newLocation.count;
+            favorite.lastUpdated = newLocation.lastUpdated;
+            favorite.latestMeasurements = newLocation.latestMeasurements;
+            favorite.latitude = newLocation.latitude;
+            favorite.longitude = newLocation.longitude;
+            favorite.sol = newLocation.sol;
+            favorite.vent = newLocation.vent;
+            favorite.pluie = newLocation.pluie;
+            favorite.save();
+            ActiveAndroid.setTransactionSuccessful();
+            ActiveAndroid.endTransaction();
+        }
+
+        searchLocationFromDB(city,location);
+    }
+
+    public void rmFromFavorites(String location, String city){
+        List<Favorite> matchingFavoriteFromDB = new Select()
+                .from(Favorite.class)
+                .where("location LIKE '%" + location + "%'")
+                .limit(1)
+                .execute();
+
+        if (matchingFavoriteFromDB != null && !matchingFavoriteFromDB.isEmpty()) {
+            ActiveAndroid.beginTransaction();
+            Favorite newLocation = matchingFavoriteFromDB.get(0);
+            new Delete()
+                    .from(Favorite.class)
+                    .where("location LIKE '%" + newLocation.location + "%'").
+                    execute();
+            //newLocation.delete();
+            ActiveAndroid.setTransactionSuccessful();
+            ActiveAndroid.endTransaction();
+        }
+
+        searchLocationFromDB(city,location);
+    }
+
+    public boolean isFavorite(String location){
+        List<Favorite> matchingFavoriteFromDB = new Select()
+                .from(Favorite.class)
+                .where("location LIKE '%" + location + "%'")
+                .limit(1)
+                .execute();
+
+        if (matchingFavoriteFromDB != null && !matchingFavoriteFromDB.isEmpty()) {
+            Favorite favorite = matchingFavoriteFromDB.get(0);
+            if (favorite != null ){
+                return true;
+            } else return false;
+        } else return false;
     }
 }

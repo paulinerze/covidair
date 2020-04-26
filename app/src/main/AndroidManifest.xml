@@ -39,7 +39,8 @@
                                    com.miage.covidair.model.Location.Location,
                                    com.miage.covidair.model.Location.Coordinates,
                                    com.miage.covidair.model.Measurement.Measurement,
-                                   com.miage.covidair.model.Location.Latest" />
+                                   com.miage.covidair.model.Location.Latest,
+                                   com.miage.covidair.model.Favorite"/>
 
         <activity android:name=".MainActivity">
             <intent-filter>

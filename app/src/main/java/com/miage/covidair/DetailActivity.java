@@ -3,6 +3,7 @@ package com.miage.covidair;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -66,6 +67,20 @@ public class DetailActivity extends AppCompatActivity{
         // Update adapter's model
         mDetailAdapter.setMeasurements(event.getLocations());
         runOnUiThread(() -> mDetailAdapter.notifyDataSetChanged());
+    }
+
+    /** Called when the user touches the button */
+    public void saveToFavorites(View view) {
+        String location = getIntent().getStringExtra("location");
+        String city = getIntent().getStringExtra("city");
+        LocationSearchService.INSTANCE.addToFavorites(location, city);
+    }
+
+    /** Called when the user touches the button */
+    public void removeFromFavorites(View view) {
+        String location = getIntent().getStringExtra("location");
+        String city = getIntent().getStringExtra("city");
+        LocationSearchService.INSTANCE.rmFromFavorites(location, city);
     }
 
 

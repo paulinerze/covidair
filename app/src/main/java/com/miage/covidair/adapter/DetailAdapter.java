@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.miage.covidair.R;
 import com.miage.covidair.model.Location.Location;
 import com.miage.covidair.service.LoadImage;
+import com.miage.covidair.service.LocationSearchService;
 
 import java.util.List;
 
@@ -41,12 +42,21 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.Measuremen
     public void onBindViewHolder(MeasurementsViewHolder holder, int position) {
         // Adapt the ViewHolder state to the new element
         final Location location = mLocations.get(position);
+        holder.mLocation.setText(location.location);
         LoadImage loadImage = new LoadImage(holder.mPhoto);
         loadImage.execute(location.latitude + "," + location.getLongitude());
         String.valueOf(location.getSol());
         holder.mTemperatureValue.setText(String.valueOf(location.getSol()));
         holder.mPluieValue.setText(String.valueOf(location.pluie));
         holder.mVentValue.setText(String.valueOf(location.vent));
+
+        if (!LocationSearchService.INSTANCE.isFavorite(location.location)) {
+            holder.mAddButton.setVisibility(View.VISIBLE);
+            holder.mRemoveButton.setVisibility(View.GONE);
+        } else {
+            holder.mAddButton.setVisibility(View.GONE);
+            holder.mRemoveButton.setVisibility(View.VISIBLE);
+        }
 
 
         if (location.getLatestMeasurements() != null && !location.getLatestMeasurements().isEmpty()){
@@ -129,6 +139,8 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.Measuremen
     // Pattern ViewHolder
     class MeasurementsViewHolder extends RecyclerView.ViewHolder {
 
+        @BindView(R.id.detail_adapter_location)
+        TextView mLocation;
         @BindView(R.id.detail_item_photo)
         ImageView mPhoto;
         @BindView(R.id.detail_adapter_temperature_value)
@@ -137,6 +149,10 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.Measuremen
         TextView mVentValue;
         @BindView(R.id.detail_adapter_pluie_value)
         TextView mPluieValue;
+        @BindView(R.id.add_button)
+        LinearLayout mAddButton;
+        @BindView(R.id.remove_button)
+        LinearLayout mRemoveButton;
 
 
         //
