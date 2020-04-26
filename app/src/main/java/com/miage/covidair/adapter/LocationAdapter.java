@@ -15,8 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.miage.covidair.DetailActivity;
 import com.miage.covidair.R;
-import com.miage.covidair.model.Location.Loca;
-import com.miage.covidair.model.Weather.Weather;
+import com.miage.covidair.model.Location.Location;
 
 import java.io.IOException;
 import java.util.List;
@@ -28,10 +27,10 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
 
     private LayoutInflater inflater;
     private Activity context;
-    private List<Loca> mLocations;
+    private List<Location> mLocations;
     private String mCity;
 
-    public LocationAdapter(Activity context, List<Loca> locations, String city) {
+    public LocationAdapter(Activity context, List<Location> locations, String city) {
         inflater = LayoutInflater.from(context);
         this.context = context;
         this.mLocations = locations;
@@ -48,7 +47,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
     @Override
     public void onBindViewHolder(LocationAdapter.LocationsViewHolder holder, int position) {
         // Adapt the ViewHolder state to the new element
-        final Loca location = mLocations.get(position);
+        final Location location = mLocations.get(position);
         holder.mLocation.setText(location.getLocation());
         holder.mCount.setText(location.getCount());
         holder.mLastUpdated.setText(location.getLastUpdated());
@@ -165,7 +164,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
         return mLocations.size();
     }
 
-    public void setLocations(List<Loca> locations) {
+    public void setLocations(List<Location> locations) {
         this.mLocations = locations;
     }
 

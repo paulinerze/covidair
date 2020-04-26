@@ -1,11 +1,6 @@
 package com.miage.covidair.adapter;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,14 +11,9 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.miage.covidair.R;
-import com.miage.covidair.model.Location.Loca;
-import com.miage.covidair.model.Measurement.Measurement;
+import com.miage.covidair.model.Location.Location;
 import com.miage.covidair.service.LoadImage;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 
 import butterknife.BindView;
@@ -32,9 +22,9 @@ import butterknife.ButterKnife;
 public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.MeasurementsViewHolder> {
     private LayoutInflater inflater;
     private Activity context;
-    private List<Loca> mLocations;
+    private List<Location> mLocations;
 
-    public DetailAdapter(Activity context, List<Loca> locations) {
+    public DetailAdapter(Activity context, List<Location> locations) {
         inflater = LayoutInflater.from(context);
         this.context = context;
         this.mLocations = locations;
@@ -50,7 +40,7 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.Measuremen
     @Override
     public void onBindViewHolder(MeasurementsViewHolder holder, int position) {
         // Adapt the ViewHolder state to the new element
-        final Loca location = mLocations.get(position);
+        final Location location = mLocations.get(position);
         LoadImage loadImage = new LoadImage(holder.mPhoto);
         loadImage.execute(location.latitude + "," + location.getLongitude());
         String.valueOf(location.getSol());
@@ -132,7 +122,7 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.Measuremen
         return mLocations.size();
     }
 
-    public void setMeasurements(List<Loca> locations) {
+    public void setMeasurements(List<Location> locations) {
         this.mLocations = locations;
     }
 

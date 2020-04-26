@@ -36,7 +36,7 @@
                     android:name="AA_MODELS"
                     android:value="com.miage.covidair.model.City.City,
                                    com.miage.covidair.model.Detail.Detail,
-                                   com.miage.covidair.model.Location.Loca,
+                                   com.miage.covidair.model.Location.Location,
                                    com.miage.covidair.model.Location.Coordinates,
                                    com.miage.covidair.model.Measurement.Measurement,
                                    com.miage.covidair.model.Location.Latest" />

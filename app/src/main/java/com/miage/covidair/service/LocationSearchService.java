@@ -14,10 +14,9 @@ import com.miage.covidair.event.EventBusManager;
 import com.miage.covidair.event.SearchLocationResultEvent;
 import com.miage.covidair.model.Location.Latest;
 import com.miage.covidair.model.Location.LatestSearchResult;
-import com.miage.covidair.model.Location.Loca;
+import com.miage.covidair.model.Location.Location;
 import com.miage.covidair.model.Location.LocationSearchResult;
 import com.miage.covidair.model.Measurement.Measurement;
-import com.miage.covidair.model.Weather.Weather;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
@@ -29,7 +28,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -107,20 +105,20 @@ public class LocationSearchService {
                     if (response.body() != null && response.body().results != null) {
                         // Save all results in Database
                         ActiveAndroid.beginTransaction();
-                        for (Loca loca : response.body().results) {
+                        for (Location location : response.body().results) {
                             //TODO : test sur la date pour last update
 
-                            if (city.equals(loca.city)) {
-                                loca.coordinates.location = loca.location; //TODO: INUTILE
-                                loca.longitude = loca.coordinates.longitude;
-                                loca.latitude = loca.coordinates.latitude;
+                            if (city.equals(location.city)) {
+                                location.coordinates.location = location.location; //TODO: INUTILE
+                                location.longitude = location.coordinates.longitude;
+                                location.latitude = location.coordinates.latitude;
                                 DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.FRENCH);
                                 DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale.FRENCH);
-                                LocalDate date = LocalDate.parse(loca.lastUpdated, inputFormatter);
+                                LocalDate date = LocalDate.parse(location.lastUpdated, inputFormatter);
                                 String formattedDate = outputFormatter.format(date);
-                                loca.lastUpdated = formattedDate;
-                                loca.latestMeasurements = new HashMap<>();
-                                loca.save();
+                                location.lastUpdated = formattedDate;
+                                location.latestMeasurements = new HashMap<>();
+                                location.save();
 
                             }
                         }
@@ -165,20 +163,20 @@ public class LocationSearchService {
                     if (response.body() != null && response.body().results != null) {
                         // Save all results in Database
                         ActiveAndroid.beginTransaction();
-                        for (Loca loca : response.body().results) {
+                        for (Location location : response.body().results) {
                             //TODO : test sur la date pour last update
 
-                            if (city.equals(loca.city)) {
-                                loca.coordinates.location = loca.location; //TODO: INUTILE
-                                loca.longitude = loca.coordinates.longitude;
-                                loca.latitude = loca.coordinates.latitude;
+                            if (city.equals(location.city)) {
+                                location.coordinates.location = location.location; //TODO: INUTILE
+                                location.longitude = location.coordinates.longitude;
+                                location.latitude = location.coordinates.latitude;
                                 DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.FRENCH);
                                 DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale.FRENCH);
-                                LocalDate date = LocalDate.parse(loca.lastUpdated, inputFormatter);
+                                LocalDate date = LocalDate.parse(location.lastUpdated, inputFormatter);
                                 String formattedDate = outputFormatter.format(date);
-                                loca.lastUpdated = formattedDate;
-                                loca.latestMeasurements = new HashMap<>();
-                                loca.save();
+                                location.lastUpdated = formattedDate;
+                                location.latestMeasurements = new HashMap<>();
+                                location.save();
 
                             }
                         }
@@ -204,19 +202,19 @@ public class LocationSearchService {
     }
 
     public void searchLatestMeasurements(String city) {
-        List<Loca> matchingLocationsFromDB = returnMatchingLocationFromDB(city);
+        List<Location> matchingLocationsFromDB = returnMatchingLocationFromDB(city);
 
-        for (Loca loca : matchingLocationsFromDB){
+        for (Location location : matchingLocationsFromDB){
             if (mLastScheduleTask != null && !mLastScheduleTask.isDone()) {
                 mLastScheduleTask.cancel(true);
             }
             mLastScheduleTask = mScheduler.schedule(() -> {
                 // Step 1 : first run a local search from DB and post result
                 searchLocationsFromDB(city);
-                //searchLatestMeasurementsFromDB(loca.city,loca.location,"FR");
+                //searchLatestMeasurementsFromDB(location.city,location.location,"FR");
 
                 // Step 2 : Call to the REST service
-                mISearchRESTService.searchForLatest(loca.latitude+","+loca.longitude,750,10000).enqueue(new Callback<LatestSearchResult>() {
+                mISearchRESTService.searchForLatest(location.latitude+","+ location.longitude,750,10000).enqueue(new Callback<LatestSearchResult>() {
                     @Override
                     public void onResponse(Call<LatestSearchResult> call, Response<LatestSearchResult> response) {
                         // Post an event so that listening activities can update their UI
@@ -229,8 +227,8 @@ public class LocationSearchService {
                                     latestMeasurements.put(measurement.parameter,measurement);
                                 }
                             }
-                            loca.setLatestMeasurements(latestMeasurements);
-                            loca.save();
+                            location.setLatestMeasurements(latestMeasurements);
+                            location.save();
 
                             ActiveAndroid.setTransactionSuccessful();
                             ActiveAndroid.endTransaction();
@@ -259,9 +257,9 @@ public class LocationSearchService {
     }
 
     public void searchWeather(String city) {
-        List<Loca> matchingLocationsFromDB = returnMatchingLocationFromDB(city);
+        List<Location> matchingLocationsFromDB = returnMatchingLocationFromDB(city);
 
-        for (Loca loca : matchingLocationsFromDB){
+        for (Location location : matchingLocationsFromDB){
             searchLocationsFromDB(city);
             // Create AsyncTask
             AsyncTask<Void, Void, Void> asyncTask = new AsyncTask<Void, Void, Void>() {
@@ -272,7 +270,7 @@ public class LocationSearchService {
                     try {
                         final OkHttpClient okHttpClient = new OkHttpClient();
                         final Request request = new Request.Builder()
-                                .url("https://www.infoclimat.fr/public-api/gfs/json?&_ll=" + loca.latitude + "," + loca.longitude +
+                                .url("https://www.infoclimat.fr/public-api/gfs/json?&_ll=" + location.latitude + "," + location.longitude +
                                         "&_auth=UkgCFVUrVnQFKFBnAXcLIgdvAjcNe1RzBHgEZwpvUi9TOFU0AmJSNFU7USxSf" +
                                         "QE3VXgEZwE6CDhWPQB4Xy1SM1I4Am5VPlYxBWpQNQEuCyAHKQJjDS1UcwRmBGQKYVIvU" +
                                         "zFVNQJpUi5VOFEyUmABK1VnBGUBPwgvVioAZl83UjlSNgJiVTZWNwVqUDABNwsgBysCZ" +
@@ -286,17 +284,17 @@ public class LocationSearchService {
                             JSONObject jsonResult = new JSONObject(response.body().string());
                             String todaysDate = getTodaysDate();
                             JSONObject prevision = jsonResult.getJSONObject(todaysDate);
-                            loca.pluie = prevision.getDouble("pluie");
-                            loca.vent = prevision.getJSONObject("vent_moyen").getDouble("10m");
+                            location.pluie = prevision.getDouble("pluie");
+                            location.vent = prevision.getJSONObject("vent_moyen").getDouble("10m");
                             JSONObject jsonTemperature = prevision.getJSONObject("temperature");
                             Double kelvin = jsonTemperature.getDouble("sol") - Double.valueOf(273.15);
                             BigDecimal celcius = new BigDecimal(kelvin).setScale(2, RoundingMode.HALF_EVEN);
-                            loca.sol = celcius.doubleValue();
-                            if (loca.latestMeasurements == null){
+                            location.sol = celcius.doubleValue();
+                            if (location.latestMeasurements == null){
                                 HashMap<String,Measurement> latestMeasurements = new HashMap<>();
-                                loca.setLatestMeasurements(latestMeasurements);
+                                location.setLatestMeasurements(latestMeasurements);
                             }
-                            loca.save();
+                            location.save();
                             ActiveAndroid.setTransactionSuccessful();
                             ActiveAndroid.endTransaction();
                             searchLocationsFromDB(city);
@@ -370,17 +368,17 @@ public class LocationSearchService {
         return todaysDate;
     }
 
-    private List<Loca> returnMatchingLocationFromDB(String city){
-        List<Loca> matchingLocationsFromDB = new Select()
-                .from(Loca.class)
+    private List<Location> returnMatchingLocationFromDB(String city){
+        List<Location> matchingLocationsFromDB = new Select()
+                .from(Location.class)
                 .where("city LIKE '%" + city + "%'")
                 .orderBy("location ASC")
                 .execute();
         return matchingLocationsFromDB;
     }
     private void searchLocationsFromDB(String city) {
-        List<Loca> matchingLocationsFromDB = new Select()
-                .from(Loca.class)
+        List<Location> matchingLocationsFromDB = new Select()
+                .from(Location.class)
                 .where("city LIKE '%" + city + "%'")
                 .orderBy("location ASC")
                 .execute();
@@ -388,17 +386,17 @@ public class LocationSearchService {
     }
 
     public void searchLocationFromDB(String city, String location) {
-        List<Loca> matchingLocationsFromDB = new Select()
-                .from(Loca.class)
+        List<Location> matchingLocationsFromDB = new Select()
+                .from(Location.class)
                 .where("city LIKE '%" + city + "%' AND location LIKE '%" + location + "%'")
                 .limit(1)
                 .execute();
         EventBusManager.BUS.post(new SearchLocationResultEvent(matchingLocationsFromDB));
     }
 
-    public Loca returnFirstLocationFromDB(String city){
-        List<Loca> matchingLocationFromDB = new Select()
-                .from(Loca.class)
+    public Location returnFirstLocationFromDB(String city){
+        List<Location> matchingLocationFromDB = new Select()
+                .from(Location.class)
                 .where("city LIKE '%" + city + "%'")
                 .limit(1)
                 .execute();

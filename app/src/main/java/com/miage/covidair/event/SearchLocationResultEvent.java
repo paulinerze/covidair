@@ -1,19 +1,19 @@
 package com.miage.covidair.event;
 
-import com.miage.covidair.model.Location.Loca;
+import com.miage.covidair.model.Location.Location;
 
 
 import java.util.List;
 
 public class SearchLocationResultEvent {
 
-    private List<Loca> locations;
+    private List<Location> locations;
 
-    public SearchLocationResultEvent(List<Loca> locations) {
+    public SearchLocationResultEvent(List<Location> locations) {
         this.locations = locations;
     }
 
-    public List<Loca> getLocations() {
+    public List<Location> getLocations() {
         return locations;
     }
 }

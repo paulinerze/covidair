@@ -8,8 +8,8 @@ import com.miage.covidair.model.Measurement.Measurement;
 
 import java.util.HashMap;
 
-@Table(name = "Loca")
-public class Loca extends Model {
+@Table(name = "Location")
+public class Location extends Model {
 
     @Expose
     @Column(name = "location", index = true, unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)

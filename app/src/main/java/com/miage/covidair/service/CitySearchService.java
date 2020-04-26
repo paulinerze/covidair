@@ -13,7 +13,7 @@ import com.miage.covidair.event.EventBusManager;
 import com.miage.covidair.event.SearchCityResultEvent;
 import com.miage.covidair.model.City.City;
 import com.miage.covidair.model.City.CitySearchResult;
-import com.miage.covidair.model.Location.Loca;
+import com.miage.covidair.model.Location.Location;
 import com.miage.covidair.model.Location.LocationSearchResult;
 
 import retrofit2.Call;
@@ -21,11 +21,7 @@ import retrofit2.Callback;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import java.lang.reflect.Modifier;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -126,10 +122,10 @@ public class CitySearchService {
                             // Save all results in Database
                             ActiveAndroid.beginTransaction();
                             Boolean saved = false;
-                            for (Loca loca : response.body().results) {
-                                if (city.name.equals(loca.city) && !saved) {
-                                    city.longitude = loca.coordinates.longitude;
-                                    city.latitude = loca.coordinates.latitude;
+                            for (Location location : response.body().results) {
+                                if (city.name.equals(location.city) && !saved) {
+                                    city.longitude = location.coordinates.longitude;
+                                    city.latitude = location.coordinates.latitude;
                                     city.save();
                                     saved = true;
                                 }
