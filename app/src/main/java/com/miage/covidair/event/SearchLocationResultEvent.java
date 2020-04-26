@@ -2,7 +2,6 @@ package com.miage.covidair.event;
 
 import com.miage.covidair.model.Location.Location;
 
-
 import java.util.List;
 
 public class SearchLocationResultEvent {

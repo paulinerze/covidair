@@ -10,9 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.miage.covidair.adapter.DetailAdapter;
 import com.miage.covidair.event.EventBusManager;
-import com.miage.covidair.event.SearchDetailResultEvent;
 import com.miage.covidair.event.SearchLocationResultEvent;
-import com.miage.covidair.service.DetailSearchService;
 import com.miage.covidair.service.LocationSearchService;
 import com.squareup.otto.Subscribe;
 

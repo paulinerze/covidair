@@ -16,10 +16,6 @@ import com.miage.covidair.model.City.CitySearchResult;
 import com.miage.covidair.model.Location.Location;
 import com.miage.covidair.model.Location.LocationSearchResult;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.converter.gson.GsonConverterFactory;
-
 import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -28,7 +24,10 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class CitySearchService {
     public ISearchRESTService mISearchRESTService;
