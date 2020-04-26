@@ -374,7 +374,7 @@ public class LocationSearchService {
         List<Loca> matchingLocationsFromDB = new Select()
                 .from(Loca.class)
                 .where("city LIKE '%" + city + "%'")
-                .orderBy("location")
+                .orderBy("location ASC")
                 .execute();
         return matchingLocationsFromDB;
     }
@@ -382,7 +382,7 @@ public class LocationSearchService {
         List<Loca> matchingLocationsFromDB = new Select()
                 .from(Loca.class)
                 .where("city LIKE '%" + city + "%'")
-                .orderBy("location")
+                .orderBy("location ASC")
                 .execute();
         EventBusManager.BUS.post(new SearchLocationResultEvent(matchingLocationsFromDB));
     }
