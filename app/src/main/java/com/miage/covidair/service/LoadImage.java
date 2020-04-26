@@ -23,7 +23,7 @@ public class LoadImage extends AsyncTask<String, Void, Bitmap> {
         URL url = null;
         Bitmap bmp = null;
         try {
-            url = new URL("https://maps.googleapis.com/maps/api/streetview?size=400x400&location=" +
+            url = new URL("https://maps.googleapis.com/maps/api/streetview?size=1500x1500&location=" +
                     search +
                     "&fov=80&heading=70&pitch=0&key=AIzaSyDY7Jss-oxBTtQJ-yDP9xLseurySYX3l7E");
 

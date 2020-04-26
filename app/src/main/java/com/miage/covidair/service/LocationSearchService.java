@@ -384,6 +384,15 @@ public class LocationSearchService {
         EventBusManager.BUS.post(new SearchLocationResultEvent(matchingLocationsFromDB));
     }
 
+    public void searchLocationFromDB(String city, String location) {
+        List<Loca> matchingLocationsFromDB = new Select()
+                .from(Loca.class)
+                .where("city LIKE '%" + city + "%' AND location LIKE '%" + location + "%'")
+                .limit(1)
+                .execute();
+        EventBusManager.BUS.post(new SearchLocationResultEvent(matchingLocationsFromDB));
+    }
+
     public Loca returnFirstLocationFromDB(String city){
         List<Loca> matchingLocationFromDB = new Select()
                 .from(Loca.class)

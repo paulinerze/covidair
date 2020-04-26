@@ -1,7 +1,5 @@
 package com.miage.covidair;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,8 +10,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.miage.covidair.adapter.DetailAdapter;
 import com.miage.covidair.event.EventBusManager;
-import com.miage.covidair.event.SearchMeasurementResultEvent;
+import com.miage.covidair.event.SearchDetailResultEvent;
+import com.miage.covidair.event.SearchLocationResultEvent;
 import com.miage.covidair.service.DetailSearchService;
+import com.miage.covidair.service.LocationSearchService;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -38,6 +38,7 @@ public class DetailActivity extends AppCompatActivity{
         // Instanciate a CityAdpater with empty content
         mDetailAdapter = new DetailAdapter(this, new ArrayList<>());
         mRecyclerView.setAdapter(mDetailAdapter);
+        //TODO: peut être ici
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
@@ -49,10 +50,8 @@ public class DetailActivity extends AppCompatActivity{
         // Register to Event bus : now each time an event is posted, the activity will receive it if it is @Subscribed to this event
         EventBusManager.BUS.register(this);
         String location = getIntent().getStringExtra("location");
-        String longitude = getIntent().getStringExtra("longitude");
-        String latitude = getIntent().getStringExtra("latitude");
         String city = getIntent().getStringExtra("city");
-        DetailSearchService.INSTANCE.searchDetails(city,location,longitude,latitude);
+        LocationSearchService.INSTANCE.searchLocationFromDB(city,location);
     }
 
     @Override
@@ -64,10 +63,10 @@ public class DetailActivity extends AppCompatActivity{
     }
 
     @Subscribe
-    public void searchMeasurement(final SearchMeasurementResultEvent event) {
+    public void searchDetail(final SearchLocationResultEvent event) {
         // Here someone has posted a SearchCityResultEvent
         // Update adapter's model
-        mDetailAdapter.setMeasurements(event.getDetails());
+        mDetailAdapter.setMeasurements(event.getLocations());
         runOnUiThread(() -> mDetailAdapter.notifyDataSetChanged());
     }
 

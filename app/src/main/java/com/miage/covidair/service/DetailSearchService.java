@@ -1,6 +1,5 @@
 package com.miage.covidair.service;
 
-import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
 
@@ -11,39 +10,24 @@ import com.activeandroid.query.Select;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.miage.covidair.event.EventBusManager;
-import com.miage.covidair.event.SearchMeasurementResultEvent;
+import com.miage.covidair.event.SearchDetailResultEvent;
 import com.miage.covidair.model.Measurement.Measurement;
 import com.miage.covidair.model.Measurement.MeasurementSearchResult;
-import com.miage.covidair.model.Weather.Weather;
 
-import org.jetbrains.annotations.NotNull;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.lang.reflect.Modifier;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.NoSuchElementException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
@@ -135,6 +119,63 @@ public class DetailSearchService {
         }, REFRESH_DELAY, TimeUnit.MILLISECONDS);
     }
 
+    public void searchDeetails(String city, String location, String longitude, String latitude) {
+        // Cancel last scheduled network call (if any)
+        if (mLastScheduleTask != null && !mLastScheduleTask.isDone()) {
+            mLastScheduleTask.cancel(true);
+        }
+        // Schedule a network call in REFRESH_DELAY ms
+        mLastScheduleTask = mScheduler.schedule(() -> {
+            // Step 1 : first run a local search from DB and post result
+            searchLatestMeasurementsFromDB(location, city);
+
+            // Step 2 : Call to the REST service
+            mISearchRESTService.searchForMeasurements(latitude+","+longitude,750,30).enqueue(new Callback<MeasurementSearchResult>() {
+                @RequiresApi(api = Build.VERSION_CODES.O)
+                @Override
+                public void onResponse(Call<MeasurementSearchResult> call, retrofit2.Response<MeasurementSearchResult> response) {
+                    // Post an event so that listening activities can update their UI
+                    if (response.body() != null && response.body().results != null) {
+                        // Save all results in Database
+                        ActiveAndroid.beginTransaction();
+                        for (Measurement measurement : response.body().results) {
+                            //TODO : test sur la date pour last update
+                            if (location.equals(measurement.location) && city.equals(measurement.city)) {
+                                measurement.latitude = measurement.coordinates.latitude;
+                                measurement.longitude = measurement.coordinates.longitude;
+                                DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.FRENCH);
+                                DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale.FRENCH);
+                                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                                String strDate = dateFormat.format(measurement.date.utc);
+                                LocalDate date = LocalDate.parse(strDate, inputFormatter);
+                                String formattedDate = outputFormatter.format(date);
+                                measurement.displayDate = formattedDate;
+                                measurement.orderDate = measurement.date.utc;
+                                measurement.save();
+                            }
+                        }
+                        ActiveAndroid.setTransactionSuccessful();
+                        ActiveAndroid.endTransaction();
+                        // Send a new event with results from network
+                        searchLatestMeasurementsFromDB(location, city);
+                    } else {
+                        // Null result
+                        // We may want to display a warning to user (e.g. Toast)
+                        Log.e("[CovidAir] [MEASUREMENT] [REST]", "Response error : null body");
+                    }
+                }
+
+
+                @Override
+                public void onFailure(Call<MeasurementSearchResult> call, Throwable t) {
+                    // Request has failed or is not at expected format
+                    // We may want to display a warning to user (e.g. Toast)
+                    Log.e("[CovidAir] [MEASUREMENT] [REST]", "Response error : " + t.getMessage());
+                }
+            });
+        }, REFRESH_DELAY, TimeUnit.MILLISECONDS);
+    }
+
 
     private void searchLatestMeasurementsFromDB(String location, String city) {
         String[] params = {"pm25", "pm10", "so2", "no2", "o3", "co", "bc"};
@@ -150,7 +191,7 @@ public class DetailSearchService {
                 latestMeasurementsFromDB.add(matchingLatest.get(0));
             }
         }
-        EventBusManager.BUS.post(new SearchMeasurementResultEvent(latestMeasurementsFromDB));
+        EventBusManager.BUS.post(new SearchDetailResultEvent(latestMeasurementsFromDB));
     }
 
 

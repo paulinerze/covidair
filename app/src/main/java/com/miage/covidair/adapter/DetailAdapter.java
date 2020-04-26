@@ -10,11 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.miage.covidair.R;
+import com.miage.covidair.model.Location.Loca;
 import com.miage.covidair.model.Measurement.Measurement;
 import com.miage.covidair.service.LoadImage;
 
@@ -30,12 +32,12 @@ import butterknife.ButterKnife;
 public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.MeasurementsViewHolder> {
     private LayoutInflater inflater;
     private Activity context;
-    private List<Measurement> mMeasurement;
+    private List<Loca> mLocations;
 
-    public DetailAdapter(Activity context, List<Measurement> measurements) {
+    public DetailAdapter(Activity context, List<Loca> locations) {
         inflater = LayoutInflater.from(context);
         this.context = context;
-        this.mMeasurement = measurements;
+        this.mLocations = locations;
     }
 
     @Override
@@ -48,42 +50,161 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.Measuremen
     @Override
     public void onBindViewHolder(MeasurementsViewHolder holder, int position) {
         // Adapt the ViewHolder state to the new element
-        final Measurement measurement = mMeasurement.get(position);
-        holder.mMeasurementParameter.setText(measurement.getParameter());
-        holder.mMeasurementValue.setText(measurement.getValue());
-        holder.mMeasurementUnit.setText(measurement.getUnit());
-        holder.mMeasurementDate.setText(measurement.getDisplayDate());
-
+        final Loca location = mLocations.get(position);
         LoadImage loadImage = new LoadImage(holder.mPhoto);
-        loadImage.execute(measurement.latitude + "," + measurement.getLongitude());
+        loadImage.execute(location.latitude + "," + location.getLongitude());
+        String.valueOf(location.getSol());
+        holder.mTemperatureValue.setText(String.valueOf(location.getSol()));
 
+
+        if (location.getLatestMeasurements() != null && !location.getLatestMeasurements().isEmpty()){
+            if (location.getLatestMeasurements().containsKey("bc")){
+                holder.mBCLayout.setVisibility(View.VISIBLE);
+                holder.mLatestBC.setText(location.getLatestMeasurements().get("bc").parameter);
+                holder.mLatestBCValue.setText(location.getLatestMeasurements().get("bc").value);
+                holder.mLatestBCUnit.setText(location.getLatestMeasurements().get("bc").unit);
+            } else {
+                holder.mBCLayout.setVisibility(View.GONE);
+            }
+            if (location.getLatestMeasurements().containsKey("co")){
+                holder.mCOLayout.setVisibility(View.VISIBLE);
+                holder.mLatestCO.setText(location.getLatestMeasurements().get("co").parameter);
+                holder.mLatestCOValue.setText(location.getLatestMeasurements().get("co").value);
+                holder.mLatestCOUnit.setText(location.getLatestMeasurements().get("co").unit);
+            } else {
+                holder.mCOLayout.setVisibility(View.GONE);
+            }
+            if (location.getLatestMeasurements().containsKey("no2")){
+                holder.mNO2Layout.setVisibility(View.VISIBLE);
+                holder.mLatestNO2.setText(location.getLatestMeasurements().get("no2").parameter);
+                holder.mLatestNO2Value.setText(location.getLatestMeasurements().get("no2").value);
+                holder.mLatestNO2Unit.setText(location.getLatestMeasurements().get("no2").unit);
+            } else {
+                holder.mNO2Layout.setVisibility(View.GONE);
+            }
+            if (location.getLatestMeasurements().containsKey("o3")){
+                holder.mO3Layout.setVisibility(View.VISIBLE);
+                holder.mLatestO3.setText(location.getLatestMeasurements().get("o3").parameter);
+                holder.mLatestO3Value.setText(location.getLatestMeasurements().get("o3").value);
+                holder.mLatestO3Unit.setText(location.getLatestMeasurements().get("o3").unit);
+            } else {
+                holder.mO3Layout.setVisibility(View.GONE);
+            }
+            if (location.getLatestMeasurements().containsKey("pm10")){
+                holder.mPM10Layout.setVisibility(View.VISIBLE);
+                holder.mLatestPM10.setText(location.getLatestMeasurements().get("pm10").parameter);
+                holder.mLatestPM10Value.setText(location.getLatestMeasurements().get("pm10").value);
+                holder.mLatestPM10Unit.setText(location.getLatestMeasurements().get("pm10").unit);
+            } else {
+                holder.mPM10Layout.setVisibility(View.GONE);
+            }
+            if (location.getLatestMeasurements().containsKey("pm25")){
+                holder.mPM25Layout.setVisibility(View.VISIBLE);
+                holder.mLatestPM25.setText(location.getLatestMeasurements().get("pm25").parameter);
+                holder.mLatestPM25Value.setText(location.getLatestMeasurements().get("pm25").value);
+                holder.mLatestPM25Unit.setText(location.getLatestMeasurements().get("pm25").unit);
+            } else {
+                holder.mPM25Layout.setVisibility(View.GONE);
+            }
+            if (location.getLatestMeasurements().containsKey("so2")){
+                holder.mSO2Layout.setVisibility(View.VISIBLE);
+                holder.mLatestSO2.setText(location.getLatestMeasurements().get("so2").parameter);
+                holder.mLatestSO2Value.setText(location.getLatestMeasurements().get("so2").value);
+                holder.mLatestSO2Unit.setText(location.getLatestMeasurements().get("so2").unit);
+            } else {
+                holder.mSO2Layout.setVisibility(View.GONE);
+            }
+        } else {
+            holder.mBCLayout.setVisibility(View.GONE);
+            holder.mCOLayout.setVisibility(View.GONE);
+            holder.mNO2Layout.setVisibility(View.GONE);
+            holder.mO3Layout.setVisibility(View.GONE);
+            holder.mPM10Layout.setVisibility(View.GONE);
+            holder.mPM25Layout.setVisibility(View.GONE);
+            holder.mSO2Layout.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return mMeasurement.size();
+        return mLocations.size();
     }
 
-    public void setMeasurements(List<Measurement> measurements) {
-        this.mMeasurement = measurements;
+    public void setMeasurements(List<Loca> locations) {
+        this.mLocations = locations;
     }
 
     // Pattern ViewHolder
     class MeasurementsViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.measurement_adapter_parameter)
-        TextView mMeasurementParameter;
-
-        @BindView(R.id.measurement_adapter_value)
-        TextView mMeasurementValue;
-
-        @BindView(R.id.measurement_adapter_unit)
-        TextView mMeasurementUnit;
-
-        @BindView(R.id.measurement_adapter_date)
-        TextView mMeasurementDate;
 
         @BindView(R.id.detail_item_photo)
         ImageView mPhoto;
+        @BindView(R.id.detail_adapter_temperature_value)
+        TextView mTemperatureValue;
+
+        //
+        @BindView(R.id.detail_bc)
+        LinearLayout mBCLayout;
+        @BindView(R.id.detail_adapter_latest_bc)
+        TextView mLatestBC;
+        @BindView(R.id.detail_adapter_latest_bc_value)
+        TextView mLatestBCValue;
+        @BindView(R.id.detail_adapter_latest_bc_unit)
+        TextView mLatestBCUnit;
+        //
+        @BindView(R.id.detail_co)
+        LinearLayout mCOLayout;
+        @BindView(R.id.detail_adapter_latest_co)
+        TextView mLatestCO;
+        @BindView(R.id.detail_adapter_latest_co_value)
+        TextView mLatestCOValue;
+        @BindView(R.id.detail_adapter_latest_co_unit)
+        TextView mLatestCOUnit;
+        //
+        @BindView(R.id.detail_no2)
+        LinearLayout mNO2Layout;
+        @BindView(R.id.detail_adapter_latest_no2)
+        TextView mLatestNO2;
+        @BindView(R.id.detail_adapter_latest_no2_value)
+        TextView mLatestNO2Value;
+        @BindView(R.id.detail_adapter_latest_no2_unit)
+        TextView mLatestNO2Unit;
+        //
+        @BindView(R.id.detail_o3)
+        LinearLayout mO3Layout;
+        @BindView(R.id.detail_adapter_latest_o3)
+        TextView mLatestO3;
+        @BindView(R.id.detail_adapter_latest_o3_value)
+        TextView mLatestO3Value;
+        @BindView(R.id.detail_adapter_latest_o3_unit)
+        TextView mLatestO3Unit;
+        //
+        @BindView(R.id.detail_pm10)
+        LinearLayout mPM10Layout;
+        @BindView(R.id.detail_adapter_latest_pm10)
+        TextView mLatestPM10;
+        @BindView(R.id.detail_adapter_latest_pm10_value)
+        TextView mLatestPM10Value;
+        @BindView(R.id.detail_adapter_latest_pm10_unit)
+        TextView mLatestPM10Unit;
+        //
+        @BindView(R.id.detail_pm25)
+        LinearLayout mPM25Layout;
+        @BindView(R.id.detail_adapter_latest_pm25)
+        TextView mLatestPM25;
+        @BindView(R.id.detail_adapter_latest_pm25_value)
+        TextView mLatestPM25Value;
+        @BindView(R.id.detail_adapter_latest_pm25_unit)
+        TextView mLatestPM25Unit;
+        //
+        @BindView(R.id.detail_so2)
+        LinearLayout mSO2Layout;
+        @BindView(R.id.detail_adapter_latest_so2)
+        TextView mLatestSO2;
+        @BindView(R.id.detail_adapter_latest_so2_value)
+        TextView mLatestSO2Value;
+        @BindView(R.id.detail_adapter_latest_so2_unit)
+        TextView mLatestSO2Unit;
 
 
         public MeasurementsViewHolder(View itemView) {

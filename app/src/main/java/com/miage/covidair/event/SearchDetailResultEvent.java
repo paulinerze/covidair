@@ -4,10 +4,10 @@ import com.miage.covidair.model.Measurement.Measurement;
 
 import java.util.List;
 
-public class SearchMeasurementResultEvent {
+public class SearchDetailResultEvent {
     private List<Measurement> measurements;
 
-    public SearchMeasurementResultEvent(List<Measurement> measurements) {
+    public SearchDetailResultEvent(List<Measurement> measurements) {
         this.measurements = measurements;
     }
 
