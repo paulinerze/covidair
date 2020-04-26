@@ -285,7 +285,10 @@ public class LocationSearchService {
                             ActiveAndroid.beginTransaction();
                             JSONObject jsonResult = new JSONObject(response.body().string());
                             String todaysDate = getTodaysDate();
-                            JSONObject jsonTemperature = jsonResult.getJSONObject(todaysDate).getJSONObject("temperature");
+                            JSONObject prevision = jsonResult.getJSONObject(todaysDate);
+                            loca.pluie = prevision.getDouble("pluie");
+                            loca.vent = prevision.getJSONObject("vent_moyen").getDouble("10m");
+                            JSONObject jsonTemperature = prevision.getJSONObject("temperature");
                             Double kelvin = jsonTemperature.getDouble("sol") - Double.valueOf(273.15);
                             BigDecimal celcius = new BigDecimal(kelvin).setScale(2, RoundingMode.HALF_EVEN);
                             loca.sol = celcius.doubleValue();

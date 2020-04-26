@@ -55,6 +55,8 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.Measuremen
         loadImage.execute(location.latitude + "," + location.getLongitude());
         String.valueOf(location.getSol());
         holder.mTemperatureValue.setText(String.valueOf(location.getSol()));
+        holder.mPluieValue.setText(String.valueOf(location.pluie));
+        holder.mVentValue.setText(String.valueOf(location.vent));
 
 
         if (location.getLatestMeasurements() != null && !location.getLatestMeasurements().isEmpty()){
@@ -141,6 +143,11 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.Measuremen
         ImageView mPhoto;
         @BindView(R.id.detail_adapter_temperature_value)
         TextView mTemperatureValue;
+        @BindView(R.id.detail_adapter_vent_value)
+        TextView mVentValue;
+        @BindView(R.id.detail_adapter_pluie_value)
+        TextView mPluieValue;
+
 
         //
         @BindView(R.id.detail_bc)
