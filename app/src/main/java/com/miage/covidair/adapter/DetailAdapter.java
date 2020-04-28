@@ -49,6 +49,7 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.Measuremen
         holder.mTemperatureValue.setText(String.valueOf(location.getSol()));
         holder.mPluieValue.setText(String.valueOf(location.pluie));
         holder.mVentValue.setText(String.valueOf(location.vent));
+        holder.mLastUpdated.setText(location.lastUpdated);
 
         if (!LocationSearchService.INSTANCE.isFavorite(location.location)) {
             holder.mAddButton.setVisibility(View.VISIBLE);
@@ -153,6 +154,8 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.Measuremen
         LinearLayout mAddButton;
         @BindView(R.id.remove_button)
         LinearLayout mRemoveButton;
+        @BindView(R.id.detail_adapter_lastUpdated)
+        TextView mLastUpdated;
 
 
         //

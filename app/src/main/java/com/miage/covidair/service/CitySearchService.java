@@ -112,7 +112,7 @@ public class CitySearchService {
             mLastScheduleTask = mScheduler.schedule(() -> {
                 searchCitiesFromDB();
                 // Step 2 : Call to the REST service
-                mISearchRESTService.searchForLocations("FR", city.name, 10000).enqueue(new Callback<LocationSearchResult>() {
+                mISearchRESTService.searchForLocations("FR", city.name, 10).enqueue(new Callback<LocationSearchResult>() {
                     @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
                     public void onResponse(Call<LocationSearchResult> call, retrofit2.Response<LocationSearchResult> response) {

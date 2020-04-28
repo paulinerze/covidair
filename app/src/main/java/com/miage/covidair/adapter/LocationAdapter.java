@@ -49,8 +49,6 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
         // Adapt the ViewHolder state to the new element
         final Location location = mLocations.get(position);
         holder.mLocation.setText(location.getLocation());
-        holder.mCount.setText(location.getCount());
-        holder.mLastUpdated.setText(location.getLastUpdated());
 
         if (location.getSol() != null){
             holder.mTemperatureLayout.setVisibility(View.VISIBLE);
@@ -176,12 +174,6 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
 
         @BindView(R.id.location_adapter_location)
         TextView mLocation;
-
-        @BindView(R.id.location_adapter_count)
-        TextView mCount;
-
-        @BindView(R.id.location_adapter_lastUpdated)
-        TextView mLastUpdated;
 
         @BindView(R.id.temperature_layout)
         LinearLayout mTemperatureLayout;

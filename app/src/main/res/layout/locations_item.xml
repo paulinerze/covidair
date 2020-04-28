@@ -55,27 +55,6 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="0dp">
-
-            <TextView
-                android:id="@+id/location_adapter_countLabel"
-                android:layout_width="73dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Nombre de mesures" />
-
-            <TextView
-                android:id="@+id/location_adapter_count"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2" />
-
-        </LinearLayout>
-
-        <LinearLayout
             android:id="@+id/bc"
             android:layout_weight="1"
             android:orientation="horizontal"
@@ -263,32 +242,6 @@
                 android:layout_weight="2" />
 
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="0dp">
-
-            <TextView
-                android:id="@+id/location_adapter_lastUpdatedLabel"
-                android:layout_width="74dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Dernière mise à jour" />
-
-            <TextView
-                android:id="@+id/location_adapter_lastUpdated"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2" />
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorPrimary"/>
 
     </LinearLayout>
 
