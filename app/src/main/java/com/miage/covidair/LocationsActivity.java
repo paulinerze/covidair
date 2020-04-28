@@ -2,8 +2,13 @@ package com.miage.covidair;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.miage.covidair.adapter.LocationAdapter;
 import com.miage.covidair.event.EventBusManager;
 import com.miage.covidair.event.SearchLocationResultEvent;
+import com.miage.covidair.service.CitySearchService;
 import com.miage.covidair.service.LocationSearchService;
 import com.squareup.otto.Subscribe;
 
@@ -25,6 +31,10 @@ public class LocationsActivity extends AppCompatActivity {
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
     private LocationAdapter mLocationAdapter;
+    @BindView(R.id.activity_main_loader)
+    ProgressBar mProgressBar;
+    @BindView(R.id.activity_main_search_adress_edittext)
+    EditText mSearchEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +49,29 @@ public class LocationsActivity extends AppCompatActivity {
         mLocationAdapter = new LocationAdapter(this, new ArrayList<>(), city);
         mRecyclerView.setAdapter(mLocationAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        LocationSearchService.INSTANCE.searchLocations(city);
+
+        mSearchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // Nothing to do when texte is about to change
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // While text is changing, hide list and show loader
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // Once text has changed
+                // Show a loader
+                mProgressBar.setVisibility(View.VISIBLE);
+
+                // Launch a search through the PlaceSearchService
+                LocationSearchService.INSTANCE.searchLocations(editable.toString());;
+            }
+        });
     }
 
     @Override
@@ -48,8 +81,6 @@ public class LocationsActivity extends AppCompatActivity {
 
         // Register to Event bus : now each time an event is posted, the activity will receive it if it is @Subscribed to this event
         EventBusManager.BUS.register(this);
-        String city = getIntent().getStringExtra("city");
-        LocationSearchService.INSTANCE.searchLocations(city);
     }
 
     @Override

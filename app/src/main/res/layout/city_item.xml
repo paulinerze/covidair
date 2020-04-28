@@ -23,55 +23,8 @@
             android:layout_width="match_parent"
             android:textStyle="bold"
             android:layout_weight="1"
-            android:layout_height="0dp" />
-
-        <LinearLayout
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="0dp">
-
-            <TextView
-                android:id="@+id/city_adapter_locationsLabel"
-                android:layout_width="75dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Nombre de lieux" />
-
-            <TextView
-                android:id="@+id/city_adapter_locations"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="0dp">
-
-            <TextView
-                android:id="@+id/city_adapter_countLabel"
-                android:layout_width="78dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Nombre de mesures" />
-
-            <TextView
-                android:id="@+id/city_adapter_count"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2" />
-
-        </LinearLayout>
-
-        <View
-            android:id="@+id/HIHI"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorPrimary" />
+            android:layout_height="match_parent"
+            android:textSize="16dp"/>
 
     </LinearLayout>
 

@@ -111,6 +111,8 @@ public class LocationSearchService {
                             //TODO : test sur la date pour last update
 
                             if (city.equals(location.city)) {
+                                location.location = location.location.toUpperCase();
+                                location.city = location.city.toUpperCase();
                                 location.coordinates.location = location.location; //TODO: INUTILE
                                 location.longitude = location.coordinates.longitude;
                                 location.latitude = location.coordinates.latitude;
@@ -169,6 +171,8 @@ public class LocationSearchService {
                             //TODO : test sur la date pour last update
 
                             if (city.equals(location.city)) {
+                                location.location = location.location.toUpperCase();
+                                location.city = location.city.toUpperCase();
                                 location.coordinates.location = location.location; //TODO: INUTILE
                                 location.longitude = location.coordinates.longitude;
                                 location.latitude = location.coordinates.latitude;

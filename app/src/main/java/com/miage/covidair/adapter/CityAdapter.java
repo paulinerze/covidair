@@ -44,8 +44,6 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityViewHolder
         // Adapt the ViewHolder state to the new element
         final City city = mCities.get(position);
         holder.mCityName.setText(city.getName());
-        holder.mCityCount.setText(city.getCount());
-        holder.mCityLocations.setText(city.getLocations());
         holder.mCityIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,12 +69,6 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityViewHolder
 
         @BindView(R.id.city_adapter_name)
         TextView mCityName;
-
-        @BindView(R.id.city_adapter_count)
-        TextView mCityCount;
-
-        @BindView(R.id.city_adapter_locations)
-        TextView mCityLocations;
 
         @BindView(R.id.city_adapter_icon)
         ImageView mCityIcon;

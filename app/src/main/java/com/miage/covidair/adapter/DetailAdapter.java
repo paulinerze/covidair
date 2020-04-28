@@ -51,6 +51,8 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.Measuremen
         holder.mVentValue.setText(String.valueOf(location.vent));
         holder.mLastUpdated.setText(location.lastUpdated);
 
+        //holder.mSearchArea.setVisibility(View.GONE);
+
         if (!LocationSearchService.INSTANCE.isFavorite(location.location)) {
             holder.mAddButton.setVisibility(View.VISIBLE);
             holder.mRemoveButton.setVisibility(View.GONE);

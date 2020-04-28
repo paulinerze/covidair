@@ -2,9 +2,12 @@ package com.miage.covidair;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     private CityAdapter mCityAdapter;
     @BindView(R.id.activity_main_loader)
     ProgressBar mProgressBar;
+    @BindView(R.id.activity_main_search_adress_edittext)
+    EditText mSearchEditText;
 
 
     @Override
@@ -43,6 +48,30 @@ public class MainActivity extends AppCompatActivity {
         mCityAdapter = new CityAdapter(this, new ArrayList<>());
         mRecyclerView.setAdapter(mCityAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        CitySearchService.INSTANCE.searchCities(null);
+
+        mSearchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // Nothing to do when texte is about to change
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // While text is changing, hide list and show loader
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // Once text has changed
+                // Show a loader
+                mProgressBar.setVisibility(View.VISIBLE);
+
+                // Launch a search through the PlaceSearchService
+                CitySearchService.INSTANCE.searchCities(editable.toString());
+            }
+        });
+
     }
 
     @Override
@@ -53,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         // Register to Event bus : now each time an event is posted, the activity will receive it if it is @Subscribed to this event
         EventBusManager.BUS.register(this);
 
-        CitySearchService.INSTANCE.searchCities();
+        //CitySearchService.INSTANCE.searchCities();
     }
 
     @Override

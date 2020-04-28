@@ -4,8 +4,13 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,13 +24,19 @@ import com.miage.covidair.event.EventBusManager;
 import com.miage.covidair.event.SearchCityResultEvent;
 import com.miage.covidair.model.City.City;
 import com.miage.covidair.service.CitySearchService;
+import com.miage.covidair.service.LocationSearchService;
 import com.squareup.otto.Subscribe;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mActiveGoogleMap;
+    @BindView(R.id.activity_main_loader)
+    ProgressBar mProgressBar;
+    @BindView(R.id.activity_main_search_adress_edittext)
+    EditText mSearchEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +50,30 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        CitySearchService.INSTANCE.searchCities(null);
+
+        mSearchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // Nothing to do when texte is about to change
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // While text is changing, hide list and show loader
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // Once text has changed
+                // Show a loader
+                mProgressBar.setVisibility(View.VISIBLE);
+
+                // Launch a search through the PlaceSearchService
+                CitySearchService.INSTANCE.searchCities(editable.toString());
+            }
+        });
     }
 
     @Override
@@ -48,7 +83,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         // Register to Event bus : now each time an event is posted, the activity will receive it if it is @Subscribed to this event
         EventBusManager.BUS.register(this);
-        CitySearchService.INSTANCE.searchCities();
+        //CitySearchService.INSTANCE.searchCities("");
     }
 
     @Override
