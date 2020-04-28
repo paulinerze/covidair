@@ -104,15 +104,16 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_list:
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
+                Intent listeIntent = new Intent(this, MainActivity.class);
+                startActivity(listeIntent);
                 return true;
             case R.id.action_favorite:
-                /* DO ADD */
+                Intent favoriteIntent = new Intent(this, FavoriteActivity.class);
+                startActivity(favoriteIntent);
                 return true;
             case R.id.action_map:
-                //Intent intent = new Intent(this, MapActivity.class);
-                //startActivity(intent);
+                Intent mapIntent = new Intent(this, MapActivity.class);
+                startActivity(mapIntent);
                 return true;
         }
         return super.onOptionsItemSelected(item);

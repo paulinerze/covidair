@@ -52,6 +52,7 @@
         <activity android:name=".LocationsActivity" />
         <activity android:name=".DetailActivity" />
         <activity android:name=".MapActivity" />
+        <activity android:name=".FavoriteActivity" />
     </application>
 
 </manifest>

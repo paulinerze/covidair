@@ -4,15 +4,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.miage.covidair.adapter.LocationAdapter;
+import com.miage.covidair.adapter.FavoriteAdapter;
 import com.miage.covidair.event.EventBusManager;
-import com.miage.covidair.event.SearchLocationResultEvent;
-import com.miage.covidair.service.LocationSearchService;
+import com.miage.covidair.event.SearchFavoriteResultEvent;
+import com.miage.covidair.service.FavoriteSearchService;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -20,11 +22,14 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+public class FavoriteActivity extends AppCompatActivity {
 
-public class LocationsActivity extends AppCompatActivity {
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
-    private LocationAdapter mLocationAdapter;
+    private FavoriteAdapter mFavoriteAdapter;
+    @BindView(R.id.activity_main_loader)
+    ProgressBar mProgressBar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +40,8 @@ public class LocationsActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         // Instanciate a CityAdpater with empty content
-        String city = getIntent().getStringExtra("city");
-        mLocationAdapter = new LocationAdapter(this, new ArrayList<>(), city);
-        mRecyclerView.setAdapter(mLocationAdapter);
+        mFavoriteAdapter = new FavoriteAdapter(this, new ArrayList<>());
+        mRecyclerView.setAdapter(mFavoriteAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
@@ -48,8 +52,8 @@ public class LocationsActivity extends AppCompatActivity {
 
         // Register to Event bus : now each time an event is posted, the activity will receive it if it is @Subscribed to this event
         EventBusManager.BUS.register(this);
-        String city = getIntent().getStringExtra("city");
-        LocationSearchService.INSTANCE.searchLocations(city);
+
+        FavoriteSearchService.INSTANCE.searchFavorites();
     }
 
     @Override
@@ -61,11 +65,16 @@ public class LocationsActivity extends AppCompatActivity {
     }
 
     @Subscribe
-    public void searchResultLocation(final SearchLocationResultEvent event) {
+    public void searchResult(final SearchFavoriteResultEvent event) {
         // Here someone has posted a SearchCityResultEvent
         // Update adapter's model
-        mLocationAdapter.setLocations(event.getLocations());
-        runOnUiThread(() -> mLocationAdapter.notifyDataSetChanged());
+        runOnUiThread(() -> {
+            mFavoriteAdapter.setFavorites(event.getFavorites());
+            mFavoriteAdapter.notifyDataSetChanged();
+            mProgressBar.setVisibility(View.GONE);
+        });
+        mFavoriteAdapter.setFavorites(event.getFavorites());
+        runOnUiThread(() -> mFavoriteAdapter.notifyDataSetChanged());
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -90,6 +99,4 @@ public class LocationsActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-
 }

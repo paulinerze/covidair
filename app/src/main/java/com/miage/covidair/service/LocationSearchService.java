@@ -422,7 +422,9 @@ public class LocationSearchService {
             favorite.city = newLocation.city;
             favorite.count = newLocation.count;
             favorite.lastUpdated = newLocation.lastUpdated;
-            favorite.latestMeasurements = newLocation.latestMeasurements;
+            HashMap<String,Measurement> latestMeasurements = new HashMap<>();
+            latestMeasurements = newLocation.latestMeasurements;
+            favorite.latestMeasurements = latestMeasurements;
             favorite.latitude = newLocation.latitude;
             favorite.longitude = newLocation.longitude;
             favorite.sol = newLocation.sol;
@@ -433,7 +435,6 @@ public class LocationSearchService {
             ActiveAndroid.endTransaction();
         }
 
-        searchLocationFromDB(city,location);
     }
 
     public void rmFromFavorites(String location, String city){

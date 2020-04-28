@@ -1,5 +1,6 @@
 package com.miage.covidair;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -92,12 +93,16 @@ public class DetailActivity extends AppCompatActivity{
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_list:
+                Intent listeIntent = new Intent(this, MainActivity.class);
+                startActivity(listeIntent);
                 return true;
             case R.id.action_favorite:
-                /* DO ADD */
+                Intent favoriteIntent = new Intent(this, FavoriteActivity.class);
+                startActivity(favoriteIntent);
                 return true;
             case R.id.action_map:
-                /* DO DELETE */
+                Intent mapIntent = new Intent(this, MapActivity.class);
+                startActivity(mapIntent);
                 return true;
         }
         return super.onOptionsItemSelected(item);
