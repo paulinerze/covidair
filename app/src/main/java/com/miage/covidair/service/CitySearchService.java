@@ -263,4 +263,11 @@ public class CitySearchService {
         List<City> matchingCitiesFromDB = new Select().from(City.class).where("name LIKE '%" + city + "%'").orderBy("name").execute();
         return matchingCitiesFromDB;
     }
+
+    public boolean isCity(String city){
+        List<City> cities = returnCityFromDB(city);
+        if (cities != null && !cities.isEmpty()){
+            return true;
+        } else return false;
+    }
 }

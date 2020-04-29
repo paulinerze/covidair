@@ -267,7 +267,14 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         @Override
         public void onInfoWindowClick(Marker marker) {
             mActiveGoogleMap.clear();
-            LocationSearchService.INSTANCE.searchLocations(marker.getTitle());
+            if (CitySearchService.INSTANCE.isCity(marker.getTitle())){
+                LocationSearchService.INSTANCE.searchLocations(marker.getTitle());
+            } else {
+                Intent seeCityDetailIntent = new Intent(MapActivity.this, DetailActivity.class);
+                seeCityDetailIntent.putExtra("longitude", String.valueOf(marker.getPosition().longitude));
+                seeCityDetailIntent.putExtra("latitude", String.valueOf(marker.getPosition().latitude));
+                MapActivity.this.startActivity(seeCityDetailIntent);
+            }
 
         }
     };

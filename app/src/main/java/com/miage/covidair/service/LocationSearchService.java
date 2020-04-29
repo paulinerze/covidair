@@ -391,10 +391,10 @@ public class LocationSearchService {
         EventBusManager.BUS.post(new SearchLocationResultEvent(matchingLocationsFromDB));
     }
 
-    public void searchLocationFromDB(String city, String location) {
+    public void searchLocationFromDB(String longitude, String latitude) {
         List<Location> matchingLocationsFromDB = new Select()
                 .from(Location.class)
-                .where("city LIKE '%" + city + "%' AND location LIKE '%" + location + "%'")
+                .where("longitude LIKE '%" + longitude + "%' AND latitude LIKE '%" + latitude + "%'")
                 .limit(1)
                 .execute();
         EventBusManager.BUS.post(new SearchLocationResultEvent(matchingLocationsFromDB));

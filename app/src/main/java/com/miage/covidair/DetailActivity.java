@@ -38,7 +38,6 @@ public class DetailActivity extends AppCompatActivity{
         // Instanciate a CityAdpater with empty content
         mDetailAdapter = new DetailAdapter(this, new ArrayList<>());
         mRecyclerView.setAdapter(mDetailAdapter);
-        //TODO: peut être ici
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
@@ -49,9 +48,9 @@ public class DetailActivity extends AppCompatActivity{
 
         // Register to Event bus : now each time an event is posted, the activity will receive it if it is @Subscribed to this event
         EventBusManager.BUS.register(this);
-        String location = getIntent().getStringExtra("location");
-        String city = getIntent().getStringExtra("city");
-        LocationSearchService.INSTANCE.searchLocationFromDB(city,location);
+        String longitude = getIntent().getStringExtra("longitude");
+        String latitude = getIntent().getStringExtra("latitude");
+        LocationSearchService.INSTANCE.searchLocationFromDB(longitude,latitude);
     }
 
     @Override
