@@ -71,16 +71,16 @@ public class DetailActivity extends AppCompatActivity{
 
     /** Called when the user touches the button */
     public void saveToFavorites(View view) {
-        String location = getIntent().getStringExtra("location");
-        String city = getIntent().getStringExtra("city");
-        LocationSearchService.INSTANCE.addToFavorites(location, city);
+        String latitude = getIntent().getStringExtra("latitude");
+        String longitude = getIntent().getStringExtra("longitude");
+        LocationSearchService.INSTANCE.addToFavorites(latitude, longitude);
     }
 
     /** Called when the user touches the button */
     public void removeFromFavorites(View view) {
-        String location = getIntent().getStringExtra("location");
-        String city = getIntent().getStringExtra("city");
-        LocationSearchService.INSTANCE.rmFromFavorites(location, city);
+        String latitude = getIntent().getStringExtra("latitude");
+        String longitude = getIntent().getStringExtra("longitude");
+        LocationSearchService.INSTANCE.rmFromFavorites(latitude, longitude);
     }
 
 

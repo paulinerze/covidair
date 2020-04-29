@@ -385,7 +385,18 @@ public class LocationSearchService {
                 .execute();
         return matchingLocationsFromDB;
     }
+
+    private List<Location> returnMatchingOneLocationFromDB(String longitude, String latitude){
+        List<Location> matchingLocationsFromDB = new Select()
+                .from(Location.class)
+                .where("longitude LIKE '%" + longitude + "%' AND latitude LIKE '%" + latitude + "%'")
+                .limit(1)
+                .execute();
+        return matchingLocationsFromDB;
+    }
+
     private void searchLocationsFromDB(String city) {
+        updateMeasurements(city);
         List<Location> matchingLocationsFromDB = new Select()
                 .from(Location.class)
                 .where("city LIKE '%" + city + "%'")
@@ -395,6 +406,7 @@ public class LocationSearchService {
     }
 
     public void searchLocationFromDB(String longitude, String latitude) {
+        updateMeasurement(longitude,latitude);
         List<Location> matchingLocationsFromDB = new Select()
                 .from(Location.class)
                 .where("longitude LIKE '%" + longitude + "%' AND latitude LIKE '%" + latitude + "%'")
@@ -403,21 +415,43 @@ public class LocationSearchService {
         EventBusManager.BUS.post(new SearchLocationResultEvent(matchingLocationsFromDB));
     }
 
-    public Location returnFirstLocationFromDB(String city){
-        List<Location> matchingLocationFromDB = new Select()
-                .from(Location.class)
-                .where("city LIKE '%" + city + "%'")
-                .limit(1)
-                .execute();
-        if (matchingLocationFromDB != null && !matchingLocationFromDB.isEmpty()) {
-            return matchingLocationFromDB.get(0);
-        } else return null;
+    private void updateMeasurements(String city){
+        List<Location> locations = returnMatchingLocationFromDB(city);
+        for (Location location : locations){
+            HashMap<String, Measurement> latestMeasurements = new HashMap<>();
+            List<Measurement> measurements = LocationSearchService.INSTANCE.returnLatestMeasurements(location.location);
+            for (Measurement measurement : measurements){
+                latestMeasurements.put(measurement.parameter,measurement);
+            }
+            ActiveAndroid.beginTransaction();
+            location.latestMeasurements = latestMeasurements;
+            location.save();
+            ActiveAndroid.setTransactionSuccessful();
+            ActiveAndroid.endTransaction();
+        }
     }
 
-    public void addToFavorites(String location, String city){
+
+    private void updateMeasurement(String longitude, String latitude){
+        List<Location> locations = returnMatchingOneLocationFromDB(longitude,latitude);
+        for (Location location : locations){
+            HashMap<String, Measurement> latestMeasurements = new HashMap<>();
+            List<Measurement> measurements = LocationSearchService.INSTANCE.returnLatestMeasurements(location.location);
+            for (Measurement measurement : measurements){
+                latestMeasurements.put(measurement.parameter,measurement);
+            }
+            ActiveAndroid.beginTransaction();
+            location.latestMeasurements = latestMeasurements;
+            location.save();
+            ActiveAndroid.setTransactionSuccessful();
+            ActiveAndroid.endTransaction();
+        }
+    }
+
+    public void addToFavorites(String latitude, String longitude){
         List<Location> matchingLocationFromDB = new Select()
                 .from(Location.class)
-                .where("location LIKE '%" + location + "%'")
+                .where("latitude LIKE '%" + latitude + "%' AND longitude LIKE '%" + longitude + "%'")
                 .limit(1)
                 .execute();
 
@@ -445,10 +479,10 @@ public class LocationSearchService {
 
     }
 
-    public void rmFromFavorites(String location, String city){
+    public void rmFromFavorites(String latitude, String longitude){
         List<Favorite> matchingFavoriteFromDB = new Select()
                 .from(Favorite.class)
-                .where("location LIKE '%" + location + "%'")
+                .where("latitude LIKE '%" + latitude + "%' AND longitude LIKE '%" + longitude + "%'")
                 .limit(1)
                 .execute();
 

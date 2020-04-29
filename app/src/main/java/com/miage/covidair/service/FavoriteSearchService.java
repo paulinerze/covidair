@@ -27,6 +27,7 @@ public class FavoriteSearchService {
             }
             ActiveAndroid.beginTransaction();
             favorite.latestMeasurements = latestMeasurements;
+            favorite.save();
             ActiveAndroid.setTransactionSuccessful();
             ActiveAndroid.endTransaction();
         }
