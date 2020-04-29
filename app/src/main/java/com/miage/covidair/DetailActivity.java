@@ -30,7 +30,7 @@ public class DetailActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.detail_main);
 
         // Binding ButterKnife annotations now that content view has been set
         ButterKnife.bind(this);
