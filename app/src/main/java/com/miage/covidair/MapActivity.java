@@ -1,16 +1,22 @@
 package com.miage.covidair;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -33,7 +39,7 @@ import com.squareup.otto.Subscribe;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MapActivity extends AppCompatActivity implements OnMapReadyCallback{
+public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mActiveGoogleMap;
     @BindView(R.id.activity_main_loader)
@@ -111,7 +117,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     mActiveGoogleMap.clear();
                     for (City city : event.getCities()) {
                         // Step 1: create marker icon (and resize drawable so that marker is not too big)
-                        if (city.latitude != null && city.longitude != null){
+                        if (city.latitude != null && city.longitude != null) {
                             // Step 2: define marker options
                             MarkerOptions markerOptions = new MarkerOptions()
                                     .position(new LatLng(Double.valueOf(city.getLatitude()), Double.valueOf(city.getLongitude())))
@@ -140,55 +146,86 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     mActiveGoogleMap.clear();
                     for (Location location : event.getLocations()) {
                         // Step 1: create marker icon (and resize drawable so that marker is not too big)
-                        if (location.latitude != null && location.longitude != null){
+                        if (location.latitude != null && location.longitude != null) {
                             // Step 2: define marker options
-                            String measurements = "";
-                            if (location.getLatestMeasurements() != null && !location.getLatestMeasurements().isEmpty()){
-                                String bc = "";
-                                String co = "";
-                                String no2 = "";
-                                String o3 = "";
-                                String pm10 = "";
-                                String pm25 = "";
-                                String so2 = "";
 
-                                if (location.getLatestMeasurements().containsKey("bc")){
-                                    bc = "BC : " + location.getLatestMeasurements().get("bc").value + " " + location.getLatestMeasurements().get("bc").unit + "\n";
-                                }
-                                if (location.getLatestMeasurements().containsKey("co")){
-                                    co = "CO : " + location.getLatestMeasurements().get("co").value + " " + location.getLatestMeasurements().get("co").unit + "\n";
-                                }
-                                if (location.getLatestMeasurements().containsKey("no2")){
-                                    no2 = "NO2 : " + location.getLatestMeasurements().get("no2").value + " " + location.getLatestMeasurements().get("no2").unit + "\n";
-                                }
-                                if (location.getLatestMeasurements().containsKey("o3")){
-                                    o3 = "O3 : " + location.getLatestMeasurements().get("o3").value + " " + location.getLatestMeasurements().get("o3").unit + "\n";
-                                }
-                                if (location.getLatestMeasurements().containsKey("pm10")){
-                                    pm10 = "PM10 : " + location.getLatestMeasurements().get("pm10").value + " " + location.getLatestMeasurements().get("pm10").unit + "\n";
-                                }
-                                if (location.getLatestMeasurements().containsKey("pm25")){
-                                    pm25 = "PM25 : " + location.getLatestMeasurements().get("pm25").value + " " + location.getLatestMeasurements().get("pm25").unit + "\n";
-                                }
-                                if (location.getLatestMeasurements().containsKey("so2")){
-                                    so2 = "SO2 : " + location.getLatestMeasurements().get("so2").value + " " + location.getLatestMeasurements().get("so2").unit + "\n";
-                                }
-
-                                measurements = bc + co + no2 + o3 + pm10 + pm25 + so2;
-                            }
-
-                            String temperature = "";
-                            if ( location.sol != null ){
-                                temperature = "Température actuelle : " + location.sol + "°C \n";
-                            }
                             MarkerOptions markerOptions = new MarkerOptions()
                                     .position(new LatLng(Double.valueOf(location.getLatitude()), Double.valueOf(location.getLongitude())))
-                                    .title(location.location)
-                                    .snippet(temperature + measurements);
-                                    //.icon(BitmapDescriptorFactory.fromBitmap(resizedBitmap));
+                                    .title(location.location);
+                            //.icon(BitmapDescriptorFactory.fromBitmap(resizedBitmap));
 
                             // Step 3: add marker
                             mActiveGoogleMap.addMarker(markerOptions);
+
+                            mActiveGoogleMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+
+                                @Override
+                                public View getInfoWindow(Marker arg0) {
+                                    return null;
+                                }
+
+                                @Override
+                                public View getInfoContents(Marker marker) {
+
+                                    String measurements = "";
+                                    if (location.getLatestMeasurements() != null && !location.getLatestMeasurements().isEmpty()) {
+                                        String bc = "";
+                                        String co = "";
+                                        String no2 = "";
+                                        String o3 = "";
+                                        String pm10 = "";
+                                        String pm25 = "";
+                                        String so2 = "";
+
+                                        if (location.getLatestMeasurements().containsKey("bc")) {
+                                            bc = "BC : " + location.getLatestMeasurements().get("bc").value + " " + location.getLatestMeasurements().get("bc").unit + "\n";
+                                        }
+                                        if (location.getLatestMeasurements().containsKey("co")) {
+                                            co = "CO : " + location.getLatestMeasurements().get("co").value + " " + location.getLatestMeasurements().get("co").unit + "\n";
+                                        }
+                                        if (location.getLatestMeasurements().containsKey("no2")) {
+                                            no2 = "NO2 : " + location.getLatestMeasurements().get("no2").value + " " + location.getLatestMeasurements().get("no2").unit + "\n";
+                                        }
+                                        if (location.getLatestMeasurements().containsKey("o3")) {
+                                            o3 = "O3 : " + location.getLatestMeasurements().get("o3").value + " " + location.getLatestMeasurements().get("o3").unit + "\n";
+                                        }
+                                        if (location.getLatestMeasurements().containsKey("pm10")) {
+                                            pm10 = "PM10 : " + location.getLatestMeasurements().get("pm10").value + " " + location.getLatestMeasurements().get("pm10").unit + "\n";
+                                        }
+                                        if (location.getLatestMeasurements().containsKey("pm25")) {
+                                            pm25 = "PM25 : " + location.getLatestMeasurements().get("pm25").value + " " + location.getLatestMeasurements().get("pm25").unit + "\n";
+                                        }
+                                        if (location.getLatestMeasurements().containsKey("so2")) {
+                                            so2 = "SO2 : " + location.getLatestMeasurements().get("so2").value + " " + location.getLatestMeasurements().get("so2").unit + "\n";
+                                        }
+
+                                        measurements = bc + co + no2 + o3 + pm10 + pm25 + so2;
+                                    }
+
+                                    String temperature = "";
+                                    if (location.sol != null) {
+                                        temperature = "Température actuelle : " + location.sol + "°C \n";
+                                    }
+
+                                    LinearLayout info = new LinearLayout(MapActivity.this);
+                                    info.setOrientation(LinearLayout.VERTICAL);
+
+                                    TextView title = new TextView(MapActivity.this);
+                                    title.setTextColor(Color.BLACK);
+                                    title.setGravity(Gravity.CENTER);
+                                    title.setTypeface(null, Typeface.BOLD);
+                                    title.setText(marker.getTitle());
+
+                                    TextView snippet = new TextView(MapActivity.this);
+                                    snippet.setTextColor(Color.GRAY);
+                                    snippet.setText(temperature + measurements);
+
+                                    info.addView(title);
+                                    info.addView(snippet);
+
+                                    return info;
+                                }
+                            });
                         }
                     }
                 }
@@ -226,7 +263,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         mActiveGoogleMap.setOnInfoWindowClickListener(WhenInfoWindowClick);
     }
 
-    GoogleMap.OnInfoWindowClickListener WhenInfoWindowClick = new GoogleMap.OnInfoWindowClickListener(){
+    GoogleMap.OnInfoWindowClickListener WhenInfoWindowClick = new GoogleMap.OnInfoWindowClickListener() {
         @Override
         public void onInfoWindowClick(Marker marker) {
             mActiveGoogleMap.clear();
