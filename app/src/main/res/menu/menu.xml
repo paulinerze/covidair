@@ -9,6 +9,10 @@
         android:icon="@drawable/baseline_map_white_18dp"
         android:title="Map"
         app:showAsAction="always"></item>
+    <item android:id="@+id/action_search"
+        android:icon="@drawable/baseline_search_white_18dp"
+        android:title="Search"
+        app:showAsAction="always"></item>
     <item
         android:id="@+id/action_favorite"
         android:icon="@drawable/baseline_favorite_white_18dp"

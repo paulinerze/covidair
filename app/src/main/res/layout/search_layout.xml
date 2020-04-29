@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".SearchActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Il s'agit d'une recherche multicritères, vous pouvez saisir des informations dans tous les champs."
+                android:textAlignment="center"
+                android:textSize="20dp"
+                android:layout_marginBottom="30dp"
+                android:layout_margin="15dp"/>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/search_zone">
+                <EditText
+                    android:id="@+id/zone_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:ems="10"
+                    android:hint="Nom de la zone"
+                    android:inputType="text"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/search_nom">
+                <EditText
+                    android:id="@+id/nom_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:ems="10"
+                    android:hint="Nom du lieu"
+                    android:inputType="text"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/search_seuil_BC"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:text="BC"
+                    android:textSize="18dp"/>
+
+                <EditText
+                    android:id="@+id/seuil_min_bc_edittext"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:ems="10"
+                    android:hint="Val. min en µg/m3"
+                    android:inputType="text" />
+
+                <EditText
+                    android:id="@+id/seuil_max_bc_edittext"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:ems="10"
+                    android:hint="Val. max en µg/m3"
+                    android:inputType="text" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/search_seuil_CO"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:text="CO"
+                    android:textSize="18dp"/>
+
+                <EditText
+                    android:id="@+id/seuil_min_co_edittext"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:ems="10"
+                    android:hint="Val. min en µg/m3"
+                    android:inputType="text" />
+
+                <EditText
+                    android:id="@+id/seuil_max_co_edittext"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:ems="10"
+                    android:hint="Val. max en µg/m3"
+                    android:inputType="text" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/search_seuil_NO2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:text="NO2"
+                    android:textSize="18dp"/>
+
+                <EditText
+                    android:id="@+id/seuil_min_no2_edittext"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:ems="10"
+                    android:hint="Val. min en µg/m3"
+                    android:inputType="text" />
+
+                <EditText
+                    android:id="@+id/seuil_max_no2_edittext"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:ems="10"
+                    android:hint="Val. max en µg/m3"
+                    android:inputType="text" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/search_seuil_O3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:text="O3"
+                    android:textSize="18dp"/>
+
+                <EditText
+                    android:id="@+id/seuil_min_o3_edittext"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:ems="10"
+                    android:hint="Val. min en µg/m3"
+                    android:inputType="text" />
+
+                <EditText
+                    android:id="@+id/seuil_max_o3_edittext"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:ems="10"
+                    android:hint="Val. max en µg/m3"
+                    android:inputType="text" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/search_seuil_PM10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:text="PM10"
+                    android:textSize="18dp"/>
+
+                <EditText
+                    android:id="@+id/seuil_min_PM10_edittext"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:ems="10"
+                    android:hint="Val. min en µg/m3"
+                    android:inputType="text" />
+
+                <EditText
+                    android:id="@+id/seuil_max_PM10_edittext"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:ems="10"
+                    android:hint="Val. max en µg/m3"
+                    android:inputType="text" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/search_seuil_PM25"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:text="PM25"
+                    android:textSize="18dp"/>
+
+                <EditText
+                    android:id="@+id/seuil_min_PM25_edittext"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:ems="10"
+                    android:hint="Val. min en µg/m3"
+                    android:inputType="text" />
+
+                <EditText
+                    android:id="@+id/seuil_max_PM25_edittext"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:ems="10"
+                    android:hint="Val. max en µg/m3"
+                    android:inputType="text" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/search_seuil_SO2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:text="SO2"
+                    android:textSize="18dp"/>
+
+                <EditText
+                    android:id="@+id/seuil_min_SO2_edittext"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:ems="10"
+                    android:hint="Val. min en µg/m3"
+                    android:inputType="text" />
+
+                <EditText
+                    android:id="@+id/seuil_max_SO2_edittext"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:ems="10"
+                    android:hint="Val. max en µg/m3"
+                    android:inputType="text" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="Rechercher"
+                android:onClick="search"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
+                android:background="@color/colorBlueBlue"/>
+
+
+        </LinearLayout>
+
+
+
+        <ProgressBar
+            android:id="@+id/activity_main_loader"
+            android:layout_centerInParent="true"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

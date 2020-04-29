@@ -53,6 +53,8 @@
         <activity android:name=".DetailActivity" />
         <activity android:name=".MapActivity" />
         <activity android:name=".FavoriteActivity" />
+        <activity android:name=".SearchActivity"/>
+        <activity android:name=".BigSearchActivity"/>
     </application>
 
 </manifest>

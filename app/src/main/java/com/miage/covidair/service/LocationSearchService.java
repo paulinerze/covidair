@@ -525,4 +525,22 @@ public class LocationSearchService {
 
         return matchingMeasurementsFromDB;
     }
+
+    public void bigSearch(String zone, String nom,
+                          String minBC, String maxBC,
+                          String minCO, String maxCO,
+                          String minNO2, String maxNO2,
+                          String minO3, String maxO3,
+                          String minPM10, String maxPM10,
+                          String minPM25, String maxPM25,
+                          String minSO2, String maxSO2){
+        List<Location> matchingLocationsFromDB = new Select()
+                .from(Location.class)
+                .where("city LIKE '%" + zone + "%' AND location LIKE '%" + nom + "%'")
+                .execute();
+
+        EventBusManager.BUS.post(new SearchLocationResultEvent(matchingLocationsFromDB));
+
+
+    }
 }

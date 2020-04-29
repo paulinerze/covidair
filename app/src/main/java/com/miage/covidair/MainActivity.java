@@ -121,6 +121,10 @@ public class MainActivity extends AppCompatActivity {
                 Intent favoriteIntent = new Intent(this, FavoriteActivity.class);
                 startActivity(favoriteIntent);
                 return true;
+            case R.id.action_search:
+                Intent searchIntent = new Intent(this, SearchActivity.class);
+                startActivity(searchIntent);
+                return true;
             case R.id.action_map:
                 Intent mapIntent = new Intent(this, MapActivity.class);
                 startActivity(mapIntent);
