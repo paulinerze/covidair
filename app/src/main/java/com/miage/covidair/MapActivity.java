@@ -20,11 +20,13 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.miage.covidair.event.EventBusManager;
@@ -260,6 +262,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mActiveGoogleMap = googleMap;
+        mActiveGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(46.227638,2.213749),5));
         mActiveGoogleMap.setOnInfoWindowClickListener(WhenInfoWindowClick);
     }
 
