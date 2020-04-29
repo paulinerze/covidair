@@ -148,10 +148,8 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
 
                 // Open locations details activity
                 Intent seeCityDetailIntent = new Intent(context, DetailActivity.class);
-                seeCityDetailIntent.putExtra("location", location.getLocation());
                 seeCityDetailIntent.putExtra("longitude", location.longitude);
                 seeCityDetailIntent.putExtra("latitude", location.latitude);
-                seeCityDetailIntent.putExtra("city", mCity);
                 context.startActivity(seeCityDetailIntent);
             }
         });

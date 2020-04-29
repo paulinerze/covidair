@@ -11,7 +11,10 @@ import java.util.Date;
 @Table(name = "Measurement")
 public class Measurement extends Model {
     @Expose
-    @Column(name = "location", index = true, unique = false, onUniqueConflict = Column.ConflictAction.IGNORE)
+    @Column(name = "key", index = true, unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
+    public String key;
+    @Expose
+    @Column(name = "location")
     public String location;
     @Expose
     @Column(name = "city")

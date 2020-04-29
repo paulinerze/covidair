@@ -231,6 +231,9 @@ public class LocationSearchService {
                             for (Latest latest : response.body().results) {
                                 for (Measurement measurement : latest.measurements) {
                                     latestMeasurements.put(measurement.parameter,measurement);
+                                    measurement.location = location.location;
+                                    measurement.key = location.location + measurement.parameter;
+                                    measurement.save();
                                 }
                             }
                             location.setLatestMeasurements(latestMeasurements);
@@ -437,6 +440,7 @@ public class LocationSearchService {
             favorite.save();
             ActiveAndroid.setTransactionSuccessful();
             ActiveAndroid.endTransaction();
+            searchLocationFromDB(favorite.longitude,favorite.latitude);
         }
 
     }
@@ -458,9 +462,10 @@ public class LocationSearchService {
             //newLocation.delete();
             ActiveAndroid.setTransactionSuccessful();
             ActiveAndroid.endTransaction();
+            searchLocationFromDB(newLocation.longitude,newLocation.latitude);
         }
 
-        searchLocationFromDB(city,location);
+
     }
 
     public boolean isFavorite(String location){
@@ -476,5 +481,14 @@ public class LocationSearchService {
                 return true;
             } else return false;
         } else return false;
+    }
+
+    public List<Measurement> returnLatestMeasurements(String location){
+        List<Measurement> matchingMeasurementsFromDB = new Select()
+                .from(Measurement.class)
+                .where("location LIKE '%" + location + "%'")
+                .execute();
+
+        return matchingMeasurementsFromDB;
     }
 }

@@ -1,6 +1,9 @@
 package com.miage.covidair.adapter;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
+import android.media.MediaPlayer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +13,11 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.miage.covidair.DetailActivity;
 import com.miage.covidair.R;
 import com.miage.covidair.model.Favorite;
 
+import java.io.IOException;
 import java.util.List;
 
 import butterknife.BindView;
@@ -121,6 +126,32 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
             holder.mSO2Layout.setVisibility(View.GONE);
             //TODO : faire un layout pour indiquer N/A
         }
+
+        holder.mLocationsIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Play mp3
+                AssetFileDescriptor afd = null;
+                try {
+                    afd = context.getAssets().openFd("house.mp3");
+
+                    MediaPlayer player = new MediaPlayer();
+                    player.setDataSource(afd.getFileDescriptor(),afd.getStartOffset(),afd.getLength());
+                    player.prepare();
+                    player.start();
+
+                } catch (IOException e) {
+                    // Silent catch : sound will not be played
+                    e.printStackTrace();
+                }
+
+                // Open locations details activity
+                Intent seeCityDetailIntent = new Intent(context, DetailActivity.class);
+                seeCityDetailIntent.putExtra("longitude", favorite.longitude);
+                seeCityDetailIntent.putExtra("latitude", favorite.latitude);
+                context.startActivity(seeCityDetailIntent);
+            }
+        });
 
     }
 
