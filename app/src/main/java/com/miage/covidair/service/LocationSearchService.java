@@ -493,7 +493,7 @@ public class LocationSearchService {
                     .from(Location.class)
                     .where("city LIKE '%" + zone + "%' AND location LIKE '%" + nom + "%'")
                     .execute();
-        } else if (!zone.equals("")){
+        } else if (!zone.equals("")) {
             matchingLocationsFromDB = new Select()
                     .from(Location.class)
                     .where("city LIKE '%" + zone + "%'")

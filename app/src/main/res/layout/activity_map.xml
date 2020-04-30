@@ -17,10 +17,10 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:ems="10"
-            android:hint="Recherchez une ville"
-            android:inputType="text"
             android:focusable="true"
-            android:focusableInTouchMode="true"/>
+            android:focusableInTouchMode="true"
+            android:hint="Recherchez une ville"
+            android:inputType="text" />
 
         <fragment
             android:id="@+id/map"
