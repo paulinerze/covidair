@@ -124,7 +124,6 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
             holder.mPM10Layout.setVisibility(View.GONE);
             holder.mPM25Layout.setVisibility(View.GONE);
             holder.mSO2Layout.setVisibility(View.GONE);
-            //TODO : faire un layout pour indiquer N/A
         }
 
         holder.mLocationsIcon.setOnClickListener(new View.OnClickListener() {

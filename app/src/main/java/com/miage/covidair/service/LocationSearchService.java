@@ -109,12 +109,9 @@ public class LocationSearchService {
                         // Save all results in Database
                         ActiveAndroid.beginTransaction();
                         for (Location location : response.body().results) {
-                            //TODO : test sur la date pour last update
-
                             if (city.equals(location.city)) {
                                 location.location = location.location.toUpperCase();
                                 location.city = location.city.toUpperCase();
-                                location.coordinates.location = location.location; //TODO: INUTILE
                                 location.longitude = location.coordinates.longitude;
                                 location.latitude = location.coordinates.latitude;
                                 DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.FRENCH);
