@@ -271,7 +271,8 @@
                     android:layout_margin="5dp"
                     android:ems="10"
                     android:hint="Val. max en µg/m3"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:layout_marginBottom="20dp"/>
             </LinearLayout>
 
             <Button
@@ -280,7 +281,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="30dp"
-                android:background="@color/colorBlueBlue"
+                android:background="@drawable/button"
                 android:onClick="search"
                 android:text="Rechercher" />
 

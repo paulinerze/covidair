@@ -358,7 +358,7 @@
         <LinearLayout
             android:id="@+id/add_button"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center">
 
             <Button
@@ -366,7 +366,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:background="@color/colorPink"
+                android:background="@drawable/button"
                 android:drawableLeft="@drawable/baseline_favorite_white_18dp"
                 android:onClick="saveToFavorites"
                 android:text=" Ajouter ce lieu aux favoris  " />
@@ -383,7 +383,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:background="@color/colorPink"
+                android:background="@drawable/button"
                 android:drawableLeft="@drawable/baseline_favorite_border_white_18dp"
                 android:onClick="removeFromFavorites"
                 android:text=" Retirer ce lieu des favoris  " />
