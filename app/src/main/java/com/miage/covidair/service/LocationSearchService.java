@@ -33,6 +33,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -534,13 +535,129 @@ public class LocationSearchService {
                           String minPM10, String maxPM10,
                           String minPM25, String maxPM25,
                           String minSO2, String maxSO2){
-        List<Location> matchingLocationsFromDB = new Select()
-                .from(Location.class)
-                .where("city LIKE '%" + zone + "%' AND location LIKE '%" + nom + "%'")
-                .execute();
+        List<Location> matchingLocationsFromDB = new ArrayList<>();
 
+        if (!nom.equals("")){
+            matchingLocationsFromDB = new Select()
+                    .from(Location.class)
+                    .where("city LIKE '%" + zone + "%' AND location LIKE '%" + nom + "%'")
+                    .execute();
+        } else {
+            matchingLocationsFromDB = new Select()
+                    .from(Location.class)
+                    .execute();
+        }
+
+        List<Integer> indicesASupprimer = new ArrayList<>();
+
+        for(int j = 0; j < matchingLocationsFromDB.size(); j++){
+            Location location = matchingLocationsFromDB.get(j);
+            List<Measurement> measurements = returnLatestMeasurements(location.location);
+
+            if (!measurements.isEmpty()){
+                boolean measurementsAreMatching = true;
+                boolean stop = false;
+                while (measurementsAreMatching && !stop){
+                    for (int i = 0; i < measurements.size() ; i++) {
+                        Measurement measurement = measurements.get(i);
+                        switch (measurement.parameter){
+                            case "bc":
+                                if (!maxBC.equals("")){
+                                    measurementsAreMatching = Double.valueOf(measurement.value).compareTo(Double.valueOf(maxBC)) <= 0;
+                                }
+                                stop = !measurementsAreMatching;
+                                if (!minBC.equals("")){
+                                    measurementsAreMatching = Double.valueOf(measurement.value).compareTo(Double.valueOf(minBC)) >= 0;
+                                }
+                                stop = !measurementsAreMatching;
+                                break;
+                            case "co":
+                                if (!maxCO.equals("")){
+                                    measurementsAreMatching = Double.valueOf(measurement.value).compareTo(Double.valueOf(maxCO)) <= 0;
+                                }
+                                stop = !measurementsAreMatching;
+                                if (!minCO.equals("")){
+                                    measurementsAreMatching = Double.valueOf(measurement.value).compareTo(Double.valueOf(minCO)) >= 0;
+                                }
+                                stop = !measurementsAreMatching;
+                                break;
+                            case "no2":
+                                if (!maxNO2.equals("")){
+                                    measurementsAreMatching = Double.valueOf(measurement.value).compareTo(Double.valueOf(maxNO2)) <= 0;
+                                }
+                                stop = !measurementsAreMatching;
+                                if (!minNO2.equals("")){
+                                    measurementsAreMatching = Double.valueOf(measurement.value).compareTo(Double.valueOf(minNO2)) >= 0;
+                                }
+                                stop = !measurementsAreMatching;
+                                break;
+                            case "o3":
+                                if (!maxO3.equals("")){
+                                    measurementsAreMatching = Double.valueOf(measurement.value).compareTo(Double.valueOf(maxO3)) <= 0;
+                                }
+                                stop = !measurementsAreMatching;
+                                if (!minO3.equals("")){
+                                    measurementsAreMatching = Double.valueOf(measurement.value).compareTo(Double.valueOf(minO3)) >= 0;
+                                }
+                                stop = !measurementsAreMatching;
+                                break;
+                            case "pm10":
+                                if (!maxPM10.equals("")){
+                                    measurementsAreMatching = Double.valueOf(measurement.value).compareTo(Double.valueOf(maxPM10)) <= 0;
+                                }
+                                stop = !measurementsAreMatching;
+                                if (!minPM10.equals("")){
+                                    measurementsAreMatching = Double.valueOf(measurement.value).compareTo(Double.valueOf(minPM10)) >= 0;
+                                }
+                                stop = !measurementsAreMatching;
+                                break;
+                            case "pm25":
+                                if (!maxPM25.equals("")){
+                                    measurementsAreMatching = Double.valueOf(measurement.value).compareTo(Double.valueOf(maxPM25)) <= 0;
+                                }
+                                stop = !measurementsAreMatching;
+                                if (!minPM25.equals("")){
+                                    measurementsAreMatching = Double.valueOf(measurement.value).compareTo(Double.valueOf(minPM25)) >= 0;
+                                }
+                                stop = !measurementsAreMatching;
+                                break;
+                            case "so2":
+                                if (!maxSO2.equals("")){
+                                    measurementsAreMatching = Double.valueOf(measurement.value).compareTo(Double.valueOf(maxSO2)) <= 0;
+                                }
+                                stop = !measurementsAreMatching;
+                                if (!minSO2.equals("")){
+                                    measurementsAreMatching = Double.valueOf(measurement.value).compareTo(Double.valueOf(minSO2)) >= 0;
+                                }
+                                stop = !measurementsAreMatching;
+                                break;
+                        }
+                    }
+                    stop = true;
+                }
+
+
+                if (measurementsAreMatching){
+                    HashMap<String,Measurement> latestMeasurements = new HashMap<>();
+                    for (Measurement measurement : measurements){
+                        latestMeasurements.put(measurement.parameter,measurement);
+                    }
+                    ActiveAndroid.beginTransaction();
+                    location.latestMeasurements = latestMeasurements;
+                    location.save();
+                    ActiveAndroid.setTransactionSuccessful();
+                    ActiveAndroid.endTransaction();
+                } else {
+                    indicesASupprimer.add(Integer.valueOf(j));
+                }
+            } else {
+                indicesASupprimer.add(Integer.valueOf(j));
+            }
+        }
+
+        for (int i = indicesASupprimer.size(); i > 0; i--) {
+            matchingLocationsFromDB.remove(indicesASupprimer.get(i-1).intValue());
+        }
         EventBusManager.BUS.post(new SearchLocationResultEvent(matchingLocationsFromDB));
-
-
     }
 }
