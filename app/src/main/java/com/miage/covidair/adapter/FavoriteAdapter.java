@@ -148,7 +148,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
     // Pattern ViewHolder
     class FavoritesViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.locationLayout)
+        @BindView(R.id.favoriteLocationLayout)
         LinearLayout mLocationLayout;
 
         @BindView(R.id.favorite_adapter_icon)
