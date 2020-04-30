@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -51,6 +52,7 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.Measuremen
         holder.mVentValue.setText(String.valueOf(location.vent));
         holder.mLastUpdated.setText(location.lastUpdated);
 
+        holder.mWebView.loadUrl("https://www.infoclimat.fr/public-api/mixed/iframeSLIDE?_ll=" + location.latitude + "," + location.longitude + "&_inc=WyJQYXJpcyIsIjQyIiwiMjk4ODUwNyIsIkZSIl0=&_auth=BB5SRVUrAyFec1tsVCIFLFI6BzIPeQIlVioHZAlsAH1SOVU0Dm4DZV8xWicCLQE3BCkFZggzCTlQOwB4Xy1fPgRuUj5VPgNkXjFbPlR7BS5SfAdmDy8CJVY0B2cJYgB9UjBVNQ5lA39fMlo5AjABKwQ2BWQINgkuUCwAZl83XzQEb1I0VTADY145WzhUYwUuUn4HYg9lAmtWZAc2CWMAMlIwVWMOPwM0X2VaawI2ASsEMAVlCDUJNVA0AG5fOl81BHhSKVVPAxJeLFt5VCYFZFInB3oPZQJkVmE%3D&_c=d28eb5b14db5bd022979c09bf0f7f40c");
 
         if (!LocationSearchService.INSTANCE.isFavorite(location.location)) {
             holder.mAddButton.setVisibility(View.VISIBLE);
@@ -141,6 +143,8 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.Measuremen
     // Pattern ViewHolder
     class MeasurementsViewHolder extends RecyclerView.ViewHolder {
 
+        @BindView(R.id.webView1)
+        WebView mWebView;
         @BindView(R.id.detail_adapter_location)
         TextView mLocation;
         @BindView(R.id.detail_item_photo)

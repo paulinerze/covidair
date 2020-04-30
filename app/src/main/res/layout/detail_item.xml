@@ -35,98 +35,6 @@
             android:layout_height="1dp"
             android:background="@color/colorPrimary" />
 
-        <LinearLayout
-            android:id="@+id/detail_temperature_layout"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/detail_adapter_temperature_label"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Température actuelle" />
-
-            <TextView
-                android:id="@+id/detail_adapter_temperature_value"
-                android:layout_width="33dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2" />
-
-            <TextView
-                android:id="@+id/detail_adapter_temperature_unit"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:text="°C" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/detail_pluie_layout"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/detail_adapter_pluie_label"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Précipitations sur 3h" />
-
-            <TextView
-                android:id="@+id/detail_adapter_pluie_value"
-                android:layout_width="33dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2" />
-
-            <TextView
-                android:id="@+id/detail_adapter_pluie_unit"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:text="mm" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/detail_vent_layout"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/detail_adapter_vent_label"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Vent moyen" />
-
-            <TextView
-                android:id="@+id/detail_adapter_vent_value"
-                android:layout_width="33dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2" />
-
-            <TextView
-                android:id="@+id/detail_adapter_vent_unit"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:text="km/h" />
-
-        </LinearLayout>
-
-        <View
-            android:id="@+id/view"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorPrimary" />
 
         <TextView
             android:id="@+id/detail_item_label"
@@ -354,6 +262,120 @@
             </LinearLayout>
 
         </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorPrimary" />
+
+
+        <TextView
+            android:id="@+id/detail_meteo_label"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="Prévisions météo"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+
+
+        <LinearLayout
+            android:id="@+id/detail_temperature_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/detail_adapter_temperature_label"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Température actuelle" />
+
+            <TextView
+                android:id="@+id/detail_adapter_temperature_value"
+                android:layout_width="33dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2" />
+
+            <TextView
+                android:id="@+id/detail_adapter_temperature_unit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="°C" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/detail_pluie_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/detail_adapter_pluie_label"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Précipitations sur 3h" />
+
+            <TextView
+                android:id="@+id/detail_adapter_pluie_value"
+                android:layout_width="33dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2" />
+
+            <TextView
+                android:id="@+id/detail_adapter_pluie_unit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="mm" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/detail_vent_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/detail_adapter_vent_label"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Vent moyen" />
+
+            <TextView
+                android:id="@+id/detail_adapter_vent_value"
+                android:layout_width="33dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2" />
+
+            <TextView
+                android:id="@+id/detail_adapter_vent_unit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="km/h" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <WebView
+                android:id="@+id/webView1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+        </LinearLayout>
+
 
         <LinearLayout
             android:id="@+id/add_button"
