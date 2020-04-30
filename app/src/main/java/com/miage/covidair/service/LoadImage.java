@@ -12,7 +12,7 @@ import java.net.URL;
 public class LoadImage extends AsyncTask<String, Void, Bitmap> {
     ImageView imageView;
 
-    public LoadImage(ImageView imageView){
+    public LoadImage(ImageView imageView) {
         this.imageView = imageView;
     }
 
@@ -36,7 +36,7 @@ public class LoadImage extends AsyncTask<String, Void, Bitmap> {
     }
 
     @Override
-    protected void onPostExecute(Bitmap bitmap){
+    protected void onPostExecute(Bitmap bitmap) {
         imageView.setImageBitmap(bitmap);
     }
 }

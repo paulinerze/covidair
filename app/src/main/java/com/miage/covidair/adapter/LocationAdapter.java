@@ -23,7 +23,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.LocationsViewHolder>{
+public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.LocationsViewHolder> {
 
     private LayoutInflater inflater;
     private Activity context;
@@ -50,17 +50,17 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
         final Location location = mLocations.get(position);
         holder.mLocation.setText(location.getLocation());
 
-        if (location.getSol() != null){
+        if (location.getSol() != null) {
             holder.mTemperatureLayout.setVisibility(View.VISIBLE);
             String.valueOf(location.getSol());
             holder.mTemperatureValue.setText(String.valueOf(location.getSol()));
-        } else{
+        } else {
             holder.mTemperatureLayout.setVisibility(View.GONE);
         }
 
 
-        if (location.getLatestMeasurements() != null && !location.getLatestMeasurements().isEmpty()){
-            if (location.getLatestMeasurements().containsKey("bc")){
+        if (location.getLatestMeasurements() != null && !location.getLatestMeasurements().isEmpty()) {
+            if (location.getLatestMeasurements().containsKey("bc")) {
                 holder.mBCLayout.setVisibility(View.VISIBLE);
                 holder.mLatestBC.setText(location.getLatestMeasurements().get("bc").parameter);
                 holder.mLatestBCValue.setText(location.getLatestMeasurements().get("bc").value);
@@ -68,7 +68,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
             } else {
                 holder.mBCLayout.setVisibility(View.GONE);
             }
-            if (location.getLatestMeasurements().containsKey("co")){
+            if (location.getLatestMeasurements().containsKey("co")) {
                 holder.mCOLayout.setVisibility(View.VISIBLE);
                 holder.mLatestCO.setText(location.getLatestMeasurements().get("co").parameter);
                 holder.mLatestCOValue.setText(location.getLatestMeasurements().get("co").value);
@@ -76,7 +76,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
             } else {
                 holder.mCOLayout.setVisibility(View.GONE);
             }
-            if (location.getLatestMeasurements().containsKey("no2")){
+            if (location.getLatestMeasurements().containsKey("no2")) {
                 holder.mNO2Layout.setVisibility(View.VISIBLE);
                 holder.mLatestNO2.setText(location.getLatestMeasurements().get("no2").parameter);
                 holder.mLatestNO2Value.setText(location.getLatestMeasurements().get("no2").value);
@@ -84,7 +84,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
             } else {
                 holder.mNO2Layout.setVisibility(View.GONE);
             }
-            if (location.getLatestMeasurements().containsKey("o3")){
+            if (location.getLatestMeasurements().containsKey("o3")) {
                 holder.mO3Layout.setVisibility(View.VISIBLE);
                 holder.mLatestO3.setText(location.getLatestMeasurements().get("o3").parameter);
                 holder.mLatestO3Value.setText(location.getLatestMeasurements().get("o3").value);
@@ -92,7 +92,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
             } else {
                 holder.mO3Layout.setVisibility(View.GONE);
             }
-            if (location.getLatestMeasurements().containsKey("pm10")){
+            if (location.getLatestMeasurements().containsKey("pm10")) {
                 holder.mPM10Layout.setVisibility(View.VISIBLE);
                 holder.mLatestPM10.setText(location.getLatestMeasurements().get("pm10").parameter);
                 holder.mLatestPM10Value.setText(location.getLatestMeasurements().get("pm10").value);
@@ -100,15 +100,15 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
             } else {
                 holder.mPM10Layout.setVisibility(View.GONE);
             }
-            if (location.getLatestMeasurements().containsKey("pm25")){
+            if (location.getLatestMeasurements().containsKey("pm25")) {
                 holder.mPM25Layout.setVisibility(View.VISIBLE);
                 holder.mLatestPM25.setText(location.getLatestMeasurements().get("pm25").parameter);
                 holder.mLatestPM25Value.setText(location.getLatestMeasurements().get("pm25").value);
                 holder.mLatestPM25Unit.setText(location.getLatestMeasurements().get("pm25").unit);
             } else {
                 holder.mPM25Layout.setVisibility(View.GONE);
-             }
-            if (location.getLatestMeasurements().containsKey("so2")){
+            }
+            if (location.getLatestMeasurements().containsKey("so2")) {
                 holder.mSO2Layout.setVisibility(View.VISIBLE);
                 holder.mLatestSO2.setText(location.getLatestMeasurements().get("so2").parameter);
                 holder.mLatestSO2Value.setText(location.getLatestMeasurements().get("so2").value);
@@ -131,21 +131,6 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
         holder.mLocationsIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Play mp3
-                AssetFileDescriptor afd = null;
-                try {
-                    afd = context.getAssets().openFd("house.mp3");
-
-                    MediaPlayer player = new MediaPlayer();
-                    player.setDataSource(afd.getFileDescriptor(),afd.getStartOffset(),afd.getLength());
-                    player.prepare();
-                    player.start();
-
-                } catch (IOException e) {
-                    // Silent catch : sound will not be played
-                    e.printStackTrace();
-                }
-
                 // Open locations details activity
                 Intent seeCityDetailIntent = new Intent(context, DetailActivity.class);
                 seeCityDetailIntent.putExtra("longitude", location.longitude);

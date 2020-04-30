@@ -13,34 +13,39 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
 
         <!-- Google Maps API Key -->
-                <meta-data
-                    android:name="com.google.android.geo.API_KEY"
-                    android:value="AIzaSyDY7Jss-oxBTtQJ-yDP9xLseurySYX3l7E"/>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDY7Jss-oxBTtQJ-yDP9xLseurySYX3l7E" />
 
         <!-- Active Android Database definition -->
-                <!-- DB Name -->
-                <meta-data android:name="AA_DB_NAME" android:value="CovidAir" />
-                <!-- DB Version -->
-                <meta-data android:name="AA_DB_VERSION" android:value="1" />
-                <!--Provider-->
-                <provider
-                    android:name="com.activeandroid.content.ContentProvider"
-                    android:authorities="com.miage.covidair"
-                    android:enabled="true"
-                    android:exported="false">
-                </provider>
-                <meta-data
-                    android:name="AA_MODELS"
-                    android:value="com.miage.covidair.model.City.City,
+        <!-- DB Name -->
+        <meta-data
+            android:name="AA_DB_NAME"
+            android:value="CovidAir" />
+        <!-- DB Version -->
+        <meta-data
+            android:name="AA_DB_VERSION"
+            android:value="1" />
+        <!--Provider-->
+        <provider
+            android:name="com.activeandroid.content.ContentProvider"
+            android:authorities="com.miage.covidair"
+            android:enabled="true"
+            android:exported="false"></provider>
+        <meta-data
+            android:name="AA_MODELS"
+            android:value="com.miage.covidair.model.City.City,
                                    com.miage.covidair.model.Detail.Detail,
                                    com.miage.covidair.model.Location.Location,
                                    com.miage.covidair.model.Location.Coordinates,
                                    com.miage.covidair.model.Measurement.Measurement,
                                    com.miage.covidair.model.Location.Latest,
-                                   com.miage.covidair.model.Favorite"/>
+                                   com.miage.covidair.model.Favorite" />
 
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -53,8 +58,8 @@
         <activity android:name=".DetailActivity" />
         <activity android:name=".MapActivity" />
         <activity android:name=".FavoriteActivity" />
-        <activity android:name=".SearchActivity"/>
-        <activity android:name=".BigSearchActivity"/>
+        <activity android:name=".SearchActivity" />
+        <activity android:name=".BigSearchActivity" />
     </application>
 
 </manifest>

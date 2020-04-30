@@ -40,10 +40,6 @@ public class Measurement extends Model {
     @Expose
     @Column(name = "orderDate")
     public Date orderDate;
-    @Expose
-    public MeasurementDate date;
-    @Expose
-    public Coordinates coordinates;
 
     public String getLatitude() {
         return latitude;
@@ -75,22 +71,6 @@ public class Measurement extends Model {
 
     public void setOrderDate(Date orderDate) {
         this.orderDate = orderDate;
-    }
-
-    public MeasurementDate getDate() {
-        return date;
-    }
-
-    public void setDate(MeasurementDate date) {
-        this.date = date;
-    }
-
-    public Coordinates getCoordinates() {
-        return coordinates;
-    }
-
-    public void setCoordinates(Coordinates coordinates) {
-        this.coordinates = coordinates;
     }
 
     public String getLocation() {

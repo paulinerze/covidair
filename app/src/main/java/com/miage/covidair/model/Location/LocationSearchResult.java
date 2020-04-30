@@ -8,7 +8,7 @@ public class LocationSearchResult {
     @Expose
     public List<Location> results;
 
-    public LocationSearchResult(List<Location> results){
+    public LocationSearchResult(List<Location> results) {
         this.results = results;
     }
 }

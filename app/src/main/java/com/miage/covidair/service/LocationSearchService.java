@@ -52,12 +52,12 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LocationSearchService {
-    public static LocationSearchService INSTANCE = new LocationSearchService();
-    public ISearchRESTService mISearchRESTService;
     private static final long REFRESH_DELAY = 650;
+    public static LocationSearchService INSTANCE = new LocationSearchService();
+    private static DecimalFormat df2 = new DecimalFormat("#.##");
+    public ISearchRESTService mISearchRESTService;
     private ScheduledExecutorService mScheduler = Executors.newScheduledThreadPool(1);
     private ScheduledFuture mLastScheduleTask;
-    private static DecimalFormat df2 = new DecimalFormat("#.##");
 
     private LocationSearchService() {
         // Create GSON Converter that will be used to convert from JSON to Java
@@ -152,66 +152,12 @@ public class LocationSearchService {
         }, REFRESH_DELAY, TimeUnit.MILLISECONDS);
 
     }
-    public void searchLocationsWOotherCalls(String city) {
-        // Cancel last scheduled network call (if any)
-        if (mLastScheduleTask != null && !mLastScheduleTask.isDone()) {
-            mLastScheduleTask.cancel(true);
-        }
-        // Schedule a network call in REFRESH_DELAY ms
-        mLastScheduleTask = mScheduler.schedule(() -> {
-            // Step 2 : Call to the REST service
-            mISearchRESTService.searchForLocations("FR", city, 10000).enqueue(new Callback<LocationSearchResult>() {
-                @RequiresApi(api = Build.VERSION_CODES.O)
-                @Override
-                public void onResponse(Call<LocationSearchResult> call, retrofit2.Response<LocationSearchResult> response) {
-                    // Post an event so that listening activities can update their UI
-                    if (response.body() != null && response.body().results != null) {
-                        // Save all results in Database
-                        ActiveAndroid.beginTransaction();
-                        for (Location location : response.body().results) {
-                            //TODO : test sur la date pour last update
 
-                            if (city.equals(location.city)) {
-                                location.location = location.location.toUpperCase();
-                                location.city = location.city.toUpperCase();
-                                location.coordinates.location = location.location; //TODO: INUTILE
-                                location.longitude = location.coordinates.longitude;
-                                location.latitude = location.coordinates.latitude;
-                                DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.FRENCH);
-                                DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale.FRENCH);
-                                LocalDate date = LocalDate.parse(location.lastUpdated, inputFormatter);
-                                String formattedDate = outputFormatter.format(date);
-                                location.lastUpdated = formattedDate;
-                                location.latestMeasurements = new HashMap<>();
-                                location.save();
-
-                            }
-                        }
-                        ActiveAndroid.setTransactionSuccessful();
-                        ActiveAndroid.endTransaction();
-                    } else {
-                        // Null result
-                        // We may want to display a warning to user (e.g. Toast)
-                        Log.e("[CovidAir] [LOCATION2] [REST]", "Response error : null body");
-                    }
-                }
-
-
-                @Override
-                public void onFailure(Call<LocationSearchResult> call, Throwable t) {
-                    // Request has failed or is not at expected format
-                    // We may want to display a warning to user (e.g. Toast)
-                    Log.e("[CovidAir] [LOCATION2] [REST]", "Response error : " + t.getMessage());
-                }
-            });
-        }, REFRESH_DELAY, TimeUnit.MILLISECONDS);
-
-    }
 
     public void searchLatestMeasurements(String city) {
         List<Location> matchingLocationsFromDB = returnMatchingLocationFromDB(city);
 
-        for (Location location : matchingLocationsFromDB){
+        for (Location location : matchingLocationsFromDB) {
             if (mLastScheduleTask != null && !mLastScheduleTask.isDone()) {
                 mLastScheduleTask.cancel(true);
             }
@@ -221,17 +167,17 @@ public class LocationSearchService {
                 //searchLatestMeasurementsFromDB(location.city,location.location,"FR");
 
                 // Step 2 : Call to the REST service
-                mISearchRESTService.searchForLatest(location.latitude+","+ location.longitude,750,10000).enqueue(new Callback<LatestSearchResult>() {
+                mISearchRESTService.searchForLatest(location.latitude + "," + location.longitude, 750, 10000).enqueue(new Callback<LatestSearchResult>() {
                     @Override
                     public void onResponse(Call<LatestSearchResult> call, Response<LatestSearchResult> response) {
                         // Post an event so that listening activities can update their UI
                         if (response.body() != null && response.body().results != null) {
                             // Save all results in Database
                             ActiveAndroid.beginTransaction();
-                            HashMap<String,Measurement> latestMeasurements = new HashMap<>();
+                            HashMap<String, Measurement> latestMeasurements = new HashMap<>();
                             for (Latest latest : response.body().results) {
                                 for (Measurement measurement : latest.measurements) {
-                                    latestMeasurements.put(measurement.parameter,measurement);
+                                    latestMeasurements.put(measurement.parameter, measurement);
                                     measurement.location = location.location;
                                     measurement.key = location.location + measurement.parameter;
                                     measurement.save();
@@ -269,7 +215,7 @@ public class LocationSearchService {
     public void searchWeather(String city) {
         List<Location> matchingLocationsFromDB = returnMatchingLocationFromDB(city);
 
-        for (Location location : matchingLocationsFromDB){
+        for (Location location : matchingLocationsFromDB) {
             searchLocationsFromDB(city);
             // Create AsyncTask
             AsyncTask<Void, Void, Void> asyncTask = new AsyncTask<Void, Void, Void>() {
@@ -300,8 +246,8 @@ public class LocationSearchService {
                             Double kelvin = jsonTemperature.getDouble("sol") - Double.valueOf(273.15);
                             BigDecimal celcius = new BigDecimal(kelvin).setScale(2, RoundingMode.HALF_EVEN);
                             location.sol = celcius.doubleValue();
-                            if (location.latestMeasurements == null){
-                                HashMap<String,Measurement> latestMeasurements = new HashMap<>();
+                            if (location.latestMeasurements == null) {
+                                HashMap<String, Measurement> latestMeasurements = new HashMap<>();
                                 location.setLatestMeasurements(latestMeasurements);
                             }
                             location.save();
@@ -323,62 +269,70 @@ public class LocationSearchService {
     }
 
 
-
     @NotNull
     private String getTodaysDate() {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH");
         Date date = new Date();
         String todaysDate = dateFormat.format(date);
 
-        int hour = Integer.parseInt(todaysDate.substring(11,13));
+        int hour = Integer.parseInt(todaysDate.substring(11, 13));
         int newHour = 0;
-        switch (hour){
+        switch (hour) {
             case 0:
             case 1:
-            case 2: newHour = 2;
+            case 2:
+                newHour = 2;
                 break;
             case 3:
             case 4:
-            case 5: newHour = 5;
+            case 5:
+                newHour = 5;
                 break;
             case 6:
             case 7:
-            case 8: newHour = 8;
+            case 8:
+                newHour = 8;
                 break;
             case 9:
             case 10:
-            case 11: newHour = 11;
+            case 11:
+                newHour = 11;
                 break;
             case 12:
             case 13:
-            case 14: newHour = 14;
+            case 14:
+                newHour = 14;
                 break;
             case 15:
             case 16:
-            case 17: newHour = 17;
+            case 17:
+                newHour = 17;
                 break;
             case 18:
             case 19:
-            case 20: newHour = 20;
+            case 20:
+                newHour = 20;
                 break;
             case 21:
             case 22:
-            case 23: newHour = 23;
+            case 23:
+                newHour = 23;
                 break;
-            default: newHour = 23;
+            default:
+                newHour = 23;
                 break;
         }
 
 
         if (newHour > 8) {
-            todaysDate = todaysDate.substring(0,10) + " " + newHour + ":00:00";
+            todaysDate = todaysDate.substring(0, 10) + " " + newHour + ":00:00";
         } else {
-            todaysDate = todaysDate.substring(0,10) + " 0" + newHour + ":00:00";
+            todaysDate = todaysDate.substring(0, 10) + " 0" + newHour + ":00:00";
         }
         return todaysDate;
     }
 
-    private List<Location> returnMatchingLocationFromDB(String city){
+    private List<Location> returnMatchingLocationFromDB(String city) {
         List<Location> matchingLocationsFromDB = new Select()
                 .from(Location.class)
                 .where("city LIKE '%" + city + "%'")
@@ -387,7 +341,7 @@ public class LocationSearchService {
         return matchingLocationsFromDB;
     }
 
-    private List<Location> returnMatchingOneLocationFromDB(String longitude, String latitude){
+    private List<Location> returnMatchingOneLocationFromDB(String longitude, String latitude) {
         List<Location> matchingLocationsFromDB = new Select()
                 .from(Location.class)
                 .where("longitude LIKE '%" + longitude + "%' AND latitude LIKE '%" + latitude + "%'")
@@ -407,7 +361,7 @@ public class LocationSearchService {
     }
 
     public void searchLocationFromDB(String longitude, String latitude) {
-        updateMeasurement(longitude,latitude);
+        updateMeasurement(longitude, latitude);
         List<Location> matchingLocationsFromDB = new Select()
                 .from(Location.class)
                 .where("longitude LIKE '%" + longitude + "%' AND latitude LIKE '%" + latitude + "%'")
@@ -416,13 +370,13 @@ public class LocationSearchService {
         EventBusManager.BUS.post(new SearchLocationResultEvent(matchingLocationsFromDB));
     }
 
-    private void updateMeasurements(String city){
+    private void updateMeasurements(String city) {
         List<Location> locations = returnMatchingLocationFromDB(city);
-        for (Location location : locations){
+        for (Location location : locations) {
             HashMap<String, Measurement> latestMeasurements = new HashMap<>();
             List<Measurement> measurements = LocationSearchService.INSTANCE.returnLatestMeasurements(location.location);
-            for (Measurement measurement : measurements){
-                latestMeasurements.put(measurement.parameter,measurement);
+            for (Measurement measurement : measurements) {
+                latestMeasurements.put(measurement.parameter, measurement);
             }
             ActiveAndroid.beginTransaction();
             location.latestMeasurements = latestMeasurements;
@@ -433,13 +387,13 @@ public class LocationSearchService {
     }
 
 
-    private void updateMeasurement(String longitude, String latitude){
-        List<Location> locations = returnMatchingOneLocationFromDB(longitude,latitude);
-        for (Location location : locations){
+    private void updateMeasurement(String longitude, String latitude) {
+        List<Location> locations = returnMatchingOneLocationFromDB(longitude, latitude);
+        for (Location location : locations) {
             HashMap<String, Measurement> latestMeasurements = new HashMap<>();
             List<Measurement> measurements = LocationSearchService.INSTANCE.returnLatestMeasurements(location.location);
-            for (Measurement measurement : measurements){
-                latestMeasurements.put(measurement.parameter,measurement);
+            for (Measurement measurement : measurements) {
+                latestMeasurements.put(measurement.parameter, measurement);
             }
             ActiveAndroid.beginTransaction();
             location.latestMeasurements = latestMeasurements;
@@ -449,7 +403,7 @@ public class LocationSearchService {
         }
     }
 
-    public void addToFavorites(String latitude, String longitude){
+    public void addToFavorites(String latitude, String longitude) {
         List<Location> matchingLocationFromDB = new Select()
                 .from(Location.class)
                 .where("latitude LIKE '%" + latitude + "%' AND longitude LIKE '%" + longitude + "%'")
@@ -464,7 +418,7 @@ public class LocationSearchService {
             favorite.city = newLocation.city;
             favorite.count = newLocation.count;
             favorite.lastUpdated = newLocation.lastUpdated;
-            HashMap<String,Measurement> latestMeasurements = new HashMap<>();
+            HashMap<String, Measurement> latestMeasurements = new HashMap<>();
             latestMeasurements = newLocation.latestMeasurements;
             favorite.latestMeasurements = latestMeasurements;
             favorite.latitude = newLocation.latitude;
@@ -475,12 +429,12 @@ public class LocationSearchService {
             favorite.save();
             ActiveAndroid.setTransactionSuccessful();
             ActiveAndroid.endTransaction();
-            searchLocationFromDB(favorite.longitude,favorite.latitude);
+            searchLocationFromDB(favorite.longitude, favorite.latitude);
         }
 
     }
 
-    public void rmFromFavorites(String latitude, String longitude){
+    public void rmFromFavorites(String latitude, String longitude) {
         List<Favorite> matchingFavoriteFromDB = new Select()
                 .from(Favorite.class)
                 .where("latitude LIKE '%" + latitude + "%' AND longitude LIKE '%" + longitude + "%'")
@@ -497,13 +451,13 @@ public class LocationSearchService {
             //newLocation.delete();
             ActiveAndroid.setTransactionSuccessful();
             ActiveAndroid.endTransaction();
-            searchLocationFromDB(newLocation.longitude,newLocation.latitude);
+            searchLocationFromDB(newLocation.longitude, newLocation.latitude);
         }
 
 
     }
 
-    public boolean isFavorite(String location){
+    public boolean isFavorite(String location) {
         List<Favorite> matchingFavoriteFromDB = new Select()
                 .from(Favorite.class)
                 .where("location LIKE '%" + location + "%'")
@@ -512,13 +466,13 @@ public class LocationSearchService {
 
         if (matchingFavoriteFromDB != null && !matchingFavoriteFromDB.isEmpty()) {
             Favorite favorite = matchingFavoriteFromDB.get(0);
-            if (favorite != null ){
+            if (favorite != null) {
                 return true;
             } else return false;
         } else return false;
     }
 
-    public List<Measurement> returnLatestMeasurements(String location){
+    public List<Measurement> returnLatestMeasurements(String location) {
         List<Measurement> matchingMeasurementsFromDB = new Select()
                 .from(Measurement.class)
                 .where("location LIKE '%" + location + "%'")
@@ -534,13 +488,18 @@ public class LocationSearchService {
                           String minO3, String maxO3,
                           String minPM10, String maxPM10,
                           String minPM25, String maxPM25,
-                          String minSO2, String maxSO2){
+                          String minSO2, String maxSO2) {
         List<Location> matchingLocationsFromDB = new ArrayList<>();
 
-        if (!nom.equals("")){
+        if (!nom.equals("")) {
             matchingLocationsFromDB = new Select()
                     .from(Location.class)
                     .where("city LIKE '%" + zone + "%' AND location LIKE '%" + nom + "%'")
+                    .execute();
+        } else if (!zone.equals("")){
+            matchingLocationsFromDB = new Select()
+                    .from(Location.class)
+                    .where("city LIKE '%" + zone + "%'")
                     .execute();
         } else {
             matchingLocationsFromDB = new Select()
@@ -550,83 +509,83 @@ public class LocationSearchService {
 
         List<Integer> indicesASupprimer = new ArrayList<>();
 
-        for(int j = 0; j < matchingLocationsFromDB.size(); j++){
+        for (int j = 0; j < matchingLocationsFromDB.size(); j++) {
             Location location = matchingLocationsFromDB.get(j);
             List<Measurement> measurements = returnLatestMeasurements(location.location);
 
-            if (!measurements.isEmpty()){
+            if (!measurements.isEmpty()) {
                 boolean measurementsAreMatching = true;
                 boolean stop = false;
-                while (measurementsAreMatching && !stop){
-                    for (int i = 0; i < measurements.size() ; i++) {
+                while (measurementsAreMatching && !stop) {
+                    for (int i = 0; i < measurements.size(); i++) {
                         Measurement measurement = measurements.get(i);
-                        switch (measurement.parameter){
+                        switch (measurement.parameter) {
                             case "bc":
-                                if (!maxBC.equals("")){
+                                if (!maxBC.equals("")) {
                                     measurementsAreMatching = Double.valueOf(measurement.value).compareTo(Double.valueOf(maxBC)) <= 0;
                                 }
                                 stop = !measurementsAreMatching;
-                                if (!minBC.equals("")){
+                                if (!minBC.equals("")) {
                                     measurementsAreMatching = Double.valueOf(measurement.value).compareTo(Double.valueOf(minBC)) >= 0;
                                 }
                                 stop = !measurementsAreMatching;
                                 break;
                             case "co":
-                                if (!maxCO.equals("")){
+                                if (!maxCO.equals("")) {
                                     measurementsAreMatching = Double.valueOf(measurement.value).compareTo(Double.valueOf(maxCO)) <= 0;
                                 }
                                 stop = !measurementsAreMatching;
-                                if (!minCO.equals("")){
+                                if (!minCO.equals("")) {
                                     measurementsAreMatching = Double.valueOf(measurement.value).compareTo(Double.valueOf(minCO)) >= 0;
                                 }
                                 stop = !measurementsAreMatching;
                                 break;
                             case "no2":
-                                if (!maxNO2.equals("")){
+                                if (!maxNO2.equals("")) {
                                     measurementsAreMatching = Double.valueOf(measurement.value).compareTo(Double.valueOf(maxNO2)) <= 0;
                                 }
                                 stop = !measurementsAreMatching;
-                                if (!minNO2.equals("")){
+                                if (!minNO2.equals("")) {
                                     measurementsAreMatching = Double.valueOf(measurement.value).compareTo(Double.valueOf(minNO2)) >= 0;
                                 }
                                 stop = !measurementsAreMatching;
                                 break;
                             case "o3":
-                                if (!maxO3.equals("")){
+                                if (!maxO3.equals("")) {
                                     measurementsAreMatching = Double.valueOf(measurement.value).compareTo(Double.valueOf(maxO3)) <= 0;
                                 }
                                 stop = !measurementsAreMatching;
-                                if (!minO3.equals("")){
+                                if (!minO3.equals("")) {
                                     measurementsAreMatching = Double.valueOf(measurement.value).compareTo(Double.valueOf(minO3)) >= 0;
                                 }
                                 stop = !measurementsAreMatching;
                                 break;
                             case "pm10":
-                                if (!maxPM10.equals("")){
+                                if (!maxPM10.equals("")) {
                                     measurementsAreMatching = Double.valueOf(measurement.value).compareTo(Double.valueOf(maxPM10)) <= 0;
                                 }
                                 stop = !measurementsAreMatching;
-                                if (!minPM10.equals("")){
+                                if (!minPM10.equals("")) {
                                     measurementsAreMatching = Double.valueOf(measurement.value).compareTo(Double.valueOf(minPM10)) >= 0;
                                 }
                                 stop = !measurementsAreMatching;
                                 break;
                             case "pm25":
-                                if (!maxPM25.equals("")){
+                                if (!maxPM25.equals("")) {
                                     measurementsAreMatching = Double.valueOf(measurement.value).compareTo(Double.valueOf(maxPM25)) <= 0;
                                 }
                                 stop = !measurementsAreMatching;
-                                if (!minPM25.equals("")){
+                                if (!minPM25.equals("")) {
                                     measurementsAreMatching = Double.valueOf(measurement.value).compareTo(Double.valueOf(minPM25)) >= 0;
                                 }
                                 stop = !measurementsAreMatching;
                                 break;
                             case "so2":
-                                if (!maxSO2.equals("")){
+                                if (!maxSO2.equals("")) {
                                     measurementsAreMatching = Double.valueOf(measurement.value).compareTo(Double.valueOf(maxSO2)) <= 0;
                                 }
                                 stop = !measurementsAreMatching;
-                                if (!minSO2.equals("")){
+                                if (!minSO2.equals("")) {
                                     measurementsAreMatching = Double.valueOf(measurement.value).compareTo(Double.valueOf(minSO2)) >= 0;
                                 }
                                 stop = !measurementsAreMatching;
@@ -637,10 +596,10 @@ public class LocationSearchService {
                 }
 
 
-                if (measurementsAreMatching){
-                    HashMap<String,Measurement> latestMeasurements = new HashMap<>();
-                    for (Measurement measurement : measurements){
-                        latestMeasurements.put(measurement.parameter,measurement);
+                if (measurementsAreMatching) {
+                    HashMap<String, Measurement> latestMeasurements = new HashMap<>();
+                    for (Measurement measurement : measurements) {
+                        latestMeasurements.put(measurement.parameter, measurement);
                     }
                     ActiveAndroid.beginTransaction();
                     location.latestMeasurements = latestMeasurements;
@@ -656,7 +615,7 @@ public class LocationSearchService {
         }
 
         for (int i = indicesASupprimer.size(); i > 0; i--) {
-            matchingLocationsFromDB.remove(indicesASupprimer.get(i-1).intValue());
+            matchingLocationsFromDB.remove(indicesASupprimer.get(i - 1).intValue());
         }
         EventBusManager.BUS.post(new SearchLocationResultEvent(matchingLocationsFromDB));
     }

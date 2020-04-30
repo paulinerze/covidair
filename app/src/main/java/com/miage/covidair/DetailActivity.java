@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DetailActivity extends AppCompatActivity{
+public class DetailActivity extends AppCompatActivity {
 
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
@@ -50,7 +50,7 @@ public class DetailActivity extends AppCompatActivity{
         EventBusManager.BUS.register(this);
         String longitude = getIntent().getStringExtra("longitude");
         String latitude = getIntent().getStringExtra("latitude");
-        LocationSearchService.INSTANCE.searchLocationFromDB(longitude,latitude);
+        LocationSearchService.INSTANCE.searchLocationFromDB(longitude, latitude);
     }
 
     @Override
@@ -69,14 +69,18 @@ public class DetailActivity extends AppCompatActivity{
         runOnUiThread(() -> mDetailAdapter.notifyDataSetChanged());
     }
 
-    /** Called when the user touches the button */
+    /**
+     * Called when the user touches the button
+     */
     public void saveToFavorites(View view) {
         String latitude = getIntent().getStringExtra("latitude");
         String longitude = getIntent().getStringExtra("longitude");
         LocationSearchService.INSTANCE.addToFavorites(latitude, longitude);
     }
 
-    /** Called when the user touches the button */
+    /**
+     * Called when the user touches the button
+     */
     public void removeFromFavorites(View view) {
         String latitude = getIntent().getStringExtra("latitude");
         String longitude = getIntent().getStringExtra("longitude");

@@ -44,12 +44,12 @@ public class Location extends Model {
     @Column(name = "pluie")
     public Double pluie;
 
-    public void setLatestMeasurements(HashMap<String, Measurement> latestMeasurements) {
-        this.latestMeasurements = latestMeasurements;
+    public HashMap<String, Measurement> getLatestMeasurements() {
+        return latestMeasurements;
     }
 
-    public HashMap<String,Measurement> getLatestMeasurements() {
-        return latestMeasurements;
+    public void setLatestMeasurements(HashMap<String, Measurement> latestMeasurements) {
+        this.latestMeasurements = latestMeasurements;
     }
 
     public String getLongitude() {

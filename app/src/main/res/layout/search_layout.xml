@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     tools:context=".SearchActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -13,9 +13,9 @@
 
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -24,17 +24,18 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Il s'agit d'une recherche multicritères, vous pouvez saisir des informations dans tous les champs."
-                android:textAlignment="center"
-                android:textSize="20dp"
+                android:layout_margin="15dp"
                 android:layout_marginBottom="30dp"
-                android:layout_margin="15dp"/>
+                android:text="Il s'agit d'une recherche multicritères, vous pouvez saisir des informations dans tous les champs et laisser vide ceux qui ne vous interessent pas."
+                android:textAlignment="center"
+                android:textSize="20dp" />
 
 
             <LinearLayout
+                android:id="@+id/search_zone"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/search_zone">
+                android:layout_height="wrap_content">
+
                 <EditText
                     android:id="@+id/zone_edittext"
                     android:layout_width="match_parent"
@@ -42,14 +43,15 @@
                     android:layout_margin="5dp"
                     android:ems="10"
                     android:hint="Nom de la zone"
-                    android:inputType="text"/>
+                    android:inputType="text" />
 
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/search_nom"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/search_nom">
+                android:layout_height="wrap_content">
+
                 <EditText
                     android:id="@+id/nom_edittext"
                     android:layout_width="match_parent"
@@ -57,7 +59,7 @@
                     android:layout_margin="5dp"
                     android:ems="10"
                     android:hint="Nom du lieu"
-                    android:inputType="text"/>
+                    android:inputType="text" />
             </LinearLayout>
 
             <LinearLayout
@@ -69,7 +71,7 @@
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
                     android:text="BC"
-                    android:textSize="18dp"/>
+                    android:textSize="18dp" />
 
                 <EditText
                     android:id="@+id/seuil_min_bc_edittext"
@@ -99,7 +101,7 @@
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
                     android:text="CO"
-                    android:textSize="18dp"/>
+                    android:textSize="18dp" />
 
                 <EditText
                     android:id="@+id/seuil_min_co_edittext"
@@ -129,7 +131,7 @@
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
                     android:text="NO2"
-                    android:textSize="18dp"/>
+                    android:textSize="18dp" />
 
                 <EditText
                     android:id="@+id/seuil_min_no2_edittext"
@@ -159,7 +161,7 @@
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
                     android:text="O3"
-                    android:textSize="18dp"/>
+                    android:textSize="18dp" />
 
                 <EditText
                     android:id="@+id/seuil_min_o3_edittext"
@@ -189,7 +191,7 @@
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
                     android:text="PM10"
-                    android:textSize="18dp"/>
+                    android:textSize="18dp" />
 
                 <EditText
                     android:id="@+id/seuil_min_PM10_edittext"
@@ -219,7 +221,7 @@
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
                     android:text="PM25"
-                    android:textSize="18dp"/>
+                    android:textSize="18dp" />
 
                 <EditText
                     android:id="@+id/seuil_min_PM25_edittext"
@@ -249,7 +251,7 @@
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
                     android:text="SO2"
-                    android:textSize="18dp"/>
+                    android:textSize="18dp" />
 
                 <EditText
                     android:id="@+id/seuil_min_SO2_edittext"
@@ -274,27 +276,26 @@
                 android:id="@+id/button"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:text="Rechercher"
-                android:onClick="search"
                 android:layout_gravity="center"
                 android:layout_marginTop="30dp"
-                android:background="@color/colorBlueBlue"/>
+                android:background="@color/colorBlueBlue"
+                android:onClick="search"
+                android:text="Rechercher" />
 
 
         </LinearLayout>
 
 
-
         <ProgressBar
             android:id="@+id/activity_main_loader"
-            android:layout_centerInParent="true"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:layout_centerInParent="true"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -19,10 +19,9 @@ public class SearchActivity extends AppCompatActivity {
 
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
-    private LocationAdapter mLocationAdapter;
     @BindView(R.id.activity_main_loader)
     ProgressBar mProgressBar;
-
+    private LocationAdapter mLocationAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +45,7 @@ public class SearchActivity extends AppCompatActivity {
     }
 
 
-    public void search(View view){
+    public void search(View view) {
 
 
         EditText mSearchZone = findViewById(R.id.zone_edittext);
@@ -66,7 +65,7 @@ public class SearchActivity extends AppCompatActivity {
         String minCO = mSearchMinCO.getText().toString();
 
 
-        EditText  mSearchMaxNO2 = findViewById(R.id.seuil_max_no2_edittext);
+        EditText mSearchMaxNO2 = findViewById(R.id.seuil_max_no2_edittext);
         EditText mSearchMinNO2 = findViewById(R.id.seuil_min_no2_edittext);
         String maxNO2 = mSearchMaxNO2.getText().toString();
         String minNO2 = mSearchMinNO2.getText().toString();
@@ -94,25 +93,25 @@ public class SearchActivity extends AppCompatActivity {
         Intent seeMatchningLocationDetailIntent = new Intent(SearchActivity.this, BigSearchActivity.class);
         seeMatchningLocationDetailIntent.putExtra("zone", zone);
         seeMatchningLocationDetailIntent.putExtra("nom", nom);
-        seeMatchningLocationDetailIntent.putExtra("minBC",minBC);
-        seeMatchningLocationDetailIntent.putExtra("maxBC",maxBC);
-        seeMatchningLocationDetailIntent.putExtra("minCO",minCO);
-        seeMatchningLocationDetailIntent.putExtra("maxCO",maxCO);
-        seeMatchningLocationDetailIntent.putExtra("minNO2",minNO2);
-        seeMatchningLocationDetailIntent.putExtra("maxNO2",maxNO2);
-        seeMatchningLocationDetailIntent.putExtra("minO3",minO3);
-        seeMatchningLocationDetailIntent.putExtra("maxO3",maxO3);
-        seeMatchningLocationDetailIntent.putExtra("minPM10",minPM10);
-        seeMatchningLocationDetailIntent.putExtra("maxPM10",maxPM10);
-        seeMatchningLocationDetailIntent.putExtra("minPM25",minPM25);
-        seeMatchningLocationDetailIntent.putExtra("maxPM25",maxPM25);
-        seeMatchningLocationDetailIntent.putExtra("minSO2",minSO2);
-        seeMatchningLocationDetailIntent.putExtra("maxSO2",maxSO2);
+        seeMatchningLocationDetailIntent.putExtra("minBC", minBC);
+        seeMatchningLocationDetailIntent.putExtra("maxBC", maxBC);
+        seeMatchningLocationDetailIntent.putExtra("minCO", minCO);
+        seeMatchningLocationDetailIntent.putExtra("maxCO", maxCO);
+        seeMatchningLocationDetailIntent.putExtra("minNO2", minNO2);
+        seeMatchningLocationDetailIntent.putExtra("maxNO2", maxNO2);
+        seeMatchningLocationDetailIntent.putExtra("minO3", minO3);
+        seeMatchningLocationDetailIntent.putExtra("maxO3", maxO3);
+        seeMatchningLocationDetailIntent.putExtra("minPM10", minPM10);
+        seeMatchningLocationDetailIntent.putExtra("maxPM10", maxPM10);
+        seeMatchningLocationDetailIntent.putExtra("minPM25", minPM25);
+        seeMatchningLocationDetailIntent.putExtra("maxPM25", maxPM25);
+        seeMatchningLocationDetailIntent.putExtra("minSO2", minSO2);
+        seeMatchningLocationDetailIntent.putExtra("maxSO2", maxSO2);
         SearchActivity.this.startActivity(seeMatchningLocationDetailIntent);
 
 
-
     }
+
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;

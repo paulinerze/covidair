@@ -23,7 +23,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.FavoritesViewHolder>{
+public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.FavoritesViewHolder> {
 
     private LayoutInflater inflater;
     private Activity context;
@@ -50,17 +50,17 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
         holder.mCount.setText(favorite.getCount());
         holder.mLastUpdated.setText(favorite.getLastUpdated());
 
-        if (favorite.getSol() != null){
+        if (favorite.getSol() != null) {
             holder.mTemperatureLayout.setVisibility(View.VISIBLE);
             String.valueOf(favorite.getSol());
             holder.mTemperatureValue.setText(String.valueOf(favorite.getSol()));
-        } else{
+        } else {
             holder.mTemperatureLayout.setVisibility(View.GONE);
         }
 
 
-        if (favorite.getLatestMeasurements() != null && !favorite.getLatestMeasurements().isEmpty()){
-            if (favorite.getLatestMeasurements().containsKey("bc")){
+        if (favorite.getLatestMeasurements() != null && !favorite.getLatestMeasurements().isEmpty()) {
+            if (favorite.getLatestMeasurements().containsKey("bc")) {
                 holder.mBCLayout.setVisibility(View.VISIBLE);
                 holder.mLatestBC.setText(favorite.getLatestMeasurements().get("bc").parameter);
                 holder.mLatestBCValue.setText(favorite.getLatestMeasurements().get("bc").value);
@@ -68,7 +68,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
             } else {
                 holder.mBCLayout.setVisibility(View.GONE);
             }
-            if (favorite.getLatestMeasurements().containsKey("co")){
+            if (favorite.getLatestMeasurements().containsKey("co")) {
                 holder.mCOLayout.setVisibility(View.VISIBLE);
                 holder.mLatestCO.setText(favorite.getLatestMeasurements().get("co").parameter);
                 holder.mLatestCOValue.setText(favorite.getLatestMeasurements().get("co").value);
@@ -76,7 +76,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
             } else {
                 holder.mCOLayout.setVisibility(View.GONE);
             }
-            if (favorite.getLatestMeasurements().containsKey("no2")){
+            if (favorite.getLatestMeasurements().containsKey("no2")) {
                 holder.mNO2Layout.setVisibility(View.VISIBLE);
                 holder.mLatestNO2.setText(favorite.getLatestMeasurements().get("no2").parameter);
                 holder.mLatestNO2Value.setText(favorite.getLatestMeasurements().get("no2").value);
@@ -84,7 +84,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
             } else {
                 holder.mNO2Layout.setVisibility(View.GONE);
             }
-            if (favorite.getLatestMeasurements().containsKey("o3")){
+            if (favorite.getLatestMeasurements().containsKey("o3")) {
                 holder.mO3Layout.setVisibility(View.VISIBLE);
                 holder.mLatestO3.setText(favorite.getLatestMeasurements().get("o3").parameter);
                 holder.mLatestO3Value.setText(favorite.getLatestMeasurements().get("o3").value);
@@ -92,7 +92,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
             } else {
                 holder.mO3Layout.setVisibility(View.GONE);
             }
-            if (favorite.getLatestMeasurements().containsKey("pm10")){
+            if (favorite.getLatestMeasurements().containsKey("pm10")) {
                 holder.mPM10Layout.setVisibility(View.VISIBLE);
                 holder.mLatestPM10.setText(favorite.getLatestMeasurements().get("pm10").parameter);
                 holder.mLatestPM10Value.setText(favorite.getLatestMeasurements().get("pm10").value);
@@ -100,7 +100,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
             } else {
                 holder.mPM10Layout.setVisibility(View.GONE);
             }
-            if (favorite.getLatestMeasurements().containsKey("pm25")){
+            if (favorite.getLatestMeasurements().containsKey("pm25")) {
                 holder.mPM25Layout.setVisibility(View.VISIBLE);
                 holder.mLatestPM25.setText(favorite.getLatestMeasurements().get("pm25").parameter);
                 holder.mLatestPM25Value.setText(favorite.getLatestMeasurements().get("pm25").value);
@@ -108,7 +108,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
             } else {
                 holder.mPM25Layout.setVisibility(View.GONE);
             }
-            if (favorite.getLatestMeasurements().containsKey("so2")){
+            if (favorite.getLatestMeasurements().containsKey("so2")) {
                 holder.mSO2Layout.setVisibility(View.VISIBLE);
                 holder.mLatestSO2.setText(favorite.getLatestMeasurements().get("so2").parameter);
                 holder.mLatestSO2Value.setText(favorite.getLatestMeasurements().get("so2").value);
@@ -130,21 +130,6 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
         holder.mLocationsIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Play mp3
-                AssetFileDescriptor afd = null;
-                try {
-                    afd = context.getAssets().openFd("house.mp3");
-
-                    MediaPlayer player = new MediaPlayer();
-                    player.setDataSource(afd.getFileDescriptor(),afd.getStartOffset(),afd.getLength());
-                    player.prepare();
-                    player.start();
-
-                } catch (IOException e) {
-                    // Silent catch : sound will not be played
-                    e.printStackTrace();
-                }
-
                 // Open locations details activity
                 Intent seeCityDetailIntent = new Intent(context, DetailActivity.class);
                 seeCityDetailIntent.putExtra("longitude", favorite.longitude);

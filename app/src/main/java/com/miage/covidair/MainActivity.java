@@ -29,12 +29,11 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
-    private CityAdapter mCityAdapter;
     @BindView(R.id.activity_main_loader)
     ProgressBar mProgressBar;
     @BindView(R.id.activity_main_search_adress_edittext)
     EditText mSearchEditText;
-
+    private CityAdapter mCityAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

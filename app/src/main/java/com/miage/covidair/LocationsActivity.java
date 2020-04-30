@@ -29,11 +29,11 @@ import butterknife.ButterKnife;
 public class LocationsActivity extends AppCompatActivity {
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
-    private LocationAdapter mLocationAdapter;
     @BindView(R.id.activity_main_loader)
     ProgressBar mProgressBar;
     @BindView(R.id.activity_main_search_adress_edittext)
     EditText mSearchEditText;
+    private LocationAdapter mLocationAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +68,8 @@ public class LocationsActivity extends AppCompatActivity {
                 mProgressBar.setVisibility(View.VISIBLE);
 
                 // Launch a search through the PlaceSearchService
-                LocationSearchService.INSTANCE.searchLocations(editable.toString());;
+                LocationSearchService.INSTANCE.searchLocations(editable.toString());
+                ;
             }
         });
     }

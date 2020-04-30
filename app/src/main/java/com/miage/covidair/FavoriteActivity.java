@@ -26,10 +26,9 @@ public class FavoriteActivity extends AppCompatActivity {
 
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
-    private FavoriteAdapter mFavoriteAdapter;
     @BindView(R.id.activity_main_loader)
     ProgressBar mProgressBar;
-
+    private FavoriteAdapter mFavoriteAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

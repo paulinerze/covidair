@@ -8,7 +8,7 @@ public class LatestSearchResult {
     @Expose
     public List<Latest> results;
 
-    public LatestSearchResult(List<Latest> results){
+    public LatestSearchResult(List<Latest> results) {
         this.results = results;
     }
 }

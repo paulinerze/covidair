@@ -1,36 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    >
+    android:orientation="horizontal">
 
     <ImageView
-        android:layout_margin="5dp"
         android:id="@+id/favorite_adapter_icon"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/location"/>
+        android:layout_margin="5dp"
+        android:src="@drawable/location" />
 
     <LinearLayout
-        android:layout_margin="5dp"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/favorite_adapter_location"
             android:layout_width="match_parent"
-            android:textStyle="bold"
+            android:layout_height="0dp"
             android:layout_weight="1"
-            android:layout_height="0dp" />
+            android:textStyle="bold" />
 
         <LinearLayout
             android:id="@+id/temperature_layout"
-            android:layout_weight="1"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="0dp">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/favorite_adapter_temperature_label"
@@ -50,15 +49,15 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:text="°C"/>
+                android:text="°C" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_weight="1"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="0dp">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/favorite_adapter_countLabel"
@@ -77,10 +76,10 @@
 
         <LinearLayout
             android:id="@+id/favorite_bc"
-            android:layout_weight="1"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="0dp">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/favorite_adapter_latest_bc"
@@ -104,10 +103,10 @@
 
         <LinearLayout
             android:id="@+id/favorite_co"
-            android:layout_weight="1"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="0dp">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/favorite_adapter_latest_co"
@@ -131,10 +130,10 @@
 
         <LinearLayout
             android:id="@+id/favorite_no2"
-            android:layout_weight="1"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="0dp">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/favorite_adapter_latest_no2"
@@ -158,10 +157,10 @@
 
         <LinearLayout
             android:id="@+id/favorite_o3"
-            android:layout_weight="1"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="0dp">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/favorite_adapter_latest_o3"
@@ -185,10 +184,10 @@
 
         <LinearLayout
             android:id="@+id/favorite_pm10"
-            android:layout_weight="1"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="0dp">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/favorite_adapter_latest_pm10"
@@ -212,10 +211,10 @@
 
         <LinearLayout
             android:id="@+id/favorite_pm25"
-            android:layout_weight="1"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="0dp">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/favorite_adapter_latest_pm25"
@@ -239,10 +238,10 @@
 
         <LinearLayout
             android:id="@+id/favorite_so2"
-            android:layout_weight="1"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="0dp">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/favorite_adapter_latest_so2"
@@ -265,10 +264,10 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_weight="1"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="0dp">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/favorite_adapter_lastUpdatedLabel"
@@ -288,7 +287,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/colorPrimary"/>
+            android:background="@color/colorPrimary" />
 
     </LinearLayout>
 

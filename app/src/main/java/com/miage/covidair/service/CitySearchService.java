@@ -30,10 +30,9 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class CitySearchService {
-    public ISearchRESTService mISearchRESTService;
-
-    public static CitySearchService INSTANCE = new CitySearchService();
     private static final long REFRESH_DELAY = 650;
+    public static CitySearchService INSTANCE = new CitySearchService();
+    public ISearchRESTService mISearchRESTService;
     private ScheduledExecutorService mScheduler = Executors.newScheduledThreadPool(1);
     private ScheduledFuture mLastScheduleTask;
 
@@ -64,14 +63,14 @@ public class CitySearchService {
             mLastScheduleTask.cancel(true);
         }
 
-        if (city != null && !city.isEmpty()){
+        if (city != null && !city.isEmpty()) {
             // Schedule a network call in REFRESH_DELAY ms
             mLastScheduleTask = mScheduler.schedule(() -> {
                 // Step 1 : first run a local search from DB and post result
                 searchCityFromDB(city);
 
                 // Step 2 : Call to the REST service
-                mISearchRESTService.searchForCities("FR",10000).enqueue(new Callback<CitySearchResult>() {
+                mISearchRESTService.searchForCities("FR", 10000).enqueue(new Callback<CitySearchResult>() {
                     @Override
                     public void onResponse(Call<CitySearchResult> call, retrofit2.Response<CitySearchResult> response) {
                         // Post an event so that listening activities can update their UI
@@ -111,7 +110,7 @@ public class CitySearchService {
                 searchCitiesFromDB();
 
                 // Step 2 : Call to the REST service
-                mISearchRESTService.searchForCities("FR",10000).enqueue(new Callback<CitySearchResult>() {
+                mISearchRESTService.searchForCities("FR", 10000).enqueue(new Callback<CitySearchResult>() {
                     @Override
                     public void onResponse(Call<CitySearchResult> call, retrofit2.Response<CitySearchResult> response) {
                         // Post an event so that listening activities can update their UI
@@ -150,9 +149,9 @@ public class CitySearchService {
     }
 
     private void searchLocations(String city) {
-        if (city != null && !city.isEmpty()){
-            List<City> matchingCitiesFromDB =  returnCityFromDB(city);
-            for (City mcity: matchingCitiesFromDB) {
+        if (city != null && !city.isEmpty()) {
+            List<City> matchingCitiesFromDB = returnCityFromDB(city);
+            for (City mcity : matchingCitiesFromDB) {
                 // Schedule a network call in REFRESH_DELAY ms
                 mLastScheduleTask = mScheduler.schedule(() -> {
                     searchCitiesFromDB();
@@ -195,8 +194,8 @@ public class CitySearchService {
                 }, REFRESH_DELAY, TimeUnit.MILLISECONDS);
             }
         } else {
-            List<City> matchingCitiesFromDB =  returnCitiesFromDB();
-            for (City mcity: matchingCitiesFromDB) {
+            List<City> matchingCitiesFromDB = returnCitiesFromDB();
+            for (City mcity : matchingCitiesFromDB) {
                 // Schedule a network call in REFRESH_DELAY ms
                 mLastScheduleTask = mScheduler.schedule(() -> {
                     searchCitiesFromDB();
@@ -241,7 +240,6 @@ public class CitySearchService {
         }
 
 
-
     }
 
     private void searchCitiesFromDB() {
@@ -264,9 +262,9 @@ public class CitySearchService {
         return matchingCitiesFromDB;
     }
 
-    public boolean isCity(String city){
+    public boolean isCity(String city) {
         List<City> cities = returnCityFromDB(city);
-        if (cities != null && !cities.isEmpty()){
+        if (cities != null && !cities.isEmpty()) {
             return true;
         } else return false;
     }

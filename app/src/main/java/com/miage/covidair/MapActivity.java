@@ -38,11 +38,26 @@ import butterknife.ButterKnife;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-    private GoogleMap mActiveGoogleMap;
     @BindView(R.id.activity_main_loader)
     ProgressBar mProgressBar;
     @BindView(R.id.activity_main_search_adress_edittext)
     EditText mSearchEditText;
+    private GoogleMap mActiveGoogleMap;
+    GoogleMap.OnInfoWindowClickListener WhenInfoWindowClick = new GoogleMap.OnInfoWindowClickListener() {
+        @Override
+        public void onInfoWindowClick(Marker marker) {
+            mActiveGoogleMap.clear();
+            if (CitySearchService.INSTANCE.isCity(marker.getTitle())) {
+                LocationSearchService.INSTANCE.searchLocations(marker.getTitle());
+            } else {
+                Intent seeCityDetailIntent = new Intent(MapActivity.this, DetailActivity.class);
+                seeCityDetailIntent.putExtra("longitude", String.valueOf(marker.getPosition().longitude));
+                seeCityDetailIntent.putExtra("latitude", String.valueOf(marker.getPosition().latitude));
+                MapActivity.this.startActivity(seeCityDetailIntent);
+            }
+
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -261,23 +276,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mActiveGoogleMap = googleMap;
-        mActiveGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(46.227638,2.213749),5));
+        mActiveGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(46.227638, 2.213749), 5));
         mActiveGoogleMap.setOnInfoWindowClickListener(WhenInfoWindowClick);
     }
-
-    GoogleMap.OnInfoWindowClickListener WhenInfoWindowClick = new GoogleMap.OnInfoWindowClickListener() {
-        @Override
-        public void onInfoWindowClick(Marker marker) {
-            mActiveGoogleMap.clear();
-            if (CitySearchService.INSTANCE.isCity(marker.getTitle())){
-                LocationSearchService.INSTANCE.searchLocations(marker.getTitle());
-            } else {
-                Intent seeCityDetailIntent = new Intent(MapActivity.this, DetailActivity.class);
-                seeCityDetailIntent.putExtra("longitude", String.valueOf(marker.getPosition().longitude));
-                seeCityDetailIntent.putExtra("latitude", String.valueOf(marker.getPosition().latitude));
-                MapActivity.this.startActivity(seeCityDetailIntent);
-            }
-
-        }
-    };
 }

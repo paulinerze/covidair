@@ -25,9 +25,9 @@ import butterknife.ButterKnife;
 public class BigSearchActivity extends AppCompatActivity {
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
-    private LocationAdapter mLocationAdapter;
     @BindView(R.id.activity_main_loader)
     ProgressBar mProgressBar;
+    private LocationAdapter mLocationAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

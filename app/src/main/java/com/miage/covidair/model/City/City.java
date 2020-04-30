@@ -12,9 +12,6 @@ public class City extends Model {
     @Column(name = "name", index = true, unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     public String name;
     @Expose
-    @Column(name = "count")
-    public String count;
-    @Expose
     @Column(name = "locations")
     public String locations;
     @Expose
@@ -31,14 +28,6 @@ public class City extends Model {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getCount() {
-        return count;
-    }
-
-    public void setCount(String count) {
-        this.count = count;
     }
 
     public String getLocations() {

@@ -51,7 +51,6 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.Measuremen
         holder.mVentValue.setText(String.valueOf(location.vent));
         holder.mLastUpdated.setText(location.lastUpdated);
 
-        //holder.mSearchArea.setVisibility(View.GONE);
 
         if (!LocationSearchService.INSTANCE.isFavorite(location.location)) {
             holder.mAddButton.setVisibility(View.VISIBLE);
@@ -62,8 +61,8 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.Measuremen
         }
 
 
-        if (location.getLatestMeasurements() != null && !location.getLatestMeasurements().isEmpty()){
-            if (location.getLatestMeasurements().containsKey("bc")){
+        if (location.getLatestMeasurements() != null && !location.getLatestMeasurements().isEmpty()) {
+            if (location.getLatestMeasurements().containsKey("bc")) {
                 holder.mBCLayout.setVisibility(View.VISIBLE);
                 holder.mLatestBC.setText(location.getLatestMeasurements().get("bc").parameter);
                 holder.mLatestBCValue.setText(location.getLatestMeasurements().get("bc").value);
@@ -71,7 +70,7 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.Measuremen
             } else {
                 holder.mBCLayout.setVisibility(View.GONE);
             }
-            if (location.getLatestMeasurements().containsKey("co")){
+            if (location.getLatestMeasurements().containsKey("co")) {
                 holder.mCOLayout.setVisibility(View.VISIBLE);
                 holder.mLatestCO.setText(location.getLatestMeasurements().get("co").parameter);
                 holder.mLatestCOValue.setText(location.getLatestMeasurements().get("co").value);
@@ -79,7 +78,7 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.Measuremen
             } else {
                 holder.mCOLayout.setVisibility(View.GONE);
             }
-            if (location.getLatestMeasurements().containsKey("no2")){
+            if (location.getLatestMeasurements().containsKey("no2")) {
                 holder.mNO2Layout.setVisibility(View.VISIBLE);
                 holder.mLatestNO2.setText(location.getLatestMeasurements().get("no2").parameter);
                 holder.mLatestNO2Value.setText(location.getLatestMeasurements().get("no2").value);
@@ -87,7 +86,7 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.Measuremen
             } else {
                 holder.mNO2Layout.setVisibility(View.GONE);
             }
-            if (location.getLatestMeasurements().containsKey("o3")){
+            if (location.getLatestMeasurements().containsKey("o3")) {
                 holder.mO3Layout.setVisibility(View.VISIBLE);
                 holder.mLatestO3.setText(location.getLatestMeasurements().get("o3").parameter);
                 holder.mLatestO3Value.setText(location.getLatestMeasurements().get("o3").value);
@@ -95,7 +94,7 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.Measuremen
             } else {
                 holder.mO3Layout.setVisibility(View.GONE);
             }
-            if (location.getLatestMeasurements().containsKey("pm10")){
+            if (location.getLatestMeasurements().containsKey("pm10")) {
                 holder.mPM10Layout.setVisibility(View.VISIBLE);
                 holder.mLatestPM10.setText(location.getLatestMeasurements().get("pm10").parameter);
                 holder.mLatestPM10Value.setText(location.getLatestMeasurements().get("pm10").value);
@@ -103,7 +102,7 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.Measuremen
             } else {
                 holder.mPM10Layout.setVisibility(View.GONE);
             }
-            if (location.getLatestMeasurements().containsKey("pm25")){
+            if (location.getLatestMeasurements().containsKey("pm25")) {
                 holder.mPM25Layout.setVisibility(View.VISIBLE);
                 holder.mLatestPM25.setText(location.getLatestMeasurements().get("pm25").parameter);
                 holder.mLatestPM25Value.setText(location.getLatestMeasurements().get("pm25").value);
@@ -111,7 +110,7 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.Measuremen
             } else {
                 holder.mPM25Layout.setVisibility(View.GONE);
             }
-            if (location.getLatestMeasurements().containsKey("so2")){
+            if (location.getLatestMeasurements().containsKey("so2")) {
                 holder.mSO2Layout.setVisibility(View.VISIBLE);
                 holder.mLatestSO2.setText(location.getLatestMeasurements().get("so2").parameter);
                 holder.mLatestSO2Value.setText(location.getLatestMeasurements().get("so2").value);
