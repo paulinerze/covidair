@@ -1,10 +1,7 @@
 package com.miage.covidair;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,22 +9,11 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.miage.covidair.adapter.CityAdapter;
 import com.miage.covidair.adapter.LocationAdapter;
-import com.miage.covidair.event.EventBusManager;
-import com.miage.covidair.event.SearchCityResultEvent;
-import com.miage.covidair.event.SearchLocationResultEvent;
-import com.miage.covidair.service.CitySearchService;
-import com.miage.covidair.service.LocationSearchService;
-import com.squareup.otto.Subscribe;
-
-import java.util.ArrayList;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class SearchActivity extends AppCompatActivity {
 

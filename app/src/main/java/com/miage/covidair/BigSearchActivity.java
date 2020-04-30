@@ -2,12 +2,8 @@ package com.miage.covidair;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.miage.covidair.adapter.LocationAdapter;
 import com.miage.covidair.event.EventBusManager;
 import com.miage.covidair.event.SearchLocationResultEvent;
-import com.miage.covidair.service.CitySearchService;
 import com.miage.covidair.service.LocationSearchService;
 import com.squareup.otto.Subscribe;
 
@@ -37,7 +32,7 @@ public class BigSearchActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.detail_main);
 
         // Binding ButterKnife annotations now that content view has been set
         ButterKnife.bind(this);
