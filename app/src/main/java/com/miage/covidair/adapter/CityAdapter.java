@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,7 +45,7 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityViewHolder
         // Adapt the ViewHolder state to the new element
         final City city = mCities.get(position);
         holder.mCityName.setText(city.getName());
-        holder.mCityIcon.setOnClickListener(new View.OnClickListener() {
+        holder.mCityLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Open city details activity
@@ -72,6 +73,9 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityViewHolder
 
         @BindView(R.id.city_adapter_icon)
         ImageView mCityIcon;
+
+        @BindView(R.id.cityLayout)
+        LinearLayout mCityLayout;
 
         public CityViewHolder(View itemView) {
             super(itemView);

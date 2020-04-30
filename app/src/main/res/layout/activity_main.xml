@@ -18,7 +18,9 @@
         <LinearLayout
             android:id="@+id/search_area"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
 
             <EditText
                 android:id="@+id/activity_main_search_adress_edittext"
@@ -26,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:ems="10"
-                android:hint="Recherchez un lieu"
+                android:hint="Filtrer les résultats"
                 android:inputType="text" />
         </LinearLayout>
 

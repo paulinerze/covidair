@@ -127,7 +127,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
         }
 
 
-        holder.mLocationsIcon.setOnClickListener(new View.OnClickListener() {
+        holder.mLocationLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Open locations details activity
@@ -150,6 +150,9 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
 
     // Pattern ViewHolder
     class LocationsViewHolder extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.locationLayout)
+        LinearLayout mLocationLayout;
 
         @BindView(R.id.locations_adapter_icon)
         ImageView mLocationsIcon;

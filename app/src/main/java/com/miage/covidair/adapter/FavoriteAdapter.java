@@ -126,7 +126,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
             holder.mSO2Layout.setVisibility(View.GONE);
         }
 
-        holder.mLocationsIcon.setOnClickListener(new View.OnClickListener() {
+        holder.mLocationLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Open locations details activity
@@ -150,6 +150,9 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
 
     // Pattern ViewHolder
     class FavoritesViewHolder extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.locationLayout)
+        LinearLayout mLocationLayout;
 
         @BindView(R.id.favorite_adapter_icon)
         ImageView mLocationsIcon;
