@@ -15,4 +15,4 @@ Attention, nous ne pactisons pas avec le diable. Ainsi l'application n'est pas d
 ### Limites
 
 Merci de ne pas trop la trifouiller, elle est sensible.
-Quand y'a pas de données, y'a pas de données.
+Quand y'a pas de données un écran blanc est affiché. Nous vous conseillons de travailler avec la zone "Air Breizh" qui dispose de données avec un lieu contenant des mesures. 
